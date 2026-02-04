@@ -78,7 +78,7 @@ class Class {
 ## 5. Version Control
 
 ### Naming Branches
-- `issue-###-short-description` (swap ### with issue number)
+- `type/short-description` 
 
 ### Merge Requests
 - Clear description of what it does
