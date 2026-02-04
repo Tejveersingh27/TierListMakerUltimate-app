@@ -32,7 +32,11 @@ This document defines programming, version control, and quality standards for ou
 
 - Max 30 lines per method (UI code may be longer)
 - Each class should be describable in 1 sentence
-- Handle exceptions appropriately
+
+- **Do** Handle exceptions appropriately
+- **Do** use `strings.xml` for all UI text:
+
+- **Don't** use magic numbers or hard-coded strings
 
 ---
 
@@ -43,6 +47,17 @@ This document defines programming, version control, and quality standards for ou
 - Format code: `Ctrl+Alt+L`
 - Line length: 120 characters max
 - Always use braces for if/else statements
+- Methods in classes should be order like:
+```java
+class Class {
+    //varaibles
+    
+    //constructors
+    
+    //methods
+    
+}
+```
 
 ### Comments
 - **Don't:** Comment obvious code
@@ -55,7 +70,7 @@ This document defines programming, version control, and quality standards for ou
 
 ### Unit Tests
 - For all logic layer classes (80% coverage required)
-- Location: `./test/java`
+- Location: `src/test/java`
 - No tests required for Database, DSO, or Presentation layer classes
 
 ---
