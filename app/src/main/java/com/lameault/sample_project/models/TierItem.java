@@ -8,27 +8,41 @@ public class TierItem {
     private int tierId;
 
     // For new items
-    public TierItem(String imagePath, String description, int tierId);  
-    // For DB load
-    public TierItem(int id, String imagePath, String description, int tierId);  
+    public TierItem(String imagePath, String description, int tierId) {
+        this.imagePath = imagePath;
+        this.description = description;
+        this.tierId = tierId;
+    }
 
-    public int getId(){
+    // For DB load
+    public TierItem(int id, String imagePath, String description, int tierId) {
+        this.id = id;
+        this.imagePath = imagePath;
+        this.description = description;
+        this.tierId = tierId;
+    }
+
+    public int getId() {
         return this.id;
     }
-    public String getImagePath(){
+
+    public String getImagePath() {
         return this.imagePath;
     }
-    public String getDescription(){
+
+    public String getDescription() {
         return this.description;
     }
-    public int getTierId(){
+
+    public int getTierId() {
         return this.tierId;
     }
 
-    public void setTierId(int tierId){
+    public void setTierId(int tierId) {
         this.tierId = tierId;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
 }
