@@ -1,6 +1,18 @@
 <resources>
+
+
     <string name="app_name">sample_project</string>
     <string name="action_settings">Settings</string>
+
+
+    <!-- Tier Editor Dialog -->
+    <string name="dialog_edit_tier_title">Edit Tier</string>
+    <string name="dialog_tier_label_hint">e.g., S-Tier</string>
+    <string name="dialog_select_color">Select Color</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_save">Save</string>
+
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
