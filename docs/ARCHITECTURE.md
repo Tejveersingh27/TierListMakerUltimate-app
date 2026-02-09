@@ -4,7 +4,7 @@ This document provides an overview of the project's architecture
 ---
 
 ## 1. Diagram
-![Image of Our Architecture Diagram](images/architecture_diagram.drawio.png)
+![Image of Our Architecture Diagram](images/Architecture.png)
 
 
 ---
