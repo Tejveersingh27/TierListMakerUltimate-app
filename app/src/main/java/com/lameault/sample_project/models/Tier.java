@@ -2,7 +2,7 @@ package com.lameault.sample_project.models;
 
 
 public class Tier {
-        private int id;
+    private int id;
     private String name;
     private String colorHex; // Format: "#RRGGBB" 
 
