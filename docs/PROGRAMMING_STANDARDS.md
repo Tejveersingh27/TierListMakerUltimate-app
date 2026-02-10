@@ -1,6 +1,6 @@
 # Programming Standards – Tier List Maker
 
-This document defines programming, version control, and quality standards for our project.
+This document defines programming, and quality standards for our project.
 
 ---
 
@@ -46,7 +46,7 @@ This document defines programming, version control, and quality standards for ou
 - Format code: `Ctrl+Alt+L`
 - Line length: 120 characters max
 - Always use braces for if/else statements
-- Methods in classes should be order like:
+- Methods in classes should be ordered like:
 ```java
 class Class {
     //variables
