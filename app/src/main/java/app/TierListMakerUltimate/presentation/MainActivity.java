@@ -1,4 +1,4 @@
-package com.lameault.sample_project.presentation;
+package app.TierListMakerUltimate.presentation;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lameault.sample_project.R;
-import com.lameault.sample_project.application.TodoApp;
-import com.lameault.sample_project.business.services.ItemService;
+import TierListMakerUltimate.application.TodoApp;
+import TierListMakerUltimate.business.validation.ValidationException;
+import TierListMakerUltimate.business.services.ItemService;
 import com.lameault.sample_project.models.Item;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
                 clearInputs();
                 refreshList();
-            } catch (com.lameault.sample_project.business.validation.ValidationException ex) {
+            } catch (ValidationException ex) {
                 // simplest: show error on the title field (or a Toast)
                 titleInput.setError(ex.getMessage());
                 titleInput.requestFocus();

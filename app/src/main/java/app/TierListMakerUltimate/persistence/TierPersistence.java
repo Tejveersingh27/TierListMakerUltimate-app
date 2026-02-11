@@ -1,6 +1,6 @@
-package com.lameault.sample_project.persistence;
+package app.TierListMakerUltimate.persistence;
 
-import com.lameault.sample_project.models.Tier;
+import app.TierListMakerUltimate.models.Tier;
 
 import java.util.List;
 
