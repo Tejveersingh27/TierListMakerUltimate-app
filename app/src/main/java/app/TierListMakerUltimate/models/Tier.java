@@ -1,4 +1,4 @@
-package com.lameault.sample_project.models;
+package app.TierListMakerUltimate.models;
 
 
 public class Tier {
