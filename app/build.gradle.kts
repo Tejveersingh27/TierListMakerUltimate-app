@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "TierListMakerUltimate"
+    namespace = "app.TierListMakerUltimate"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "TierListMakerUltimate"
+        applicationId = "app.TierListMakerUltimate"
         minSdk = 34
         targetSdk = 35
         versionCode = 1
