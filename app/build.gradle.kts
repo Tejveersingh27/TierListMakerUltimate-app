@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.lameault.sample_project"
+    namespace = "app.TierListMakerUltimate"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.lameault.sample_project"
+        applicationId = "app.TierListMakerUltimate"
         minSdk = 34
         targetSdk = 35
         versionCode = 1
