@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:alpha="1"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/label_edit_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_edit_tier_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_edit_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_tier_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/dialog_tier_label_hint"
+            android:inputType="textCapWords" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/label_select_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/dialog_select_color"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_layout_label" />
+
+    <GridLayout
+        android:id="@+id/grid_colors_"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:columnCount="5"
+        android:rowCount="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_select_color">
+
+        <View
+            android:id="@+id/color_red"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:background="#F44336"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:id="@+id/color_orange"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:background="#FF9800"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:id="@+id/color_yellow"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:background="#FFC107"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:id="@+id/color_green"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:background="#FFEB3B"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:id="@+id/color_blue"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:background="#4CAF50"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:id="@+id/color_purple"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:background="#8BC34A"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:id="@+id/color_pink"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:background="#2196F3"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:id="@+id/color_gray"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:background="#3F51B5"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:id="@+id/color_brown"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:background="#673AB7"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:id="@+id/color_cyan"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:background="#9C27B0"
+            android:clickable="true"
+            android:focusable="true" />
+    </GridLayout>
+
+    <Button
+        android:id="@+id/button_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/button_cancel"
+        app:layout_constraintEnd_toStartOf="@+id/button_confirm"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/grid_colors_" />
+
+    <Button
+        android:id="@+id/button_confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/button_cancel"
+        app:layout_constraintTop_toTopOf="@id/button_cancel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

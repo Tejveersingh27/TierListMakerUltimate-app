@@ -1,7 +1,7 @@
-//package TierListMakerUltimate.business.validation;
-//
-//public class ValidationException extends RuntimeException {
-//    public ValidationException(String message) {
-//        super(message);
-//    }
-//}
+package app.TierListMakerUltimate.business.validation;
+
+public class ValidationException extends RuntimeException {
+    public ValidationException(String message) {
+        super(message);
+    }
+}
