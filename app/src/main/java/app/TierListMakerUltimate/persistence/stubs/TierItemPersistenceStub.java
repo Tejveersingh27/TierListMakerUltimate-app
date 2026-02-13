@@ -1,11 +1,14 @@
-// FAKE PERSISTENCE CREATED BY CHATGPT JUST FOR TESTING
-package app.TierListMakerUltimate.persistence.fake;
+package app.TierListMakerUltimate.persistence.stubs;
+
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class FakeTierItemPersistence implements TierItemPersistence {
+public class TierItemPersistenceStub implements TierItemPersistence {
 
     private final Map<Integer, TierItem> items = new HashMap<>();
     private int nextId = 1;
@@ -29,14 +32,17 @@ public class FakeTierItemPersistence implements TierItemPersistence {
     @Override
     public int insertItem(int tierId, TierItem currentItem) {
         int id = nextId++;
-        currentItem.setId(id);
-        items.put(id, currentItem);
+        TierItem copy = new TierItem(id, currentItem.getImagePath(),
+                currentItem.getDescription(), tierId);
+        items.put(id, copy);
         return id;
     }
 
     @Override
     public void updateItem(TierItem currentItem) {
-        items.put(currentItem.getId(), currentItem);
+        if (items.containsKey(currentItem.getId())) {
+            items.put(currentItem.getId(), currentItem);
+        }
     }
 
     @Override

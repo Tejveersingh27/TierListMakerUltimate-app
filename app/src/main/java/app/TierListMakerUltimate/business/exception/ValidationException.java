@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.business.validation;
+package app.TierListMakerUltimate.business.exception;
 
 public class ValidationException extends RuntimeException {
     public ValidationException(String message) {
