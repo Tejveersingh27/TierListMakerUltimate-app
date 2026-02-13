@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     // Variables
     private static final String TAG = "epic_games";     // Used for debugging
 
-
     private TierListManager activeList;
     private TierManager tierManager;
     private ItemPlacementManager placementManager;
