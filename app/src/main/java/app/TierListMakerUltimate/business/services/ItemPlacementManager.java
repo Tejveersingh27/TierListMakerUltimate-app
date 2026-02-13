@@ -12,6 +12,9 @@ public class ItemPlacementManager {
     private final ItemValidator validator;
 
     public ItemPlacementManager(TierItemPersistence itemStorage, ItemValidator validator) {
+        if (itemStorage == null || validator == null) {
+            throw new IllegalArgumentException("TierItemPersistence and ItemValidator cannot be null");
+        }
         this.itemStorage = itemStorage;
         this.validator = validator;
     }

@@ -11,6 +11,9 @@ public class TierManager {
     private final TierValidator validator;
 
     public TierManager(TierPersistence tierStorage, TierValidator validator) {
+        if (tierStorage == null || validator == null) {
+            throw new IllegalArgumentException("TierPersistence and TierValidator cannot be null");
+        }
         this.tierStorage = tierStorage;
         this.validator = validator;
     }

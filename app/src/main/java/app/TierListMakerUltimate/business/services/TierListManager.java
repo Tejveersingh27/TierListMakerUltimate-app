@@ -9,6 +9,9 @@ public class TierListManager {
     private final TierListValidator validator;
 
     public TierListManager(TierListPersistence tierListStorage, TierListValidator validator) {
+        if (tierListStorage == null || validator == null) {
+            throw new IllegalArgumentException("TierListPersistence and TierListValidator cannot be null");
+        }
         this.tierListStorage = tierListStorage;
         this.validator = validator;
     }

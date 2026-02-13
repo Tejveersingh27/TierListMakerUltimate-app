@@ -26,9 +26,15 @@ public class TierValidator {
         validateColor(color);
     }
 
+    public void validateTierId(int tierId) {
+        if (tierId <= 0) {
+            throw new ValidationException("Tier Id is required.");
+        }
+    }
+
     public void validateTierListId(int tierListId) {
         if (tierListId <= 0) {
-            throw new ValidationException("TierList Id is required");
+            throw new ValidationException("Tier List Id is required.");
         }
     }
 }
