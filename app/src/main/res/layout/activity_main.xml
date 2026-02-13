@@ -1,62 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="60dp"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    >
-
-    <!-- Title -->
-    <EditText
-        android:id="@+id/titleInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="#666666"
-        android:hint="@string/item_title"
-        android:importantForAutofill="no"
-        android:maxWidth="320dp"
-        android:minHeight="48dp"
-        android:inputType="text"
-        android:textSize="16sp" />
-
-    <!-- Description -->
-    <EditText
-        android:id="@+id/descInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="#666666"
-        android:hint="@string/item_description"
-        android:minHeight="48dp"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:textSize="16sp" />
-
-    <!-- Add button -->
+    android:layout_height="wrap_content"
+    android:alpha="1"
+    android:background="#FFFFFF"
+    android:padding="15dp">
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
-
-    <!-- List -->
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="#666666"
-        android:text="@string/button_add_to_do"
-        android:maxWidth="320dp"
-        android:textSize="14sp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/todoList"
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:textSize="16sp"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
 
-</LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/unplaced_items"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="#7A7A7A"
+        android:columnWidth="90dp"
+        android:numColumns="auto_fit"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:background="#2A2A2A"
+        android:paddingLeft="4dp"
+        android:paddingTop="8dp"
+        android:paddingRight="4dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:id="@+id/tier_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00ED5858"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

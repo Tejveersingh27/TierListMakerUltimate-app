@@ -3,19 +3,19 @@ package app.TierListMakerUltimate.models;
 
 public class TierItem {
     private int id;
-    private String imagePath;
+    private int imagePath;
     private String description;
     private int tierId;
 
     // For new items
-    public TierItem(String imagePath, String description, int tierId) {
+    public TierItem(int imagePath, String description, int tierId) {
         this.imagePath = imagePath;
         this.description = description;
         this.tierId = tierId;
     }
 
     // For DB load
-    public TierItem(int id, String imagePath, String description, int tierId) {
+    public TierItem(int id, int imagePath, String description, int tierId) {
         this.id = id;
         this.imagePath = imagePath;
         this.description = description;
@@ -26,7 +26,7 @@ public class TierItem {
         return this.id;
     }
 
-    public String getImagePath() {
+    public int getImagePath() {
         return this.imagePath;
     }
 

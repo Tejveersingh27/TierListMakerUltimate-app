@@ -37,7 +37,7 @@ public class TierItemStorage implements TierItemPersistence {
                 for (int i = 0; i < items.length(); i++) {
                     JSONObject item = items.getJSONObject(i);
                     int id = item.getInt("id");
-                    String imagePath = item.getString("imagePath");
+                    int imagePath = Integer.parseInt(item.getString("imagePath"));
                     String description = item.getString("description");
                     int tierId = item.getInt("tierId");
 

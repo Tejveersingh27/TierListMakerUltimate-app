@@ -1,20 +1,23 @@
 package app.TierListMakerUltimate.business.validation;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 import app.TierListMakerUltimate.business.exception.ValidationException;
 
 public class ItemValidator {
     private static final int MAX_LENGTH_DESCRIPTION = 100;
 
-    public void validateCreateItem(String localImagePath, int tierId, String description) {
+    public void validateCreateItem(int localImagePath, int tierId, String description) {
         validateImagePath(localImagePath);
         validateTierId(tierId);
         validateDescription(description);
     }
 
-    public void validateImagePath(String localImagePath) {
-        if (localImagePath == null || localImagePath.trim().isEmpty()) {
-            throw new ValidationException("Image path is required");
-        }
+    public void validateImagePath(int localImagePath) {
+        //if (localImagePath >= 0) {
+         //   throw new ValidationException("A valid image path is required");
+        //}
     }
 
     public void validateTierId(int tierId) {
