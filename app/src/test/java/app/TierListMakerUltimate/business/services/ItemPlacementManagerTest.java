@@ -52,6 +52,7 @@ public class ItemPlacementManagerTest {
         TierItem item = manager.createItem("image.png", 1, "This is a test item");
         assertEquals(1, item.getTierId());
         manager.moveItemToTier(item.getId(), 2);
+        item = manager.getItem(item.getId());
         assertEquals(2, item.getTierId()); //confirms that the tierId actually changed after moving
     }
 
