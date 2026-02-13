@@ -5,12 +5,13 @@ public class TierItem {
     private int id;
     private String imagePath;
     private String description;
+    private int tierId;
 
     // For new items
     public TierItem(String imagePath, String description, int tierId) {
         this.imagePath = imagePath;
         this.description = description;
-//        this.tierId = tierId;
+        this.tierId = tierId;
     }
 
     // For DB load
@@ -18,7 +19,7 @@ public class TierItem {
         this.id = id;
         this.imagePath = imagePath;
         this.description = description;
-//        this.tierId = tierId;
+        this.tierId = tierId;
     }
 
     public int getId() {
@@ -33,13 +34,13 @@ public class TierItem {
         return this.description;
     }
 
-//    public int getTierId() {
-//        return this.tierId;
-//    }
-//
-//    public void setTierId(int tierId) {
-//        this.tierId = tierId;
-//    }
+    public int getTierId() {
+        return this.tierId;
+    }
+
+    public void setTierId(int tierId) {
+        this.tierId = tierId;
+    }
 
     public void setId(int id) {
         this.id = id;
