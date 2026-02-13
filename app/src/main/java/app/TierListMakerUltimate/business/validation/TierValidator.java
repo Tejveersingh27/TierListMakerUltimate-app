@@ -6,7 +6,7 @@ public class TierValidator {
     public static final int MAX_LABEL_LENGTH = 60;
     public static final String COLOR_REGEX = "^#[0-9A-Fa-f]{6}$";
 
-    public static void validateLabel(String label) {
+    public void validateLabel(String label) {
         if (label == null || label.trim().isEmpty()) {
             throw new ValidationException("Label is required.");
         }
@@ -15,13 +15,13 @@ public class TierValidator {
         }
     }
 
-    public static void validateColor(String color) {
+    public void validateColor(String color) {
         if (color == null || !color.matches(COLOR_REGEX)) {
             throw new ValidationException("Color must be a valid hex code.");
         }
     }
 
-    public static void validateTier(String label, String color) {
+    public void validateTier(String label, String color) {
         validateLabel(label);
         validateColor(color);
     }
