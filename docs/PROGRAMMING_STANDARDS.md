@@ -10,11 +10,11 @@ This document defines programming, and quality standards for our project.
 - Names should be self-explanatory where possible
 
 ### Packages
-- Lowercase
+- Lowercase, PascalCase
 
 ### Classes
 - **Classes:** PascalCase
-- **Interfaces:** PascalCase with prefix "I"
+- **Interfaces:** PascalCase
 - **Test Files:** {ClassName}Test
 
 ### Variables
