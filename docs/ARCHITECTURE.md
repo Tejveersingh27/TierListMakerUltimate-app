@@ -20,6 +20,7 @@ This document provides an overview of the project's architecture
 **MainView**
 
 - Class to let users interact with the tier list (starting screen of the app)
+- Used to translate user interactions with the tier list and send them to the business layer.
 
 --- 
 
@@ -29,7 +30,7 @@ This document provides an overview of the project's architecture
 
 **TierListManager**
 
-- Class to modify and create TierLists
+- Class to modify TierLists
 
 **TierManager**
 
