@@ -31,8 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    // Vars for main page go here
-    private static final String TAG = "epic_games";
+    // Variables
+    private static final String TAG = "epic_games";     // Used for debugging
+
+
     private TierListManager activeList;
     private TierManager tierManager;
     private ItemPlacementManager placementManager;
