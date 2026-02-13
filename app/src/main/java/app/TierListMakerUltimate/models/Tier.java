@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.models;
 
+import java.util.Objects;
+
 public class Tier {
     private int id;
     private String name;
@@ -40,5 +42,24 @@ public class Tier {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Tier tier = (Tier) obj;
+        return id == tier.id &&
+                name.equals(tier.name) &&
+                colorHex.equals(tier.colorHex);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, colorHex);
     }
 }
