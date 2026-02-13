@@ -1,5 +1,6 @@
 // FAKE PERSISTENCE CREATED BY CHATGPT JUST FOR TESTING
 package app.TierListMakerUltimate.persistence.fake;
+
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 

@@ -1,17 +1,19 @@
 package app.TierListMakerUltimate.business.services;
 
-import app.TierListMakerUltimate.models.Tier;
-import app.TierListMakerUltimate.persistence.TierPersistence;
-import com.lameault.sample_project.persistence.stubs.StubTierPersistence; // TODO: Replace with actual storage implementation
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import app.TierListMakerUltimate.business.services.TierManager;
+import app.TierListMakerUltimate.models.Tier;
+import app.TierListMakerUltimate.persistence.TierPersistence;
+import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
 
 class TierManagerTest {
 
@@ -20,7 +22,7 @@ class TierManagerTest {
 
     @BeforeEach
     void setup() {
-        tierStorage = new StubTierPersistence(); // TODO: Replace with actual storage implementation
+        tierStorage = new TierPersistenceStub(); // TODO: Replace with actual storage implementation
         tierManager = new TierManager(tierStorage);
     }
 
