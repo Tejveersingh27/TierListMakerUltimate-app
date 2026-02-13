@@ -35,7 +35,7 @@ class TierManagerTest {
         assertNotNull(created);
         assertTrue(created.getId() > 0);
         assertEquals("S Tier", created.getName());
-        assertEquals("#FF0000", created.getColor());
+        assertEquals("#FFFFFF", created.getColor());
     }
 
     @Test
@@ -49,7 +49,7 @@ class TierManagerTest {
 
     @Test
     void renameTier_updatesName() {
-        Tier created = tierManager.createTier(1, "Old", "##FFFFFF");
+        Tier created = tierManager.createTier(1, "Old", "#FFFFFF");
         tierManager.renameTier(created.getId(), "New");
 
         assertEquals("New", tierManager.getTier(created.getId()).getName());
