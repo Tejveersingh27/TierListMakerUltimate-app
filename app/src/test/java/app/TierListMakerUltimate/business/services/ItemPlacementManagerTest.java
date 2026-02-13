@@ -25,61 +25,57 @@ public class ItemPlacementManagerTest {
     }
 
     @Test
-    void testCreateItem() {
+    void testCreateItemSuccess() {
         TierItem item = manager.createItem("image.png", 1, "This is a test item");
-        assertEquals("This is a test item", item.getDescription());
         assertNotNull(item);
-        assertTrue(item.getId() >= 0);
+        assertEquals("This is a test item", item.getDescription());
+        assertTrue(item.getId() > 0);
         assertEquals(1, item.getTierId());
     }
 
     @Test
-    void testInvalidImagePathThrowsException() {
+    void testCreateItemInvalidImagePathThrowsException() {
         assertThrows(ValidationException.class, () -> {
             manager.createItem("", 2, "This is an item with no image path");
         });
     }
 
     @Test
-    void testInvalidTierIdThrowsException() {
+    void testCreateItemInvalidTierIdThrowsException() {
         assertThrows(ValidationException.class, () -> {
-            manager.createItem("img.png", 0, "This is an item with no image path");
+            manager.createItem("img.png", 0, "This is an item with invalid tier id");
         });
     }
 
     @Test
-    void testMovesItemToTierSuccess() {
+    void testMoveItemToTierSuccess() {
         TierItem item = manager.createItem("image.png", 1, "This is a test item");
         assertEquals(1, item.getTierId());
         manager.moveItemToTier(item.getId(), 2);
         item = manager.getItem(item.getId());
-        assertEquals(2, item.getTierId()); //confirms that the tierId actually changed after moving
+        assertEquals(2, item.getTierId());
     }
 
     @Test
-    void testMoveItemMoveThrowsException() {
+    void testMoveItemInvalidIdThrowsException() {
         assertThrows(ValidationException.class, () -> {
             manager.moveItemToTier(0, 2);
         });
     }
 
     @Test
-    void testRemoveItem() {
+    void testRemoveItemSuccess() {
         TierItem item = manager.createItem("xyz.png", 1, "Another test item");
         int id = item.getId();
         assertNotNull(persistence.getItem(id));
-        manager.removeItem(id); // Now the persistence should be empty
+        manager.removeItem(id);
         assertNull(persistence.getItem(id));
     }
 
     @Test
     void testRemoveInvalidItemThrowsException() {
-        TierItem item1 = manager.createItem("itemA.png", 1, "Item A");
-        TierItem item2 = manager.createItem("itemB.png", 2, "Item B");
-        TierItem item3 = manager.createItem("itemC.png", 3, "Item C");
         assertThrows(ValidationException.class, () -> {
-            manager.removeItem(-1); // Doesn't exist
+            manager.removeItem(-1);
         });
     }
-
 }
