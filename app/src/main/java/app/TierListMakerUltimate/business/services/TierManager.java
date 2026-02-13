@@ -10,10 +10,6 @@ public class TierManager {
     private final TierPersistence tierStorage;
     private final TierValidator validator;
 
-    public TierManager(TierPersistence tierStorage) {
-        this(tierStorage, new TierValidator());
-    }
-
     public TierManager(TierPersistence tierStorage, TierValidator validator) {
         this.tierStorage = tierStorage;
         this.validator = validator;
@@ -54,6 +50,7 @@ public class TierManager {
     }
 
     public List<Tier> getTiersForList(int tierListId) {
+        validator.validateTierListId(tierListId);
         return tierStorage.getTiersForList(tierListId);
     }
 }

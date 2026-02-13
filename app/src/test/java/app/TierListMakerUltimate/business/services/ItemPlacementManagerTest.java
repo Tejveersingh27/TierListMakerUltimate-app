@@ -10,18 +10,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
 
 public class ItemPlacementManagerTest {
     private TierItemPersistence persistence;
+    private ItemValidator validator;
     private ItemPlacementManager manager;
 
     @BeforeEach
     void setup() {
         persistence = new TierItemPersistenceStub();
-        manager = new ItemPlacementManager(persistence);
+        validator = new ItemValidator();
+        manager = new ItemPlacementManager(persistence, validator);
     }
 
     @Test

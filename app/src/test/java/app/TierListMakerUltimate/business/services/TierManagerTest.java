@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.persistence.TierPersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
@@ -24,7 +25,7 @@ class TierManagerTest {
     @BeforeEach
     void setup() {
         tierStorage = new TierPersistenceStub();
-        tierManager = new TierManager(tierStorage);
+        tierManager = new TierManager(tierStorage, new TierValidator());
     }
 
     @Test

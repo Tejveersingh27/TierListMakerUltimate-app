@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.business.services;
 
+import java.util.List;
+
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
@@ -8,11 +10,6 @@ import app.TierListMakerUltimate.business.validation.ItemValidator;
 public class ItemPlacementManager {
     private final TierItemPersistence itemStorage;
     private final ItemValidator validator;
-
-    public ItemPlacementManager(TierItemPersistence itemStorage) {
-        this.itemStorage = itemStorage;
-        this.validator = new ItemValidator();
-    }
 
     public ItemPlacementManager(TierItemPersistence itemStorage, ItemValidator validator) {
         this.itemStorage = itemStorage;
@@ -45,5 +42,10 @@ public class ItemPlacementManager {
     public TierItem getItem(int itemId) {
         validator.validateItemId(itemId);
         return itemStorage.getItem(itemId);
+    }
+
+    public List<TierItem> getItemsForTier(int tierId) {
+        validator.validateTierId(tierId);
+        return itemStorage.getItemsForTier(tierId);
     }
 }
