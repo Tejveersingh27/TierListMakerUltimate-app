@@ -22,11 +22,9 @@ class TierManagerTest {
 
     @BeforeEach
     void setup() {
-        tierStorage = new TierPersistenceStub(); // TODO: Replace with actual storage implementation
+        tierStorage = new TierPersistenceStub();
         tierManager = new TierManager(tierStorage);
     }
-
-    // Happy Paths :)
 
     @Test
     void createTier_assignsIdAndStoresCorrectly() {
@@ -58,9 +56,9 @@ class TierManagerTest {
     @Test
     void changeTierColor_updatesColor() {
         Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
-        tierManager.changeTierColor(created.getId(), "#FFFFFF");
+        tierManager.changeTierColor(created.getId(), "#000000");
 
-        assertEquals("#FFFFFF", tierManager.getTier(created.getId()).getColor());
+        assertEquals("#000000", tierManager.getTier(created.getId()).getColor());
     }
 
     @Test
@@ -80,8 +78,6 @@ class TierManagerTest {
         List<Tier> list = tierManager.getTiersForList(1);
         assertEquals(2, list.size());
     }
-
-    // Edge cases :(
 
     @Test
     void createTier_rejectsEmptyLabel() {
