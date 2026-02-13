@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.business.validation;
 
+import app.TierListMakerUltimate.business.exception.ValidationException;
+
 public class ItemValidator {
 
     public void validate(String title, String description) {

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import app.TierListMakerUltimate.business.validation.ValidationException;
+import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
