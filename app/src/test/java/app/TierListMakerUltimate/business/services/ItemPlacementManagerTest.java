@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.models.TierItem;
@@ -34,6 +37,14 @@ public class ItemPlacementManagerTest {
         assertEquals("This is a test item", item.getDescription());
         assertTrue(item.getId() > 0);
         assertEquals(1, item.getTierId());
+    }
+
+    @Test
+    void testGetItemsForTier() {
+        TierItem item = manager.createItem("image.png", 1, "Test item 1");
+        List<TierItem> testItems = new ArrayList<>();
+        testItems.add(item);
+        assertEquals(manager.getItemsForTier(1), testItems);
     }
 
     @Test
