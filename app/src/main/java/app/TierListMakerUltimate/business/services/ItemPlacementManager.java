@@ -3,19 +3,18 @@ package app.TierListMakerUltimate.business.services;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
-import app.TierListMakerUltimate.business.validation.ItemPlacementValidator;
+import app.TierListMakerUltimate.business.validation.ItemValidator;
 
 public class ItemPlacementManager {
     private final TierItemPersistence itemStorage;
-    private final ItemPlacementValidator validator;
+    private final ItemValidator validator;
 
-    public ItemPlacementManager(TierItemPersistence itemStorage) // SHOULD I PASS VALIDATOR AS INPUT HERE?
-    {
+    public ItemPlacementManager(TierItemPersistence itemStorage) {
         this.itemStorage = itemStorage;
-        this.validator = new ItemPlacementValidator();
+        this.validator = new ItemValidator();
     }
 
-    public ItemPlacementManager(TierItemPersistence itemStorage, ItemPlacementValidator validator) {
+    public ItemPlacementManager(TierItemPersistence itemStorage, ItemValidator validator) {
         this.itemStorage = itemStorage;
         this.validator = validator;
     }
@@ -28,19 +27,17 @@ public class ItemPlacementManager {
         return newTierItem;
     }
 
-    // Create DSO > add to database > set DSO ID
     public void moveItemToTier(int itemId, int targetTierId) {
         validator.validateMoveItemToTier(itemId, targetTierId);
-        TierItem targetItem = itemStorage.getItem(itemId); // Get the item with matching id from the database
+        TierItem targetItem = itemStorage.getItem(itemId);
         if (targetItem == null) {
             throw new ValidationException("Tier Item not Found");
         }
-        targetItem.setTierId(targetTierId); // setting the tier Id of the item as the targeted one
+        targetItem.setTierId(targetTierId);
         itemStorage.updateItem(targetItem);
     }
 
-    public void removeItem(int itemId)// Remove from Database > Remove image file
-    {
+    public void removeItem(int itemId) {
         validator.validateItemId(itemId);
         itemStorage.deleteItem(itemId);
     }
@@ -49,6 +46,4 @@ public class ItemPlacementManager {
         validator.validateItemId(itemId);
         return itemStorage.getItem(itemId);
     }
-
-
 }

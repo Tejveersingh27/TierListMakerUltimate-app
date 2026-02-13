@@ -3,16 +3,33 @@ package app.TierListMakerUltimate.business.validation;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 
 public class ItemValidator {
+    private static final int MAX_LENGTH_DESCRIPTION = 100;
 
-    public void validate(String title, String description) {
-        if (title == null || title.trim().isEmpty()) {
-            throw new ValidationException("Title is required.");
+    public void validateCreateItem(String localImagePath, int tierId, String description) {
+        if (localImagePath == null || localImagePath.trim().isEmpty()) {
+            throw new ValidationException("Image path is required");
         }
-        if (title.trim().length() > 60) {
-            throw new ValidationException("Title must be 60 characters or less.");
+        if (tierId <= 0) {
+            throw new ValidationException("Tier Id is required");
         }
-        if (description != null && description.length() > 500) {
-            throw new ValidationException("Description must be 500 characters or less.");
+        if (description == null) {
+            throw new ValidationException("Description cannot be null");
+        }
+        if (description.length() > MAX_LENGTH_DESCRIPTION) {
+            throw new ValidationException("Description should be less than " + MAX_LENGTH_DESCRIPTION + " characters");
+        }
+    }
+
+    public void validateMoveItemToTier(int itemId, int targetTierId) {
+        validateItemId(itemId);
+        if (targetTierId <= 0) {
+            throw new ValidationException("Tier Id is required");
+        }
+    }
+
+    public void validateItemId(int itemId) {
+        if (itemId <= 0) {
+            throw new ValidationException("Item Id is required.");
         }
     }
 }
