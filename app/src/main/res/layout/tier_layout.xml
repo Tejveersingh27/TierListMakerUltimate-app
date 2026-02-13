@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         app:layout_constrainedHeight="true"
         android:layout_margin="10dp"
-        android:background="#F26A6A"
+        android:background="#2A2A2A"
         android:padding="4dp"
         android:scrollbars="none"
         tools:itemCount="4" />

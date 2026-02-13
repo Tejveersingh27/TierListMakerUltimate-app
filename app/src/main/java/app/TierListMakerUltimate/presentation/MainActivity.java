@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.util.Log;
@@ -64,18 +65,32 @@ public class MainActivity extends AppCompatActivity {
         // Make default tiers
         unplacedItemsId = tierManager.createTier(TIER_LIST_ID, "unranked", "#7A7A7A").getId();
 
-        tierManager.createTier(TIER_LIST_ID, "S Tier", "#EF4343");
-        tierManager.createTier(TIER_LIST_ID, "A Tier", "#FFBF7F");
-        tierManager.createTier(TIER_LIST_ID, "B Tier", "#FFFF7F");
+        int stierid = tierManager.createTier(TIER_LIST_ID, "S Tier", "#EF4343").getId();
+        int atierid = tierManager.createTier(TIER_LIST_ID, "A Tier", "#FFBF7F").getId();
+        int btierid = tierManager.createTier(TIER_LIST_ID, "B Tier", "#FFFF7F").getId();
+        int ctierid = tierManager.createTier(TIER_LIST_ID, "C Tier", "#85E75D").getId();
+        int dtierid = tierManager.createTier(TIER_LIST_ID, "D Tier", "#5DE7D9").getId();
+        int etierid = tierManager.createTier(TIER_LIST_ID, "E Tier", "#104FDE").getId();
+        int ftierid = tierManager.createTier(TIER_LIST_ID, "F Tier", "#E12FE4").getId();
 
-        // Default items XOTWOD
-        placementManager.createItem(R.drawable.kissland, unplacedItemsId, "Sample Item 1");
-        placementManager.createItem(R.drawable.bbtm, unplacedItemsId, "Sample Item 2");
-        placementManager.createItem(R.drawable.starboy, unplacedItemsId, "Sample Item 3");
-        placementManager.createItem(R.drawable.mdm, unplacedItemsId, "Sample Item 4");
-        placementManager.createItem(R.drawable.afterhours, unplacedItemsId, "Sample Item 5");
-        placementManager.createItem(R.drawable.dawnfm, unplacedItemsId, "Sample Item 6");
-        placementManager.createItem(R.drawable.hut, unplacedItemsId, "Sample Item 7");
+        // Default items (My personal ranking) XOTWOD
+        placementManager.createItem(R.drawable.hob, stierid, "Sample Item -2");
+        placementManager.createItem(R.drawable.thursday, atierid, "Sample Item -1");
+        placementManager.createItem(R.drawable.echoes, atierid, "Sample Item 0");
+        placementManager.createItem(R.drawable.kissland, stierid, "Sample Item 1");
+        placementManager.createItem(R.drawable.bbtm, btierid, "Sample Item 2");
+        placementManager.createItem(R.drawable.starboy, btierid, "Sample Item 3");
+        placementManager.createItem(R.drawable.mdm, atierid, "Sample Item 4");
+        placementManager.createItem(R.drawable.afterhours, stierid, "Sample Item 5");
+        placementManager.createItem(R.drawable.dawnfm, atierid, "Sample Item 6");
+        placementManager.createItem(R.drawable.hut, stierid, "Sample Item 7");
+
+        // Other placeholders to showcase the unranked items and lower tiers
+        placementManager.createItem(R.drawable.placeholder, ftierid, "Sample Item 8");
+        placementManager.createItem(R.drawable.placeholder, unplacedItemsId, "Sample Item 9");
+        placementManager.createItem(R.drawable.placeholder, unplacedItemsId, "Sample Item 10");
+        placementManager.createItem(R.drawable.placeholder, unplacedItemsId, "Sample Item 11");
+        placementManager.createItem(R.drawable.placeholder, unplacedItemsId, "Sample Item 12");
     }
 
     private void refreshList()
@@ -100,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
                 images.add(item.getImagePath());
 
             // Set recycler to have images inside
-            //RecyclerView recycler = rootView.findViewWithTag("recycler" + tierId);
-            //setupRecycler(recycler, 4, images);
+            RecyclerView recycler = rootView.findViewWithTag("recycler" + tierId);
+            setupRecycler(recycler, 4, images);
         }
     }
 
@@ -113,23 +128,19 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout tierContainer = findViewById(R.id.tier_container);
 
         // Inflate new tier and change color
-        View newTier = LayoutInflater.from(this).inflate(R.layout.tier_layout, tierContainer);
-        newTier.setTag("tier" + tierId);
-        newTier.setId(View.generateViewId());
+        ViewGroup newTier = (ViewGroup)LayoutInflater.from(this).inflate(R.layout.tier_layout, tierContainer, false);
         int color = Color.parseColor(tierData.getColor());
         newTier.setBackgroundColor(color);
+        tierContainer.addView(newTier);
 
         // Set up recycler for having tier items
-        RecyclerView recycler = newTier.findViewById(R.id.recycler0);
+        RecyclerView recycler = (RecyclerView) newTier.getChildAt(1);
         setupRecycler(recycler, 4, new ArrayList<>());
         recycler.setTag("recycler" + tierId);
-        recycler.setId(View.generateViewId());
 
         // Apply tier name
-        TextView text = newTier.findViewById(R.id.tierTitle0);
+        TextView text = (TextView) newTier.getChildAt(0);
         text.setText(tierData.getName());
-        text.setTag("title" + tierId);
-        text.setId(View.generateViewId());
     }
 
     private void setupRecycler(RecyclerView recycler, int spanCount, List<Integer> images)
