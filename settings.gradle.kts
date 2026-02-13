@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "sample_project"
+rootProject.name = "TierListMakerUltimate"
 include(":app")

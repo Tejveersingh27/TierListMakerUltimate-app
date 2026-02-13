@@ -3,7 +3,7 @@ package app.TierListMakerUltimate.models;
 public class Tier {
     private int id;
     private String name;
-    private String colorHex; // Format: "#RRGGBB" 
+    private String colorHex; // Format: "#RRGGBB"
 
     // For new tiers
     public Tier(String name, String colorHex) {
