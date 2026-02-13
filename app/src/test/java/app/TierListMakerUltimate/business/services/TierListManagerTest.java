@@ -9,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import app.TierListMakerUltimate.business.validation.ValidationException;
+import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
@@ -21,7 +22,7 @@ public class TierListManagerTest {
     @BeforeEach
     void setup() {
         persistence = new TierListPersistenceStub();
-        manager = new TierListManager(persistence);
+        manager = new TierListManager(persistence, new TierListValidator());
     }
 
     @Test
@@ -34,7 +35,7 @@ public class TierListManagerTest {
     @Test
     void testCreateTierListInvalidNameThrowsException() {
         assertThrows(ValidationException.class, () -> {
-            TierList newList = manager.createTierList("");
+            manager.createTierList("");
         });
     }
 
@@ -42,16 +43,15 @@ public class TierListManagerTest {
     void testRemoveTierList() {
         TierList newList = manager.createTierList("Test List");
         int id = newList.getId();
-        ;
         assertNotNull(persistence.getTierListById(id));
-        manager.removeTierList(id);// After removing the Tier List from its database
+        manager.removeTierList(id);
         assertNull(persistence.getTierListById(id));
     }
 
     @Test
     void testsRemoveTierListInvalidIdThrowsException() {
         assertThrows(ValidationException.class, () -> {
-            manager.removeTierList(-1); // doesn't exist
+            manager.removeTierList(-1);
         });
     }
 }
