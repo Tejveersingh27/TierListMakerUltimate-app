@@ -1,17 +1,19 @@
 package app.TierListMakerUltimate.business.services;
 
-import app.TierListMakerUltimate.models.Tier;
-import app.TierListMakerUltimate.persistence.TierPersistence;
-import com.lameault.sample_project.persistence.stubs.StubTierPersistence; // TODO: Replace with actual storage implementation
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import app.TierListMakerUltimate.business.services.TierManager;
+import app.TierListMakerUltimate.models.Tier;
+import app.TierListMakerUltimate.persistence.TierPersistence;
+import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
 
 class TierManagerTest {
 
@@ -20,11 +22,9 @@ class TierManagerTest {
 
     @BeforeEach
     void setup() {
-        tierStorage = new StubTierPersistence(); // TODO: Replace with actual storage implementation
+        tierStorage = new TierPersistenceStub();
         tierManager = new TierManager(tierStorage);
     }
-
-    // Happy Paths :)
 
     @Test
     void createTier_assignsIdAndStoresCorrectly() {
@@ -33,7 +33,7 @@ class TierManagerTest {
         assertNotNull(created);
         assertTrue(created.getId() > 0);
         assertEquals("S Tier", created.getName());
-        assertEquals("#FF0000", created.getColor());
+        assertEquals("#FFFFFF", created.getColor());
     }
 
     @Test
@@ -47,7 +47,7 @@ class TierManagerTest {
 
     @Test
     void renameTier_updatesName() {
-        Tier created = tierManager.createTier(1, "Old", "##FFFFFF");
+        Tier created = tierManager.createTier(1, "Old", "#FFFFFF");
         tierManager.renameTier(created.getId(), "New");
 
         assertEquals("New", tierManager.getTier(created.getId()).getName());
@@ -56,9 +56,9 @@ class TierManagerTest {
     @Test
     void changeTierColor_updatesColor() {
         Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
-        tierManager.changeTierColor(created.getId(), "#FFFFFF");
+        tierManager.changeTierColor(created.getId(), "#000000");
 
-        assertEquals("#FFFFFF", tierManager.getTier(created.getId()).getColor());
+        assertEquals("#000000", tierManager.getTier(created.getId()).getColor());
     }
 
     @Test
@@ -78,8 +78,6 @@ class TierManagerTest {
         List<Tier> list = tierManager.getTiersForList(1);
         assertEquals(2, list.size());
     }
-
-    // Edge cases :(
 
     @Test
     void createTier_rejectsEmptyLabel() {
