@@ -57,7 +57,7 @@ public class TierItem {
 
         TierItem item = (TierItem) obj;
         return id == item.id && tierId == item.tierId &&
-                imagePath.equals(item.imagePath) &&
+                imagePath == item.imagePath &&
                 description.equals(item.description);
     }
 
