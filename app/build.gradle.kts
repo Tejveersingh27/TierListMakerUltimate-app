@@ -64,6 +64,8 @@ dependencies {
 
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.recyclerview)
 
     testImplementation(libs.junit.jupiter)
 
