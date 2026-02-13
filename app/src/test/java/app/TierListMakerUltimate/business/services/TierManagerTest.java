@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.persistence.TierPersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
@@ -81,13 +82,13 @@ class TierManagerTest {
 
     @Test
     void createTier_rejectsEmptyLabel() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ValidationException.class,
                 () -> tierManager.createTier(1, "", "#FFFFFF"));
     }
 
     @Test
     void createTier_rejectsInvalidColor() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ValidationException.class,
                 () -> tierManager.createTier(1, "S Tier", "invalid"));
     }
 
@@ -95,7 +96,7 @@ class TierManagerTest {
     void renameTier_rejectsInvalidLabel() {
         Tier created = tierManager.createTier(1, "Original", "#FFFFFF");
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ValidationException.class,
                 () -> tierManager.renameTier(created.getId(), ""));
 
         assertEquals("Original", tierManager.getTier(created.getId()).getName());

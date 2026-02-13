@@ -6,12 +6,24 @@ public class ItemValidator {
     private static final int MAX_LENGTH_DESCRIPTION = 100;
 
     public void validateCreateItem(String localImagePath, int tierId, String description) {
+        validateImagePath(localImagePath);
+        validateTierId(tierId);
+        validateDescription(description);
+    }
+
+    public void validateImagePath(String localImagePath) {
         if (localImagePath == null || localImagePath.trim().isEmpty()) {
             throw new ValidationException("Image path is required");
         }
+    }
+
+    public void validateTierId(int tierId) {
         if (tierId <= 0) {
             throw new ValidationException("Tier Id is required");
         }
+    }
+
+    public void validateDescription(String description) {
         if (description == null) {
             throw new ValidationException("Description cannot be null");
         }
@@ -22,9 +34,7 @@ public class ItemValidator {
 
     public void validateMoveItemToTier(int itemId, int targetTierId) {
         validateItemId(itemId);
-        if (targetTierId <= 0) {
-            throw new ValidationException("Tier Id is required");
-        }
+        validateTierId(targetTierId);
     }
 
     public void validateItemId(int itemId) {
