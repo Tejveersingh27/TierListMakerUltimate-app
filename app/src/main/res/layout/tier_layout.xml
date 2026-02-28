@@ -1,41 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout0"
-    android:tag="defaultTierTag"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
     android:layout_marginTop="0dp"
     android:layout_marginRight="8dp"
     android:layout_marginBottom="4dp"
-    android:orientation="vertical">
+    android:background="#EF4343"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    <TextView
-        android:id="@+id/tierTitle0"
-        android:tag="defaultTitleTag"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="4dp"
-        android:text="SS Tier"
-        android:textAlignment="viewStart"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tierTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:minHeight="50dp"
+            android:padding="4dp"
+            android:text="Very super ultra long tier name to test how it looks when the tier name is super duper mega ex levels of long"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/upButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="5dp"
+            android:background="@null"
+            app:tint="#191919"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/uparrow"/>
+        <ImageButton
+            android:id="@+id/downButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="5dp"
+            android:background="@null"
+            app:tint="#191919"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/downarrow"/>
+        <ImageButton
+            android:id="@+id/tierSettings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="5dp"
+            android:background="@null"
+            app:tint="#191919"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/tiersettings"/>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler0"
-        android:tag="defaultRecyclerTag"
+        android:id="@+id/itemHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constrainedHeight="true"
-        android:layout_margin="10dp"
         android:background="#2A2A2A"
         android:padding="4dp"
         android:scrollbars="none"
+        app:layout_constrainedHeight="true"
         tools:itemCount="4" />
 
 </LinearLayout>
