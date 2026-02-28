@@ -17,7 +17,7 @@ import app.TierListMakerUltimate.business.services.TierListManager;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.models.TierList;
 
-public class TierListBrowserActivity extends AppCompatActivity {
+public class TierListBrowserActivity extends AppCompatActivity implements TierListBrowserAdapter.TierListBrowserActionListener {
     private RecyclerView recyclerView;
     private TierListBrowserAdapter adapter;
 
@@ -32,45 +32,38 @@ public class TierListBrowserActivity extends AppCompatActivity {
         tierListManager = app.getTierListManager();
 
         setupRecyclerView();
-        setupButtons();
+        setupAddButton();
     }
 
     private void setupRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // To test layout, remove later.
-        List<TierList> tierLists = tierListManager.getAllTierLists();
-        if (tierLists.isEmpty()) {
-            List<String> names = Arrays.asList(
-                    "Tier List 1",
-                    "Tier List 2",
-                    "Tier List 3",
-                    "Tier List 1",
-                    "Tier List 2",
-                    "Tier List 3",
-                    "Tier List 1",
-                    "Tier List 2",
-                    "Tier List 3"
-            );
-
-            for (String name : names) {
-                tierListManager.createTierList(name);
-            }
-            tierLists = tierListManager.getAllTierLists();
-        }
-
-        adapter = new TierListBrowserAdapter(tierLists);
+        adapter = new TierListBrowserAdapter(tierListManager.getAllTierLists(), this);
         recyclerView.setAdapter(adapter);
     }
 
-    private void setupButtons() {
+    private void setupAddButton() {
         Button createButton = findViewById(R.id.createTierListButton);
         createButton.setOnClickListener(v -> {
-            Intent intent = new Intent(TierListBrowserActivity.this, MainActivity.class);
-            startActivity(intent);
+            tierListManager.createTierList("New Tier List");
+            TierList newTierList = tierListManager.createTierList("Untitled");
+            adapter.addItem(newTierList);
         });
+        // TODO: hook up to tierlist creation screen
     }
 
 
+    @Override
+    public void onEditButtonClick(TierList tierList) {
+        // TODO: hook up to editor with actual tier list
+        Intent intent = new Intent(TierListBrowserActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDeleteButtonClick(int position, TierList tierList) {
+        tierListManager.removeTierList(tierList.getId());
+        adapter.removeItem(position);
+    }
 }
