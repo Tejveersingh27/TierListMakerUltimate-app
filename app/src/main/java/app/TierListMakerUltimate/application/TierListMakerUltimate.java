@@ -62,7 +62,7 @@ public class TierListMakerUltimate extends Application {
 
 
     private boolean isTestEnvironment() {
-        return true;
+        return true; // Need to add an environment variable for this
     }
 }
 
