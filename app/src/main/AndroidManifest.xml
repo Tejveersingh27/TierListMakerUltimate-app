@@ -25,6 +25,8 @@
 
         </activity>
 
+        <activity android:name="app.TierListMakerUltimate.presentation.MainActivity" />
+
     </application>
 
 </manifest>

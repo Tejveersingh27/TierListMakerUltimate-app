@@ -1,6 +1,8 @@
 package app.TierListMakerUltimate.presentation;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +31,15 @@ public class TierListBrowserActivity extends AppCompatActivity {
         TierListMakerUltimate app = (TierListMakerUltimate) getApplication();
         tierListManager = app.getTierListManager();
 
-        // Sample tier lists to test layout
+        setupRecyclerView();
+        setupButtons();
+    }
+
+    private void setupRecyclerView() {
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // To test layout, remove later.
         List<TierList> tierLists = tierListManager.getAllTierLists();
         if (tierLists.isEmpty()) {
             List<String> names = Arrays.asList(
@@ -47,14 +57,19 @@ public class TierListBrowserActivity extends AppCompatActivity {
             for (String name : names) {
                 tierListManager.createTierList(name);
             }
+            tierLists = tierListManager.getAllTierLists();
         }
+
         adapter = new TierListBrowserAdapter(tierLists);
-
-
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TierListBrowserAdapter(tierListManager.getAllTierLists());
         recyclerView.setAdapter(adapter);
+    }
+
+    private void setupButtons() {
+        Button createButton = findViewById(R.id.createTierListButton);
+        createButton.setOnClickListener(v -> {
+            Intent intent = new Intent(TierListBrowserActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
     }
 
 
