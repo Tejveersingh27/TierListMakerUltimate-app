@@ -14,4 +14,6 @@ public interface TierListPersistence {
     void updateTierList(TierList currentTierList);
 
     void deleteTierList(int tierListId);
+
+    List<TierList> getAllTierLists();
 }

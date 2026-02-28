@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.business.services;
 
+import java.util.List;
+
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
@@ -27,5 +29,9 @@ public class TierListManager {
     public void removeTierList(int tierListId) {
         validator.validateRemoveTierList(tierListId);
         tierListStorage.deleteTierList(tierListId);
+    }
+
+    public List<TierList> getAllTierLists() {
+        return tierListStorage.getAllTierLists();
     }
 }
