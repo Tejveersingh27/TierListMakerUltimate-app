@@ -46,9 +46,9 @@ public class TierListBrowserAdapter extends RecyclerView.Adapter<TierListBrowser
 
         public TierListBrowserViewHolder(@NonNull View itemView) {
             super(itemView);
-            tierListName = itemView.findViewById(R.id.textTitle);
-            editButton = itemView.findViewById(R.id.buttonEdit);
-            deleteButton = itemView.findViewById(R.id.buttonDelete);
+            tierListName = itemView.findViewById(R.id.titleText);
+            editButton = itemView.findViewById(R.id.editButton);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
     }
 }

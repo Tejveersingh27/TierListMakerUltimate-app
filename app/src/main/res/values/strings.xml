@@ -13,6 +13,16 @@
     <string name="button_save">Save</string>
 
 
+    <!-- TierList Browser Menu-->
+    <string name="tier_list_browser_title">Saved Tier Lists</string>
+    <string name="create_tier_list_button">Create New Tier List</string>
+    <string name="edit_tier_list_button">Edit Tier List</string>
+    <string name="delete_tier_list_button">Delete Tier List</string>
+    <!-- TierList Browser Recycler View-->
+    <string name="edit_alt_text">Edit</string>
+    <string name="delete_alt_text" delete_alt_text="Delete">Delete</string>
+
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
