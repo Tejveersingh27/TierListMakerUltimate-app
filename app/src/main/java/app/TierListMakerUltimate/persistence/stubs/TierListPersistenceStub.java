@@ -43,4 +43,9 @@ public class TierListPersistenceStub implements TierListPersistence {
     public void deleteTierList(int tierListId) {
         tierLists.remove(tierListId);
     }
+
+    @Override
+    public List<TierList> getAllTierLists() {
+        return new ArrayList<>(tierLists.values());
+    }
 }

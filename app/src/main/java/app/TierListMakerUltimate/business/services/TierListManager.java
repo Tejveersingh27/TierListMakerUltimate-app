@@ -28,4 +28,8 @@ public class TierListManager {
         validator.validateRemoveTierList(tierListId);
         tierListStorage.deleteTierList(tierListId);
     }
+
+    public TierList getAllTierLists() {
+        tierListStorage.getAllTierLists();
+    }
 }
