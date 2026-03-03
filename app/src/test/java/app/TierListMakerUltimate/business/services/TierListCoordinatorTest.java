@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.models.Tier;
@@ -33,23 +35,19 @@ class TierListCoordinatorTest {
     }
 
     @Test
-    void addTierListCreatesListAndUnrankedTier() {
+    void addTierListCreatesListAndDefaultTiers() {
         int listId = tierListCoordinator.addTierList("My List");
 
         // Verify list exists
-        assertNotNull(tierListManager.getAllTierLists().stream()
-                .filter(l -> l.getId() == listId)
-                .findFirst()
-                .orElse(null));
+        TierList list = tierListManager.getTierList(listId);
+        assertNotNull(list);
 
-        // Verify unranked tier was created
-        Tier unranked = tierListCoordinator.getUrankedTier(listId);
-        assertNotNull(unranked);
-        assertTrue(unranked.isUnranked());
-        assertEquals("unranked", unranked.getName());
-        assertEquals(listId, unranked.getTierListId());
+        // Verify default tiers were added
+        List<Tier> tiers = tierManager.getTiersForList(listId);
+        assertEquals(7, tiers.size());
+
     }
-    
+
 
     @Test
     void removeTierListDeletesTierList() { // TODO: Test for tier and item deletion

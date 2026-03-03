@@ -4,6 +4,7 @@ import java.util.List;
 
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
+import app.TierListMakerUltimate.business.constants.DefaultTiers;
 
 public class TierListCoordinator implements ITierListCoordinator {
     TierManager tierManager;
@@ -16,9 +17,16 @@ public class TierListCoordinator implements ITierListCoordinator {
 
     @Override
     public int addTierList(String name) {
-        TierList tierList = tierListManager.createTierList(name);
-        tierManager.createUnrankedTier(tierList.getId(), "unranked", "#7A7A7A"); // TODO: Use constants for these
-        return tierList.getId();
+        int tierListId = tierListManager.createTierList(name);
+        createDefaultTiers(tierListId);
+        return tierListId;
+    }
+
+    private void createDefaultTiers(int tierListId) {
+        List<DefaultTiers.TierRecord> defaultTiers = DefaultTiers.DEFAULT_TIERS;
+        for (DefaultTiers.TierRecord tier : defaultTiers) {
+            tierManager.systemCreateTier(tierListId, tier.name(), tier.color(), tier.isUnranked());
+        }
     }
 
     @Override

@@ -40,7 +40,7 @@ class TierManagerTest {
 
     @Test
     void createUnrankedTierSetsIsUnrankedToTrue() {
-        int id = tierManager.createUnrankedTier(1, "Unranked", "#808080");
+        int id = tierManager.systemCreateTier(1, "Unranked", "#808080", true);
         Tier created = tierManager.getTier(id);
 
         assertNotNull(created);

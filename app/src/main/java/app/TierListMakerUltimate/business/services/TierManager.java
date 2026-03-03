@@ -19,14 +19,11 @@ public class TierManager {
     }
 
     public int createTier(int tierListId, String label, String color) {
-        return internalCreateTier(tierListId, label, color, false);
+        return systemCreateTier(tierListId, label, color, false);
     }
 
-    int createUnrankedTier(int tierListId, String label, String color) {
-        return internalCreateTier(tierListId, label, color, true);
-    }
 
-    private int internalCreateTier(int tierListId, String label, String color, boolean isUnranked) {
+    int systemCreateTier(int tierListId, String label, String color, boolean isUnranked) {
         validator.validateTier(label, color, isUnranked);
         Tier newTier = new Tier(tierListId, label, color, isUnranked);
         return tierStorage.insertTier(tierListId, newTier);

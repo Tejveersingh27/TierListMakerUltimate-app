@@ -27,9 +27,12 @@ public class TierListManagerTest {
 
     @Test
     void testCreateTierListSuccess() {
-        TierList tierListItem = manager.createTierList("Favourite Netflix Series List");
+        int id = manager.createTierList("Favourite Netflix Series List");
+        assertTrue(id > 0);
+        
+        TierList tierListItem = persistence.getTierListById(id);
+        assertNotNull(tierListItem);
         assertEquals("Favourite Netflix Series List", tierListItem.getName());
-        assertTrue(tierListItem.getId() > 0);
     }
 
     @Test
@@ -41,9 +44,9 @@ public class TierListManagerTest {
 
     @Test
     void testRemoveTierList() {
-        TierList newList = manager.createTierList("Test List");
-        int id = newList.getId();
+        int id = manager.createTierList("Test List");
         assertNotNull(persistence.getTierListById(id));
+
         manager.removeTierList(id);
         assertNull(persistence.getTierListById(id));
     }
