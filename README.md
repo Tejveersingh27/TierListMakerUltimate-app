@@ -46,6 +46,16 @@ Project documentation and standards:
 
 ---
 
+## Dependencies
+
+The project relies on the following libraries:
+
+* **AndroidX & Material Components**: For UI elements like ConstraintLayout.
+* **JUnit 5 (Jupiter)**: For JVM unit testing.*
+* **Espresso**: For UI testing on emulators.
+
+---
+
 ## Architecture & Package Structure
 
 This project enforces strict separation of concerns.
