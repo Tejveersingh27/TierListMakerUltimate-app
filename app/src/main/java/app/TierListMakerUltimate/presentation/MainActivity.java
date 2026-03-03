@@ -64,15 +64,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeDefaultData() {
         // Make default tiers
-        unplacedItemsId = tierManager.createTier(TIER_LIST_ID, "unranked", "#7A7A7A").getId();
+        unplacedItemsId = tierManager.createTier(TIER_LIST_ID, "unranked", "#7A7A7A");
 
-        int stierid = tierManager.createTier(TIER_LIST_ID, "S Tier", "#EF4343").getId();
-        int atierid = tierManager.createTier(TIER_LIST_ID, "A Tier", "#FFBF7F").getId();
-        int btierid = tierManager.createTier(TIER_LIST_ID, "B Tier", "#FFFF7F").getId();
-        int ctierid = tierManager.createTier(TIER_LIST_ID, "C Tier", "#85E75D").getId();
-        int dtierid = tierManager.createTier(TIER_LIST_ID, "D Tier", "#5DE7D9").getId();
-        int etierid = tierManager.createTier(TIER_LIST_ID, "E Tier", "#104FDE").getId();
-        int ftierid = tierManager.createTier(TIER_LIST_ID, "F Tier", "#E12FE4").getId();
+        int stierid = tierManager.createTier(TIER_LIST_ID, "S Tier", "#EF4343");
+        int atierid = tierManager.createTier(TIER_LIST_ID, "A Tier", "#FFBF7F");
+        int btierid = tierManager.createTier(TIER_LIST_ID, "B Tier", "#FFFF7F");
+        int ctierid = tierManager.createTier(TIER_LIST_ID, "C Tier", "#85E75D");
+        int dtierid = tierManager.createTier(TIER_LIST_ID, "D Tier", "#5DE7D9");
+        int etierid = tierManager.createTier(TIER_LIST_ID, "E Tier", "#104FDE");
+        int ftierid = tierManager.createTier(TIER_LIST_ID, "F Tier", "#E12FE4");
 
         // Default items (My personal ranking) XOTWOD
         placementManager.createItem(R.drawable.hob, stierid, "Sample Item -2");
@@ -94,8 +94,7 @@ public class MainActivity extends AppCompatActivity {
         placementManager.createItem(R.drawable.placeholder, unplacedItemsId, "Sample Item 12");
     }
 
-    private void refreshList()
-    {
+    private void refreshList() {
         // Get all tiers for this tier list
         List<Tier> tiers = tierManager.getTiersForList(TIER_LIST_ID);
         View rootView = this.getWindow().getDecorView().findViewById(android.R.id.content);
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             List<TierItem> items = placementManager.getItemsForTier(tierId);
             List<Integer> images = new ArrayList<>();
 
-            for (TierItem item: items)
+            for (TierItem item : items)
                 images.add(item.getImagePath());
 
             // Set recycler to have images inside
@@ -121,15 +120,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void createTier(Tier tierData)
-    {
+    private void createTier(Tier tierData) {
         int tierId = tierData.getId();
 
         // Find tier container
         LinearLayout tierContainer = findViewById(R.id.tier_container);
 
         // Inflate new tier and change color
-        ViewGroup newTier = (ViewGroup)LayoutInflater.from(this).inflate(R.layout.tier_layout, tierContainer, false);
+        ViewGroup newTier = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.tier_layout, tierContainer, false);
         int color = Color.parseColor(tierData.getColor());
         newTier.setBackgroundColor(color);
         tierContainer.addView(newTier);
@@ -144,8 +142,7 @@ public class MainActivity extends AppCompatActivity {
         text.setText(tierData.getName());
     }
 
-    private void setupRecycler(RecyclerView recycler, int spanCount, List<Integer> images)
-    {
+    private void setupRecycler(RecyclerView recycler, int spanCount, List<Integer> images) {
         recycler.setLayoutManager(new GridLayoutManager(this, spanCount));
         recycler.setAdapter(new RecycleAdapter(images));
     }

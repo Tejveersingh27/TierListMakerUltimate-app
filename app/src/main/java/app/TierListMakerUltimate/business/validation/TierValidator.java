@@ -21,10 +21,17 @@ public class TierValidator {
         }
     }
 
-    public void validateTier(String label, String color) {
+    public void validateWritePermission(boolean isUnRanked) {
+        if (isUnRanked) {
+            throw new ValidationException("Unranked tiers cannot be edited.");
+        }
+    }
+
+    public void validateTier(String label, String color, boolean isUnranked) {
         validateLabel(label);
         validateColor(color);
     }
+
 
     public void validateTierId(int tierId) {
         if (tierId <= 0) {
