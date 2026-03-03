@@ -61,7 +61,7 @@ The project relies on the following libraries:
 This project enforces strict separation of concerns.
 
 ```
-com.lameault.sample_project
+app.TierListMakerUltimate
 │
 ├── presentation/      // Android UI (Activities, Adapters, UI logic)
 │
