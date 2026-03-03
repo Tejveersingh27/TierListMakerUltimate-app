@@ -27,8 +27,8 @@ public class TierManager {
     }
 
     private int internalCreateTier(int tierListId, String label, String color, boolean isUnranked) {
-        validator.validateTier(label, color, isUnranked);
-        Tier newTier = new Tier(label, color, tierListId, isUnranked);
+        validator.validateTier(label, color, isUnranked); // Re-added validation call
+        Tier newTier = new Tier(tierListId, label, color, isUnranked);
         return tierStorage.insertTier(tierListId, newTier);
     }
 
@@ -52,8 +52,8 @@ public class TierManager {
     public void changeTierColor(int tierId, String colorHex) {
         validator.validateColor(colorHex);
         Tier tier = tierStorage.getTier(tierId);
-        validator.validateWritePermission(tier.isUnranked());
         if (tier != null) {
+            validator.validateWritePermission(tier.isUnranked());
             tier.setColor(colorHex);
             tierStorage.updateTier(tier);
         }

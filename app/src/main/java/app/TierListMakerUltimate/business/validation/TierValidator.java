@@ -28,14 +28,10 @@ public class TierValidator {
     }
 
     public void validateTier(String label, String color, boolean isUnranked) {
-        validateInternalTier(label, color);
-        validateWritePermission(isUnranked);
-    }
-
-    public void validateInternalTier(String label, String color) {
         validateLabel(label);
         validateColor(color);
     }
+
 
     public void validateTierId(int tierId) {
         if (tierId <= 0) {
