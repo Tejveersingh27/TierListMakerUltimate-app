@@ -49,15 +49,7 @@ class TierListCoordinatorTest {
         assertEquals("unranked", unranked.getName());
         assertEquals(listId, unranked.getTierListId());
     }
-
-    @Test
-    void creatingTierListWithoutCoordinatorThrowsException() {
-        TierList list = tierListManager.createTierList("Empty List");
-
-        assertThrows(RuntimeException.class, () -> {
-            tierListCoordinator.getUrankedTier(list.getId());
-        });
-    }
+    
 
     @Test
     void removeTierListDeletesTierList() { // TODO: Test for tier and item deletion

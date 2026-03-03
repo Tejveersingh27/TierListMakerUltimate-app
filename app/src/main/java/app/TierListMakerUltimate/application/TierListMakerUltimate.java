@@ -3,6 +3,7 @@ package app.TierListMakerUltimate.application;
 import android.app.Application;
 
 import app.TierListMakerUltimate.business.services.ItemPlacementManager;
+import app.TierListMakerUltimate.business.services.TierListCoordinator;
 import app.TierListMakerUltimate.business.services.TierListManager;
 import app.TierListMakerUltimate.business.services.TierManager;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
@@ -24,6 +25,7 @@ public class TierListMakerUltimate extends Application {
     private TierItemPersistence itemStorage;
 
     // Business logic instances
+    private TierListCoordinator tierListCoordinator;
     private TierListManager tierListManager;
     private TierManager tierManager;
     private ItemPlacementManager itemPlacementManager;
@@ -44,7 +46,7 @@ public class TierListMakerUltimate extends Application {
         tierListManager = new TierListManager(tierListStorage, new TierListValidator());
         tierManager = new TierManager(tierStorage, new TierValidator());
         itemPlacementManager = new ItemPlacementManager(itemStorage, new ItemValidator());
-
+        tierListCoordinator = new TierListCoordinator(tierManager, tierListManager);
 
     }
 
@@ -58,6 +60,10 @@ public class TierListMakerUltimate extends Application {
 
     public ItemPlacementManager getItemPlacementManager() {
         return itemPlacementManager;
+    }
+
+    public TierListCoordinator getTtierListCoordinator() {
+        return tierListCoordinator;
     }
 
 

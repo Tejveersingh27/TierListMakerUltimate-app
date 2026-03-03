@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import app.TierListMakerUltimate.R;
+import app.TierListMakerUltimate.business.services.TierListCoordinator;
 import app.TierListMakerUltimate.business.services.TierListManager;
 
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
@@ -22,6 +23,8 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     private TierListBrowserAdapter adapter;
 
     private TierListManager tierListManager;
+    private TierListCoordinator tierListCoordinator;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
 
         TierListMakerUltimate app = (TierListMakerUltimate) getApplication();
         tierListManager = app.getTierListManager();
+        tierListCoordinator = app.getTtierListCoordinator();
 
         setupRecyclerView();
         setupAddButton();
@@ -46,9 +50,9 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     private void setupAddButton() {
         Button createButton = findViewById(R.id.createTierListButton);
         createButton.setOnClickListener(v -> {
-            tierListManager.createTierList("New Tier List");
-            TierList newTierList = tierListManager.createTierList("Untitled");
-            adapter.addItem(newTierList);
+            tierListCoordinator.addTierList("New Tier List");
+            int newTierListId = tierListCoordinator.addTierList("Untitled");
+            adapter.addItem(tierListManager.getTierList(newTierListId));
         });
         // TODO: hook up to tierlist creation screen
     }
