@@ -14,7 +14,7 @@
         android:layout_marginHorizontal="17dp"
         android:layout_marginTop="17dp"
         android:textColor="@color/white"
-        android:text="@string/tier_list_browser_title"
+        android:text="@string/template_browser_title"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,19 +31,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:listitem="@layout/item_tier_list" />
+        tools:listitem="@layout/item_template_list" />
+
 
     <Button
         android:id="@+id/createTierListButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="17dp"
-        android:text="@string/create_tier_list_button"
+        android:layout_marginTop="100dp"
+        android:text="@string/new_template_button"
         android:textSize="18sp"
         app:backgroundTint="#E90053"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_max="320dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
