@@ -27,7 +27,7 @@ public class TierManager {
     }
 
     private int internalCreateTier(int tierListId, String label, String color, boolean isUnranked) {
-        validator.validateTier(label, color, isUnranked); // Re-added validation call
+        validator.validateTier(label, color, isUnranked);
         Tier newTier = new Tier(tierListId, label, color, isUnranked);
         return tierStorage.insertTier(tierListId, newTier);
     }
