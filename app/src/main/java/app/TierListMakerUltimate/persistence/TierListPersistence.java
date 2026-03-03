@@ -12,6 +12,7 @@ public interface TierListPersistence {
     int insertTierList(TierList currentTierList); // Returns ID
 
     void updateTierList(TierList currentTierList);
+    
 
     void deleteTierList(int tierListId);
 

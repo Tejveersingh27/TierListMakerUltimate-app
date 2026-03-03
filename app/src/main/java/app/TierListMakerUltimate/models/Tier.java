@@ -41,6 +41,11 @@ public class Tier {
         this.colorHex = colorHex;
     }
 
+    public boolean isUnranked() {
+        return this.isUnranked;
+    }
+
+
     public void setName(String name) {
         this.name = name;
     }

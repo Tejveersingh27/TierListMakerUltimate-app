@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.business.services;
 
+import java.util.List;
+
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
 
@@ -25,5 +27,15 @@ public class TierListCoordinator implements ITierListCoordinator {
         // TODO: Remove all tiers/items in this tier list
     }
 
+    @Override
+    public Tier getUrankedTier(int tierListId) {
+        List<Tier> tiers = tierManager.getTiersForList(tierListId);
+        for (Tier tier : tiers) {
+            if (tier.isUnranked()) {
+                return tier;
+            }
+        }
 
+        throw new RuntimeException("Unranked tier not found"); // TODO: Use custom exception
+    }
 }
