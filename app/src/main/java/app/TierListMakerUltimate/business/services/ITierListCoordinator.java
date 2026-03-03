@@ -1,10 +1,11 @@
 package app.TierListMakerUltimate.business.services;
 
-import app.TierListMakerUltimate.models.TierList;
+import app.TierListMakerUltimate.models.Tier;
 
 public interface ITierListCoordinator {
-    public TierList createDefaultTierListWithDefaults();
+    int addTierList(String name);
 
-    public TierList duplicateTierList(TierList tierList);
-    
+    void removeTierList(int tierListId);
+
+    Tier getUrankedTier(int tierListId);
 }

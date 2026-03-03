@@ -26,6 +26,11 @@ public class TierListManager {
         return newList;
     }
 
+    public TierList getTierList(int tierListId) {
+        validator.validateTierListId(tierListId);
+        return tierListStorage.getTierListById(tierListId);
+    }
+
     public void removeTierList(int tierListId) {
         validator.validateRemoveTierList(tierListId);
         tierListStorage.deleteTierList(tierListId);
@@ -34,4 +39,5 @@ public class TierListManager {
     public List<TierList> getAllTierLists() {
         return tierListStorage.getAllTierLists();
     }
+
 }
