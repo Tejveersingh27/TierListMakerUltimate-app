@@ -6,11 +6,16 @@ public class Tier {
     private int id;
     private String name;
     private String colorHex; // Format: "#RRGGBB"
+    private boolean isUnranked;
+    private int tierListId;
+
 
     // For new tiers
-    public Tier(String name, String colorHex) {
+    public Tier(String name, String colorHex, int tierListId, boolean isUnranked) {
         this.name = name;
         this.colorHex = colorHex;
+        this.tierListId = tierListId;
+        this.isUnranked = isUnranked;
     }
 
     // For DB load
@@ -40,26 +45,4 @@ public class Tier {
         this.name = name;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-
-        Tier tier = (Tier) obj;
-        return id == tier.id &&
-                name.equals(tier.name) &&
-                colorHex.equals(tier.colorHex);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, colorHex);
-    }
 }
