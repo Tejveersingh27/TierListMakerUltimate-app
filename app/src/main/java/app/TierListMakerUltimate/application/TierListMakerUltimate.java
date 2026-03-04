@@ -57,6 +57,7 @@ public class TierListMakerUltimate extends Application {
         tierListCoordinator = new TierListCoordinator(tierManager, tierListManager);
         systemTemplateCoordinator = new SystemTemplateCoordinator(tierListCoordinator, itemPlacementManager, seedProvider);
 
+        systemTemplateCoordinator.loadSystemTemplates();
     }
 
     public TierListManager getTierListManager() {
