@@ -18,7 +18,7 @@ public class TierListManager {
         this.validator = validator;
     }
 
-    int createTierList(String name) {
+    TierList createTierList(String name) {
         validator.validateCreateTierList(name);
         TierList newList = new TierList(name);
         return tierListStorage.insertTierList(newList);

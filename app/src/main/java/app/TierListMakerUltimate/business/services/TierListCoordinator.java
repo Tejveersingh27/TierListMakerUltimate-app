@@ -4,6 +4,7 @@ import java.util.List;
 
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
+import app.TierListMakerUltimate.models.TierList;
 
 public class TierListCoordinator implements ITierListCoordinator {
     TierManager tierManager;
@@ -15,10 +16,10 @@ public class TierListCoordinator implements ITierListCoordinator {
     }
 
     @Override
-    public int addTierList(String name) {
-        int tierListId = tierListManager.createTierList(name);
-        createDefaultTiers(tierListId);
-        return tierListId;
+    public TierList addTierList(String name) {
+        TierList tierList = tierListManager.createTierList(name);
+        createDefaultTiers(tierList.getId());
+        return tierList;
     }
 
     private void createDefaultTiers(int tierListId) {

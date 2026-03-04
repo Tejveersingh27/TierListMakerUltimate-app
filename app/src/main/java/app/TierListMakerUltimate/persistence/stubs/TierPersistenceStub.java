@@ -30,21 +30,21 @@ public class TierPersistenceStub implements TierPersistence {
     }
 
     @Override
-    public int insertTier(int tierListId, Tier currentTier) {
+    public Tier insertTier(int tierListId, Tier currentTier) {
         int id = nextId++;
         Tier copy = new Tier(
                 id,
-                tierListId,
+                currentTier.getTierListId(),
                 currentTier.getName(),
                 currentTier.getColor(),
                 currentTier.isUnranked()
         );
         tiers.put(id, copy);
-        return id;
+        return copy;
     }
 
     @Override
-    public void updateTier(Tier currentTier) {
+    public Tier updateTier(Tier currentTier) {
         if (tiers.containsKey(currentTier.getId())) {
             Tier copy = new Tier(
                     currentTier.getId(),
@@ -54,7 +54,9 @@ public class TierPersistenceStub implements TierPersistence {
                     currentTier.isUnranked()
             );
             tiers.put(currentTier.getId(), copy);
+            return copy;
         }
+        return null;
     }
 
     @Override

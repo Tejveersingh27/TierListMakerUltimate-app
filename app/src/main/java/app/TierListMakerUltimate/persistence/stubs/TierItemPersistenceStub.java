@@ -30,19 +30,21 @@ public class TierItemPersistenceStub implements TierItemPersistence {
     }
 
     @Override
-    public int insertItem(int tierId, TierItem currentItem) {
+    public TierItem insertItem(int tierId, TierItem currentItem) {
         int id = nextId++;
         TierItem copy = new TierItem(id, currentItem.getImagePath(),
                 currentItem.getDescription(), tierId);
         items.put(id, copy);
-        return id;
+        return copy;
     }
 
     @Override
-    public void updateItem(TierItem currentItem) {
+    public TierItem updateItem(TierItem currentItem) {
         if (items.containsKey(currentItem.getId())) {
             items.put(currentItem.getId(), currentItem);
+            return currentItem;
         }
+        return null;
     }
 
     @Override

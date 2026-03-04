@@ -34,14 +34,13 @@ class TierListCoordinatorTest {
 
     @Test
     void addTierListCreatesListAndDefaultTiers() {
-        int listId = tierListCoordinator.addTierList("My List");
+        TierList list = tierListCoordinator.addTierList("My List");
 
         // Verify list exists
-        TierList list = tierListManager.getTierList(listId);
         assertNotNull(list);
 
         // Verify default tiers were added
-        List<Tier> tiers = tierManager.getTiersForList(listId);
+        List<Tier> tiers = tierManager.getTiersForList(list.getId());
         assertEquals(7, tiers.size());
 
     }
@@ -49,7 +48,8 @@ class TierListCoordinatorTest {
 
     @Test
     void removeTierListDeletesTierList() { // TODO: Test for tier and item deletion
-        int listId = tierListCoordinator.addTierList("To Delete");
+        TierList tierList = tierListCoordinator.addTierList("To Delete");
+        int listId = tierList.getId();
         assertEquals(1, tierListManager.getAllTierLists().size());
 
         tierListCoordinator.removeTierList(listId);

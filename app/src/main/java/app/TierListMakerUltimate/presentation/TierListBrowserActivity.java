@@ -51,8 +51,8 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
         Button createButton = findViewById(R.id.createTierListButton);
         createButton.setOnClickListener(v -> {
             tierListCoordinator.addTierList("New Tier List");
-            int newTierListId = tierListCoordinator.addTierList("Untitled");
-            adapter.addItem(tierListManager.getTierList(newTierListId));
+            TierList createdTierList = tierListCoordinator.addTierList("Untitled");
+            adapter.addItem(createdTierList);
         });
         // TODO: hook up to tierlist creation screen
     }

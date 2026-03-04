@@ -18,12 +18,12 @@ public class TierManager {
         this.validator = validator;
     }
 
-    public int createTier(int tierListId, String label, String color) {
+    public Tier createTier(int tierListId, String label, String color) {
         return systemCreateTier(tierListId, label, color, false);
     }
 
 
-    int systemCreateTier(int tierListId, String label, String color, boolean isUnranked) {
+    Tier systemCreateTier(int tierListId, String label, String color, boolean isUnranked) {
         validator.validateTier(label, color, isUnranked);
         Tier newTier = new Tier(tierListId, label, color, isUnranked);
         return tierStorage.insertTier(tierListId, newTier);
