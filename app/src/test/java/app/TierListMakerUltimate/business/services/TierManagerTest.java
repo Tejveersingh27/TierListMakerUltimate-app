@@ -31,8 +31,7 @@ class TierManagerTest {
 
     @Test
     void createTierSetsIsUnrankedToFalse() {
-        int id = tierManager.createTier(1, "S Tier", "#FFFFFF");
-        Tier created = tierManager.getTier(id);
+        Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
 
         assertNotNull(created);
         assertFalse(created.isUnranked(), "Normally created tiers should not be unranked");
@@ -40,8 +39,7 @@ class TierManagerTest {
 
     @Test
     void createUnrankedTierSetsIsUnrankedToTrue() {
-        int id = tierManager.createUnrankedTier(1, "Unranked", "#808080");
-        Tier created = tierManager.getTier(id);
+        Tier created = tierManager.createUnrankedTier(1, "Unranked", "#808080");
 
         assertNotNull(created);
         assertTrue(created.isUnranked(), "Unranked tiers must have the unranked flag set to true");
@@ -49,10 +47,9 @@ class TierManagerTest {
 
     @Test
     void createTierAssignsIdAndStoresCorrectly() {
-        int id = tierManager.createTier(1, "S Tier", "#FFFFFF");
+        Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
 
-        assertTrue(id > 0);
-        Tier created = tierManager.getTier(id);
+        assertTrue(created.getId() > 0);
         assertNotNull(created);
         assertEquals("S Tier", created.getName());
         assertEquals("#FFFFFF", created.getColor());
@@ -60,24 +57,23 @@ class TierManagerTest {
 
     @Test
     void getTierReturnsExistingTier() {
-        int id = tierManager.createTier(1, "S Tier", "#FFFFFF");
-        Tier retrieved = tierManager.getTier(id);
+        Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
 
-        assertNotNull(retrieved);
-        assertEquals("S Tier", retrieved.getName());
+        assertNotNull(created);
+        assertEquals("S Tier", created.getName());
     }
 
     @Test
     void renameTierUpdatesName() {
-        int id = tierManager.createTier(1, "Old", "#FFFFFF");
-        tierManager.renameTier(id, "New");
+        Tier created = tierManager.createTier(1, "Old", "#FFFFFF");
+        tierManager.renameTier(created.getId(), "New");
 
-        assertEquals("New", tierManager.getTier(id).getName());
+        assertEquals("New", tierManager.getTier(created.getId()).getName());
     }
 
     @Test
     void changeTierColorUpdatesColor() {
-        int id = tierManager.createTier(1, "S Tier", "#FFFFFF");
+        int id = tierManager.createTier(1, "S Tier", "#FFFFFF").getId();
         tierManager.changeTierColor(id, "#000000");
 
         assertEquals("#000000", tierManager.getTier(id).getColor());
@@ -85,7 +81,7 @@ class TierManagerTest {
 
     @Test
     void removeTierDeletesTier() {
-        int id = tierManager.createTier(1, "S Tier", "#FFFFFF");
+        int id = tierManager.createTier(1, "S Tier", "#FFFFFF").getId();
         tierManager.removeTier(id);
 
         assertNull(tierManager.getTier(id));
@@ -115,7 +111,7 @@ class TierManagerTest {
 
     @Test
     void renameTierRejectsInvalidLabel() {
-        int id = tierManager.createTier(1, "Original", "#FFFFFF");
+        int id = tierManager.createTier(1, "Original", "#FFFFFF").getId();
 
         assertThrows(ValidationException.class,
                 () -> tierManager.renameTier(id, ""));

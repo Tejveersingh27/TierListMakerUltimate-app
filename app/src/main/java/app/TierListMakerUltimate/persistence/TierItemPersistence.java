@@ -10,7 +10,7 @@ public interface TierItemPersistence {
 
     TierItem getItem(int itemId);
 
-    TierItem insertItem(int tierId, TierItem currentItem); // Returns ID
+    TierItem insertItem(int tierId, TierItem currentItem);
 
     TierItem updateItem(TierItem currentItem);
 

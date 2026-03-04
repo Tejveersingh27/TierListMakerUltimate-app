@@ -1,9 +1,10 @@
 package app.TierListMakerUltimate.business.services;
 
 import app.TierListMakerUltimate.models.Tier;
+import app.TierListMakerUltimate.models.TierList;
 
 public interface ITierListCoordinator {
-    int addTierList(String name);
+    TierList addTierList(String name);
 
     void removeTierList(int tierListId);
 

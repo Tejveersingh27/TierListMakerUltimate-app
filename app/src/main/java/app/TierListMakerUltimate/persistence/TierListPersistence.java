@@ -9,7 +9,7 @@ public interface TierListPersistence {
 
     TierList getTierListById(int tierListId);
 
-    TierList insertTierList(TierList currentTierList); // Returns ID
+    TierList insertTierList(TierList currentTierList);
 
     TierList updateTierList(TierList currentTierList);
 

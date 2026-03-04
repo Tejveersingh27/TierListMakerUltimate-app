@@ -34,13 +34,11 @@ class TierListCoordinatorTest {
 
     @Test
     void addTierListCreatesListAndUnrankedTier() {
-        int listId = tierListCoordinator.addTierList("My List");
+        TierList tierList = tierListCoordinator.addTierList("My List");
+        int listId = tierList.getId();
 
         // Verify list exists
-        assertNotNull(tierListManager.getAllTierLists().stream()
-                .filter(l -> l.getId() == listId)
-                .findFirst()
-                .orElse(null));
+        assertNotNull(tierListManager.getTierList(listId));
 
         // Verify unranked tier was created
         Tier unranked = tierListCoordinator.getUrankedTier(listId);
@@ -61,7 +59,8 @@ class TierListCoordinatorTest {
 
     @Test
     void removeTierListDeletesTierList() { // TODO: Test for tier and item deletion
-        int listId = tierListCoordinator.addTierList("To Delete");
+        TierList tierList = tierListCoordinator.addTierList("To Delete");
+        int listId = tierList.getId();
         assertEquals(1, tierListManager.getAllTierLists().size());
 
         tierListCoordinator.removeTierList(listId);

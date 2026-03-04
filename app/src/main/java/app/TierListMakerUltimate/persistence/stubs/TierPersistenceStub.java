@@ -34,7 +34,7 @@ public class TierPersistenceStub implements TierPersistence {
         int id = nextId++;
         Tier copy = new Tier(
                 id,
-                tierListId,
+                currentTier.getTierListId(),
                 currentTier.getName(),
                 currentTier.getColor(),
                 currentTier.isUnranked()

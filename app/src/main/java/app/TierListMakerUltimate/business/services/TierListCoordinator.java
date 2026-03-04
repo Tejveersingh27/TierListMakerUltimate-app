@@ -15,10 +15,10 @@ public class TierListCoordinator implements ITierListCoordinator {
     }
 
     @Override
-    public int addTierList(String name) {
+    public TierList addTierList(String name) {
         TierList tierList = tierListManager.createTierList(name);
         tierManager.createUnrankedTier(tierList.getId(), "unranked", "#7A7A7A"); // TODO: Use constants for these
-        return tierList.getId();
+        return tierList;
     }
 
     @Override
