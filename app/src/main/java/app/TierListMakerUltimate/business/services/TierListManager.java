@@ -2,6 +2,8 @@ package app.TierListMakerUltimate.business.services;
 
 import java.util.List;
 
+import app.TierListMakerUltimate.business.exception.InitializationException;
+import app.TierListMakerUltimate.business.exception.NotFoundException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.models.TierList;
@@ -11,9 +13,9 @@ public class TierListManager implements ITierListManager {
     private final TierListPersistence tierListStorage;
     private final TierListValidator validator;
 
-    public TierListManager(TierListPersistence tierListStorage, TierListValidator validator) {
+    public TierListManager(TierListPersistence tierListStorage, TierListValidator validator) throws InitializationException {
         if (tierListStorage == null || validator == null) {
-            throw new IllegalArgumentException("TierListPersistence and TierListValidator cannot be null"); // TODO custom exception
+            throw new InitializationException("TierListPersistence and TierListValidator cannot be null");
         }
         this.tierListStorage = tierListStorage;
         this.validator = validator;
@@ -27,23 +29,30 @@ public class TierListManager implements ITierListManager {
     }
 
     @Override
-    public TierList getTierList(int tierListId) throws ValidationException {
+    public TierList getTierList(int tierListId) throws ValidationException, NotFoundException {
         validator.validateTierListId(tierListId);
-        return tierListStorage.getTierListById(tierListId);
+        TierList tierList = tierListStorage.getTierListById(tierListId);
+        if (tierList == null) {
+            throw new NotFoundException("TierList with ID " + tierListId + " not found");
+        }
+        return tierList;
     }
 
     @Override
-    public void removeTierList(int tierListId) throws ValidationException {
+    public void removeTierList(int tierListId) throws ValidationException, NotFoundException {
         validator.validateDeleteTierList(tierListId);
+        if (tierListStorage.getTierListById(tierListId) == null) {
+            throw new NotFoundException("TierList with ID " + tierListId + " not found");
+        }
         tierListStorage.deleteTierList(tierListId);
     }
 
     @Override
-    public void updateTierList(TierList updatedTierList) throws ValidationException {
+    public void updateTierList(TierList updatedTierList) throws ValidationException, NotFoundException {
         validator.validateUpdateTierList(updatedTierList);
 
         if (tierListStorage.getTierListById(updatedTierList.getId()) == null) {
-            throw new RuntimeException("TierList not found"); // TODO custom exception
+            throw new NotFoundException("TierList not found with ID: " + updatedTierList.getId());
         }
 
         tierListStorage.updateTierList(updatedTierList);

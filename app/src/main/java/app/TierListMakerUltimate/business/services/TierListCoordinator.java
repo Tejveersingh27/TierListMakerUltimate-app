@@ -2,18 +2,19 @@ package app.TierListMakerUltimate.business.services;
 
 import java.util.List;
 
+import app.TierListMakerUltimate.business.exception.InitializationException;
+import app.TierListMakerUltimate.business.exception.NotFoundException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
 
 public class TierListCoordinator implements ITierListCoordinator {
-    TierManager tierManager;
-    TierListManager tierListManager;
+    private final TierManager tierManager;
+    private final TierListManager tierListManager;
 
-    public TierListCoordinator(TierManager tierManager, TierListManager tierListManager) {
-
+    public TierListCoordinator(TierManager tierManager, TierListManager tierListManager) throws InitializationException {
         if (tierManager == null || tierListManager == null) {
-            throw new IllegalArgumentException("TierItemPersistence and ItemValidator cannot be null"); // TODO custom exception
+            throw new InitializationException("TierManager and TierListManager cannot be null");
         }
         this.tierManager = tierManager;
         this.tierListManager = tierListManager;
@@ -22,14 +23,15 @@ public class TierListCoordinator implements ITierListCoordinator {
     @Override
     public TierList addTierList(String name) throws ValidationException {
         TierList tierList = tierListManager.createTierList(name);
-        tierManager.systemCreateTier(tierList.getId(), "unranked", "#7A7A7A", true); // TODO: Use constants for these
+        tierManager.systemCreateTier(tierList.getId(), "unranked", "#7A7A7A", true);
         return tierList;
     }
 
     @Override
     public void removeTierList(int tierListId) throws ValidationException {
         tierListManager.removeTierList(tierListId);
-        // TODO: Remove all tiers/items in this tier list
+
+        // TODO: The persistence layer should handle cascading deletes for tiers/items
     }
 
     @Override
@@ -40,6 +42,7 @@ public class TierListCoordinator implements ITierListCoordinator {
                 return tier;
             }
         }
-        return null;
+
+        throw new NotFoundException("Unranked tier not found for TierList ID: " + tierListId);
     }
 }

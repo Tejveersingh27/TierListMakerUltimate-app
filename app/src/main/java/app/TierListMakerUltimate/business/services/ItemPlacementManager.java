@@ -2,6 +2,8 @@ package app.TierListMakerUltimate.business.services;
 
 import java.util.List;
 
+import app.TierListMakerUltimate.business.exception.InitializationException;
+import app.TierListMakerUltimate.business.exception.NotFoundException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
@@ -11,9 +13,9 @@ public class ItemPlacementManager implements IItemPlacementManager {
     private final TierItemPersistence itemStorage;
     private final ItemValidator validator;
 
-    public ItemPlacementManager(TierItemPersistence itemStorage, ItemValidator validator) {
+    public ItemPlacementManager(TierItemPersistence itemStorage, ItemValidator validator) throws InitializationException {
         if (itemStorage == null || validator == null) {
-            throw new IllegalArgumentException("TierItemPersistence and ItemValidator cannot be null"); // TODO custom exception
+            throw new InitializationException("TierItemPersistence and ItemValidator cannot be null");
         }
         this.itemStorage = itemStorage;
         this.validator = validator;
@@ -27,37 +29,44 @@ public class ItemPlacementManager implements IItemPlacementManager {
     }
 
     @Override
-    public TierItem moveItemToTier(int itemId, int targetTierId) throws ValidationException {
+    public TierItem moveItemToTier(int itemId, int targetTierId) throws ValidationException, NotFoundException {
         validator.validateMoveItemToTier(itemId, targetTierId);
         TierItem targetItem = itemStorage.getItem(itemId);
         if (targetItem == null) {
-            throw new RuntimeException("Tier Item not Found"); // TODO custom exception
+            throw new NotFoundException("Tier Item not found with ID: " + itemId);
         }
         targetItem.setTierId(targetTierId);
         return itemStorage.updateItem(targetItem);
-    }
+    } // TODO use update instead
 
     @Override
-    public void updateItem(TierItem updatedItem) throws ValidationException {
+    public void updateItem(TierItem updatedItem) throws ValidationException, NotFoundException {
         validator.validateUpdateItem(updatedItem);
 
         if (itemStorage.getItem(updatedItem.getId()) == null) {
-            throw new RuntimeException("Tier Item not found"); //TODO: custom exception
+            throw new NotFoundException("Tier Item not found with ID: " + updatedItem.getId());
         }
 
         itemStorage.updateItem(updatedItem);
     }
 
     @Override
-    public void removeItem(int itemId) throws ValidationException {
+    public void removeItem(int itemId) throws ValidationException, NotFoundException {
         validator.validateRemoveItem(itemId);
+        if (itemStorage.getItem(itemId) == null) {
+            throw new NotFoundException("Tier Item not found with ID: " + itemId);
+        }
         itemStorage.deleteItem(itemId);
     }
 
     @Override
-    public TierItem getItem(int itemId) throws ValidationException {
+    public TierItem getItem(int itemId) throws ValidationException, NotFoundException {
         validator.validateItemId(itemId);
-        return itemStorage.getItem(itemId);
+        TierItem item = itemStorage.getItem(itemId);
+        if (item == null) {
+            throw new NotFoundException("Tier Item not found with ID: " + itemId);
+        }
+        return item;
     }
 
     @Override

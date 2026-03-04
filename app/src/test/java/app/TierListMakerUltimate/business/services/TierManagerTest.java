@@ -3,7 +3,6 @@ package app.TierListMakerUltimate.business.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -12,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import app.TierListMakerUltimate.business.exception.NotFoundException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.models.Tier;
@@ -80,7 +80,8 @@ class TierManagerTest {
         int id = tierManager.createTier(1, "S Tier", "#FFFFFF").getId();
         tierManager.removeTier(id);
 
-        assertNull(tierManager.getTier(id));
+        // Since getTier now throws NotFoundException when missing, we must assert the throw
+        assertThrows(NotFoundException.class, () -> tierManager.getTier(id));
     }
 
     @Test
@@ -120,6 +121,6 @@ class TierManagerTest {
     void updateTierThrowsExceptionIfNotFound() {
         Tier nonExistent = new Tier(999, 1, "Ghost", "#000000", false);
         
-        assertThrows(RuntimeException.class, () -> tierManager.updateTier(nonExistent));
+        assertThrows(NotFoundException.class, () -> tierManager.updateTier(nonExistent));
     }
 }

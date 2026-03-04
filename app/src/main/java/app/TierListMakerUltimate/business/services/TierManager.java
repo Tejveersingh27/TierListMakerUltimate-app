@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.business.services;
 
+import app.TierListMakerUltimate.business.exception.InitializationException;
+import app.TierListMakerUltimate.business.exception.NotFoundException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.persistence.TierPersistence;
@@ -11,9 +13,9 @@ public class TierManager implements ITierManager {
     private final TierPersistence tierStorage;
     private final TierValidator validator;
 
-    public TierManager(TierPersistence tierStorage, TierValidator validator) {
+    public TierManager(TierPersistence tierStorage, TierValidator validator) throws InitializationException {
         if (tierStorage == null || validator == null) {
-            throw new IllegalArgumentException("TierPersistence and TierValidator cannot be null"); // TODO custom exception
+            throw new InitializationException("TierPersistence and TierValidator cannot be null");
         }
         this.tierStorage = tierStorage;
         this.validator = validator;
@@ -31,22 +33,30 @@ public class TierManager implements ITierManager {
     }
 
     @Override
-    public void removeTier(int tierId) throws ValidationException {
+    public void removeTier(int tierId) throws ValidationException, NotFoundException {
         validator.validateRemoveTier(tierId);
+        if (tierStorage.getTier(tierId) == null) {
+            throw new NotFoundException("Tier not found with ID: " + tierId);
+        }
         tierStorage.deleteTier(tierId);
     }
 
     @Override
-    public Tier getTier(int tierId) throws ValidationException {
-        return tierStorage.getTier(tierId);
+    public Tier getTier(int tierId) throws ValidationException, NotFoundException {
+        validator.validateTierId(tierId);
+        Tier tier = tierStorage.getTier(tierId);
+        if (tier == null) {
+            throw new NotFoundException("Tier not found with ID: " + tierId);
+        }
+        return tier;
     }
 
     @Override
-    public void updateTier(Tier updatedTier) throws ValidationException {
+    public void updateTier(Tier updatedTier) throws ValidationException, NotFoundException {
         validator.validateUpdateTier(updatedTier);
 
         if (tierStorage.getTier(updatedTier.getId()) == null) {
-            throw new RuntimeException("Tier not found"); // TODO custom exception)
+            throw new NotFoundException("Tier not found with ID: " + updatedTier.getId());
         }
 
         tierStorage.updateTier(updatedTier);
