@@ -21,9 +21,7 @@ public class TierListManager {
     public TierList createTierList(String name) {
         validator.validateCreateTierList(name);
         TierList newList = new TierList(name);
-        int id = tierListStorage.insertTierList(newList);
-        newList.setId(id);
-        return newList;
+        return tierListStorage.insertTierList(newList);
     }
 
     public TierList getTierList(int tierListId) {

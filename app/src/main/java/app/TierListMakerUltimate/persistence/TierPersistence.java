@@ -10,9 +10,9 @@ public interface TierPersistence {
 
     Tier getTier(int tierId);
 
-    int insertTier(int tierListId, Tier currentTier); // Returns ID
+    Tier insertTier(int tierListId, Tier currentTier); // Returns ID
 
-    void updateTier(Tier currentTier);
+    Tier updateTier(Tier currentTier);
 
     void deleteTier(int tierId);
 }
