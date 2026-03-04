@@ -1,30 +1,30 @@
 package app.TierListMakerUltimate.business.validation;
 
+import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
+
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 
 public class TierValidator {
-    public static final int MAX_LABEL_LENGTH = 60;
-    public static final String COLOR_REGEX = "^#[0-9A-Fa-f]{6}$";
 
     public void validateLabel(String label) throws ValidationException {
         if (label == null || label.trim().isEmpty()) {
-            throw new ValidationException("Label is required.");
+            throw new ValidationException(ERROR_LABEL_REQUIRED);
         }
         if (label.trim().length() > MAX_LABEL_LENGTH) {
-            throw new ValidationException("Label must be " + MAX_LABEL_LENGTH + " characters or less.");
+            throw new ValidationException(ERROR_LABEL_TOO_LONG);
         }
     }
 
     public void validateColor(String color) throws ValidationException {
         if (color == null || !color.matches(COLOR_REGEX)) {
-            throw new ValidationException("Color must be a valid hex code.");
+            throw new ValidationException(ERROR_COLOR_INVALID);
         }
     }
 
     public void validateWritePermission(boolean isUnRanked) throws ValidationException {
         if (isUnRanked) {
-            throw new ValidationException("Unranked tiers cannot be edited.");
+            throw new ValidationException(ERROR_UNRANKED_EDIT);
         }
     }
 
@@ -47,13 +47,13 @@ public class TierValidator {
 
     public void validateTierId(int tierId) throws ValidationException {
         if (tierId <= 0) {
-            throw new ValidationException("Tier Id is required.");
+            throw new ValidationException(ERROR_TIER_ID_REQUIRED);
         }
     }
 
     public void validateTierListId(int tierListId) throws ValidationException {
         if (tierListId <= 0) {
-            throw new ValidationException("Tier List Id is required.");
+            throw new ValidationException(ERROR_TIER_LIST_ID_REQUIRED);
         }
     }
 }

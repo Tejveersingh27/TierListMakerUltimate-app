@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.business.services;
 
+import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
+
 import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
@@ -15,7 +17,7 @@ public class TierListManager implements ITierListManager {
 
     public TierListManager(TierListPersistence tierListStorage, TierListValidator validator) throws InitializationException {
         if (tierListStorage == null || validator == null) {
-            throw new InitializationException("TierListPersistence and TierListValidator cannot be null");
+            throw new InitializationException(ERROR_PERSISTENCE_VALIDATOR_NULL);
         }
         this.tierListStorage = tierListStorage;
         this.validator = validator;
@@ -33,7 +35,7 @@ public class TierListManager implements ITierListManager {
         validator.validateTierListId(tierListId);
         TierList tierList = tierListStorage.getTierListById(tierListId);
         if (tierList == null) {
-            throw new NotFoundException("TierList with ID " + tierListId + " not found");
+            throw new NotFoundException(ERROR_TIER_LIST_NOT_FOUND + tierListId);
         }
         return tierList;
     }
@@ -42,7 +44,7 @@ public class TierListManager implements ITierListManager {
     public void removeTierList(int tierListId) throws ValidationException, NotFoundException {
         validator.validateDeleteTierList(tierListId);
         if (tierListStorage.getTierListById(tierListId) == null) {
-            throw new NotFoundException("TierList with ID " + tierListId + " not found");
+            throw new NotFoundException(ERROR_TIER_LIST_NOT_FOUND + tierListId);
         }
         tierListStorage.deleteTierList(tierListId);
     }
@@ -52,7 +54,7 @@ public class TierListManager implements ITierListManager {
         validator.validateUpdateTierList(updatedTierList);
 
         if (tierListStorage.getTierListById(updatedTierList.getId()) == null) {
-            throw new NotFoundException("TierList not found with ID: " + updatedTierList.getId());
+            throw new NotFoundException(ERROR_TIER_LIST_NOT_FOUND + updatedTierList.getId());
         }
 
         tierListStorage.updateTierList(updatedTierList);

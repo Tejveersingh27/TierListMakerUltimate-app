@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.business.services;
 
+import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
+
 import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
@@ -10,11 +12,11 @@ import app.TierListMakerUltimate.models.TierList;
 
 public class TierListCoordinator implements ITierListCoordinator {
     private final ITierManager tierManager;
-    private final TierListManager tierListManager;
+    private final ITierListManager tierListManager;
 
-    public TierListCoordinator(TierManager tierManager, TierListManager tierListManager) throws InitializationException {
+    public TierListCoordinator(ITierManager tierManager, ITierListManager tierListManager) throws InitializationException {
         if (tierManager == null || tierListManager == null) {
-            throw new InitializationException("TierManager and TierListManager cannot be null");
+            throw new InitializationException(ERROR_MANAGERS_NULL);
         }
         this.tierManager = tierManager;
         this.tierListManager = tierListManager;
@@ -28,14 +30,12 @@ public class TierListCoordinator implements ITierListCoordinator {
     }
 
     @Override
-    public void removeTierList(int tierListId) throws ValidationException {
+    public void removeTierList(int tierListId) throws ValidationException, NotFoundException {
         tierListManager.removeTierList(tierListId);
-
-        // TODO: The persistence layer should handle cascading deletes for tiers/items
     }
 
     @Override
-    public Tier getUrankedTier(int tierListId) throws ValidationException {
+    public Tier getUrankedTier(int tierListId) throws ValidationException, NotFoundException {
         List<Tier> tiers = tierManager.getTiersForList(tierListId);
         for (Tier tier : tiers) {
             if (tier.isUnranked()) {
@@ -43,6 +43,6 @@ public class TierListCoordinator implements ITierListCoordinator {
             }
         }
 
-        throw new NotFoundException("Unranked tier not found for TierList ID: " + tierListId);
+        throw new NotFoundException(ERROR_TIER_NOT_FOUND + "unranked for list " + tierListId);
     }
 }
