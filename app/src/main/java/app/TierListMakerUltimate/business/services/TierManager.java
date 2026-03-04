@@ -1,5 +1,6 @@
 package app.TierListMakerUltimate.business.services;
 
+import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.persistence.TierPersistence;
 import app.TierListMakerUltimate.business.validation.TierValidator;
@@ -18,17 +19,17 @@ public class TierManager {
         this.validator = validator;
     }
 
-    public Tier createTier(int tierListId, String label, String color) {
+    public Tier createTier(int tierListId, String label, String color) throws ValidationException {
         return systemCreateTier(tierListId, label, color, false);
     }
 
-    Tier systemCreateTier(int tierListId, String label, String color, boolean isUnranked) {
+    Tier systemCreateTier(int tierListId, String label, String color, boolean isUnranked) throws ValidationException {
         validator.validateCreateTier(label, color);
         Tier newTier = new Tier(tierListId, label, color, isUnranked);
         return tierStorage.insertTier(tierListId, newTier);
     }
 
-    public void removeTier(int tierId) {
+    public void removeTier(int tierId) throws ValidationException {
         validator.validateRemoveTier(tierId);
         tierStorage.deleteTier(tierId);
     }
@@ -37,7 +38,7 @@ public class TierManager {
         return tierStorage.getTier(tierId);
     }
 
-    public void updateTier(Tier updatedTier) {
+    public void updateTier(Tier updatedTier) throws ValidationException {
         validator.validateUpdateTier(updatedTier);
 
         if (tierStorage.getTier(updatedTier.getId()) == null) {
@@ -46,9 +47,9 @@ public class TierManager {
 
         tierStorage.updateTier(updatedTier);
     }
-    
 
-    public List<Tier> getTiersForList(int tierListId) {
+
+    public List<Tier> getTiersForList(int tierListId) throws ValidationException {
         validator.validateTierListId(tierListId);
         return tierStorage.getTiersForList(tierListId);
     }
