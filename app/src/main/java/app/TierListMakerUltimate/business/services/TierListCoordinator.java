@@ -1,34 +1,41 @@
 package app.TierListMakerUltimate.business.services;
 
+import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
+
 import java.util.List;
 
+import app.TierListMakerUltimate.business.exception.InitializationException;
+import app.TierListMakerUltimate.business.exception.NotFoundException;
+import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
 
 public class TierListCoordinator implements ITierListCoordinator {
-    TierManager tierManager;
-    TierListManager tierListManager;
+    private final ITierManager tierManager;
+    private final ITierListManager tierListManager;
 
-    public TierListCoordinator(TierManager tierManager, TierListManager tierListManager) {
+    public TierListCoordinator(ITierManager tierManager, ITierListManager tierListManager) throws InitializationException {
+        if (tierManager == null || tierListManager == null) {
+            throw new InitializationException(ERROR_MANAGERS_NULL);
+        }
         this.tierManager = tierManager;
         this.tierListManager = tierListManager;
     }
 
     @Override
-    public TierList addTierList(String name) {
+    public TierList addTierList(String name) throws ValidationException {
         TierList tierList = tierListManager.createTierList(name);
-        tierManager.createUnrankedTier(tierList.getId(), "unranked", "#7A7A7A"); // TODO: Use constants for these
+        tierManager.createTier(tierList.getId(), "unranked", "#7A7A7A", true);
         return tierList;
     }
 
     @Override
-    public void removeTierList(int tierListId) {
+    public void removeTierList(int tierListId) throws ValidationException, NotFoundException {
         tierListManager.removeTierList(tierListId);
-        // TODO: Remove all tiers/items in this tier list
     }
 
     @Override
-    public Tier getUrankedTier(int tierListId) {
+    public Tier getUrankedTier(int tierListId) throws ValidationException, NotFoundException {
         List<Tier> tiers = tierManager.getTiersForList(tierListId);
         for (Tier tier : tiers) {
             if (tier.isUnranked()) {
@@ -36,6 +43,6 @@ public class TierListCoordinator implements ITierListCoordinator {
             }
         }
 
-        throw new RuntimeException("Unranked tier not found"); // TODO: Use custom exception
+        throw new NotFoundException(ERROR_TIER_NOT_FOUND + "unranked for list " + tierListId);
     }
 }

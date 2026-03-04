@@ -41,28 +41,7 @@ public class TierItem {
 
     public void setTierId(int tierId) {
         this.tierId = tierId;
-    }
+    } // TODO: remove after updating ItemPlacementManager to not use this
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj == null || getClass() != obj.getClass()) {
-                return false;
-        }
-
-        TierItem item = (TierItem) obj;
-        return id == item.id && tierId == item.tierId &&
-                imagePath == item.imagePath &&
-                description.equals(item.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, imagePath, description, tierId);
-    }
 }
