@@ -8,18 +8,18 @@ import java.util.List;
 public class SeedTemplates {
 
     private static final List<SystemTemplateItem> POKEMON_STARTERS_ITEMS = List.of(
-            new SystemTemplateItem("pokemon_bulbasaur", "Bulbasaur"),
-            new SystemTemplateItem("pokemon_charmander", "Charmander"),
-            new SystemTemplateItem("pokemon_squirtle", "Squirtle"),
-            new SystemTemplateItem("pokemon_chikorita", "Chikorita"),
-            new SystemTemplateItem("pokemon_cyndaquil", "Cyndaquil"),
-            new SystemTemplateItem("pokemon_totodile", "Totodile"),
-            new SystemTemplateItem("pokemon_treecko", "Treecko"),
-            new SystemTemplateItem("pokemon_torchic", "Torchic"),
-            new SystemTemplateItem("pokemon_mudkip", "Mudkip"),
-            new SystemTemplateItem("pokemon_turtwig", "Turtwig"),
-            new SystemTemplateItem("pokemon_chimchar", "Chimchar"),
-            new SystemTemplateItem("pokemon_piplup", "Piplup")
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_bulbasaur", "Bulbasaur"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_charmander", "Charmander"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_squirtle", "Squirtle"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_chikorita", "Chikorita"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_cyndaquil", "Cyndaquil"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_totodile", "Totodile"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_treecko", "Treecko"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_torchic", "Torchic"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_mudkip", "Mudkip"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_turtwig", "Turtwig"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_chimchar", "Chimchar"),
+            new SystemTemplateItem("android.resource://app.TierListMakerUltimate/drawable/pokemon_piplup", "Piplup")
     );
 
     public static final List<SystemTemplate> SYSTEM_TEMPLATES = List.of(

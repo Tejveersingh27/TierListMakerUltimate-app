@@ -8,11 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Arrays;
-import java.util.List;
 
 import app.TierListMakerUltimate.R;
-import app.TierListMakerUltimate.business.services.TierListCoordinator;
+import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.TierListManager;
 
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
@@ -23,7 +21,7 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     private TierListBrowserAdapter adapter;
 
     private TierListManager tierListManager;
-    private TierListCoordinator tierListCoordinator;
+    private ITierListCoordinator tierListCoordinator;
 
 
     @Override
@@ -33,7 +31,7 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
 
         TierListMakerUltimate app = (TierListMakerUltimate) getApplication();
         tierListManager = app.getTierListManager();
-        tierListCoordinator = app.getTtierListCoordinator();
+        tierListCoordinator = app.getTierListCoordinator();
 
         setupRecyclerView();
         setupAddButton();

@@ -32,7 +32,7 @@ public class ItemPlacementManagerTest {
 
     @Test
     void testCreateItemSuccess() {
-        TierItem item = manager.createItem(0, 1, "This is a test item");
+        TierItem item = manager.createItem("path", 1, "This is a test item");
         assertNotNull(item);
         assertEquals("This is a test item", item.getDescription());
         assertTrue(item.getId() > 0);
@@ -41,7 +41,7 @@ public class ItemPlacementManagerTest {
 
     @Test
     void testGetItemsForTier() {
-        TierItem item = manager.createItem(0, 1, "Test item 1");
+        TierItem item = manager.createItem("path", 1, "Test item 1");
         List<TierItem> testItems = new ArrayList<>();
         testItems.add(item);
         assertEquals(manager.getItemsForTier(1), testItems);
@@ -50,20 +50,20 @@ public class ItemPlacementManagerTest {
 //    @Test
 //    void testCreateItemInvalidImagePathThrowsException() {
 //        assertThrows(ValidationException.class, () -> {
-//            manager.createItem(0, 2, "This is an item with no image path");
+//            manager.createItem("path", 2, "This is an item with no image path");
 //        });
 //    }
 
     @Test
     void testCreateItemInvalidTierIdThrowsException() {
         assertThrows(ValidationException.class, () -> {
-            manager.createItem(0, 0, "This is an item with invalid tier id");
+            manager.createItem("path", 0, "This is an item with invalid tier id");
         });
     }
 
     @Test
     void testMoveItemToTierSuccess() {
-        TierItem item = manager.createItem(0, 1, "This is a test item");
+        TierItem item = manager.createItem("path", 1, "This is a test item");
         assertEquals(1, item.getTierId());
         manager.moveItemToTier(item.getId(), 2);
         item = manager.getItem(item.getId());
@@ -79,7 +79,7 @@ public class ItemPlacementManagerTest {
 
     @Test
     void testRemoveItemSuccess() {
-        TierItem item = manager.createItem(0, 1, "Another test item");
+        TierItem item = manager.createItem("path", 1, "Another test item");
         int id = item.getId();
         assertNotNull(persistence.getItem(id));
         manager.removeItem(id);
