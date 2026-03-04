@@ -3,7 +3,6 @@ package app.TierListMakerUltimate.business.services;
 import java.util.List;
 
 import app.TierListMakerUltimate.models.Tier;
-import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
 
 public class TierListCoordinator implements ITierListCoordinator {
@@ -23,9 +22,8 @@ public class TierListCoordinator implements ITierListCoordinator {
     }
 
     private void createDefaultTiers(int tierListId) {
-        List<DefaultTiers.TierRecord> defaultTiers = DefaultTiers.DEFAULT_TIERS;
-        for (DefaultTiers.TierRecord tier : defaultTiers) {
-            tierManager.systemCreateTier(tierListId, tier.name(), tier.color(), tier.isUnranked());
+        for (DefaultTiers tier : DefaultTiers.values()) {
+            tierManager.systemCreateTier(tierListId, tier.label, tier.color, tier.isUnranked);
         }
     }
 
