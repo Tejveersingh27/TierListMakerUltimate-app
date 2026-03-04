@@ -1,41 +1,67 @@
 package app.TierListMakerUltimate.business.services;
 
+import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
+
 import java.util.List;
 
+import app.TierListMakerUltimate.business.exception.InitializationException;
+import app.TierListMakerUltimate.business.exception.NotFoundException;
+import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 
-public class TierListManager {
+public class TierListManager implements ITierListManager {
     private final TierListPersistence tierListStorage;
     private final TierListValidator validator;
 
-    public TierListManager(TierListPersistence tierListStorage, TierListValidator validator) {
+    public TierListManager(TierListPersistence tierListStorage, TierListValidator validator) throws InitializationException {
         if (tierListStorage == null || validator == null) {
-            throw new IllegalArgumentException("TierListPersistence and TierListValidator cannot be null");
+            throw new InitializationException(ERROR_PERSISTENCE_VALIDATOR_NULL);
         }
         this.tierListStorage = tierListStorage;
         this.validator = validator;
     }
 
-    TierList createTierList(String name) {
+    @Override
+    public TierList createTierList(String name) throws ValidationException {
         validator.validateCreateTierList(name);
         TierList newList = new TierList(name);
         return tierListStorage.insertTierList(newList);
     }
 
-    public TierList getTierList(int tierListId) {
+    @Override
+    public TierList getTierList(int tierListId) throws ValidationException, NotFoundException {
         validator.validateTierListId(tierListId);
-        return tierListStorage.getTierListById(tierListId);
+        TierList tierList = tierListStorage.getTierListById(tierListId);
+        if (tierList == null) {
+            throw new NotFoundException(ERROR_TIER_LIST_NOT_FOUND + tierListId);
+        }
+        return tierList;
     }
 
-    public void removeTierList(int tierListId) {
-        validator.validateRemoveTierList(tierListId);
+    @Override
+    public void removeTierList(int tierListId) throws ValidationException, NotFoundException {
+        validator.validateDeleteTierList(tierListId);
+        if (tierListStorage.getTierListById(tierListId) == null) {
+            throw new NotFoundException(ERROR_TIER_LIST_NOT_FOUND + tierListId);
+        }
         tierListStorage.deleteTierList(tierListId);
     }
 
-    public List<TierList> getAllTierLists() {
-        return tierListStorage.getAllTierLists();
+    @Override
+    public void updateTierList(TierList updatedTierList) throws ValidationException, NotFoundException {
+        validator.validateUpdateTierList(updatedTierList);
+
+        if (tierListStorage.getTierListById(updatedTierList.getId()) == null) {
+            throw new NotFoundException(ERROR_TIER_LIST_NOT_FOUND + updatedTierList.getId());
+        }
+
+        tierListStorage.updateTierList(updatedTierList);
     }
 
+    @Override
+    public List<TierList> getAllTierLists() throws ValidationException {
+        return tierListStorage.getAllTierLists();
+    }
 }

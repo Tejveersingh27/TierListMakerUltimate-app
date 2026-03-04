@@ -1,64 +1,73 @@
 package app.TierListMakerUltimate.business.services;
 
+import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
+
+import app.TierListMakerUltimate.business.exception.InitializationException;
+import app.TierListMakerUltimate.business.exception.NotFoundException;
+import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.persistence.TierPersistence;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 
 import java.util.List;
 
-public class TierManager {
+public class TierManager implements ITierManager {
     private final TierPersistence tierStorage;
     private final TierValidator validator;
 
-    public TierManager(TierPersistence tierStorage, TierValidator validator) {
+    public TierManager(TierPersistence tierStorage, TierValidator validator) throws InitializationException {
         if (tierStorage == null || validator == null) {
-            throw new IllegalArgumentException("TierPersistence and TierValidator cannot be null");
+            throw new InitializationException(ERROR_PERSISTENCE_VALIDATOR_NULL);
         }
         this.tierStorage = tierStorage;
         this.validator = validator;
     }
 
-    public Tier createTier(int tierListId, String label, String color) {
-        return systemCreateTier(tierListId, label, color, false);
+    @Override
+    public Tier createTier(int tierListId, String label, String color) throws ValidationException {
+        return createTier(tierListId, label, color, false);
     }
 
-
-    Tier systemCreateTier(int tierListId, String label, String color, boolean isUnranked) {
-        validator.validateTier(label, color, isUnranked);
+    @Override
+    public Tier createTier(int tierListId, String label, String color, boolean isUnranked) throws ValidationException {
+        validator.validateCreateTier(label, color);
         Tier newTier = new Tier(tierListId, label, color, isUnranked);
         return tierStorage.insertTier(tierListId, newTier);
     }
 
-    public void removeTier(int tierId) {
+    @Override
+    public void removeTier(int tierId) throws ValidationException, NotFoundException {
+        validator.validateRemoveTier(tierId);
+        if (tierStorage.getTier(tierId) == null) {
+            throw new NotFoundException(ERROR_TIER_NOT_FOUND + tierId);
+        }
         tierStorage.deleteTier(tierId);
     }
 
-    public Tier getTier(int tierId) {
-        return tierStorage.getTier(tierId);
-    }
-
-    public void renameTier(int tierId, String newLabel) {
-        validator.validateLabel(newLabel);
+    @Override
+    public Tier getTier(int tierId) throws ValidationException, NotFoundException {
+        validator.validateTierId(tierId);
         Tier tier = tierStorage.getTier(tierId);
-        if (tier != null) {
-            tier.setName(newLabel);
-            tierStorage.updateTier(tier);
+        if (tier == null) {
+            throw new NotFoundException(ERROR_TIER_NOT_FOUND + tierId);
         }
+        return tier;
     }
 
-    public void changeTierColor(int tierId, String colorHex) {
-        validator.validateColor(colorHex);
-        Tier tier = tierStorage.getTier(tierId);
-        if (tier != null) {
-            validator.validateWritePermission(tier.isUnranked());
-            tier.setColor(colorHex);
-            tierStorage.updateTier(tier);
+    @Override
+    public void updateTier(Tier updatedTier) throws ValidationException, NotFoundException {
+        validator.validateUpdateTier(updatedTier);
+
+        if (tierStorage.getTier(updatedTier.getId()) == null) {
+            throw new NotFoundException(ERROR_TIER_NOT_FOUND + updatedTier.getId());
         }
+
+        tierStorage.updateTier(updatedTier);
     }
 
-    public List<Tier> getTiersForList(int tierListId) {
+    @Override
+    public List<Tier> getTiersForList(int tierListId) throws ValidationException {
         validator.validateTierListId(tierListId);
         return tierStorage.getTiersForList(tierListId);
     }
-
 }

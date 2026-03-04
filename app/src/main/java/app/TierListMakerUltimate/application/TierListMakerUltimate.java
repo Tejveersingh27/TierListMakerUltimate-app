@@ -2,8 +2,11 @@ package app.TierListMakerUltimate.application;
 
 import android.app.Application;
 
+import app.TierListMakerUltimate.business.services.IItemPlacementManager;
 import app.TierListMakerUltimate.business.services.ISystemTemplateCoordinator;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
+import app.TierListMakerUltimate.business.services.ITierListManager;
+import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.business.services.ItemPlacementManager;
 import app.TierListMakerUltimate.business.services.SystemTemplateCoordinator;
 import app.TierListMakerUltimate.business.services.TierListCoordinator;
@@ -33,10 +36,9 @@ public class TierListMakerUltimate extends Application {
     // Business logic instances
     private ITierListCoordinator tierListCoordinator;
     private ISystemTemplateCoordinator systemTemplateCoordinator;
-    private TierListManager tierListManager;
-    private TierManager tierManager;
-    private ItemPlacementManager itemPlacementManager;
-
+    private ITierListManager tierListManager;
+    private ITierManager tierManager;
+    private IItemPlacementManager itemPlacementManager;
 
     @Override
     public void onCreate() {
@@ -60,15 +62,15 @@ public class TierListMakerUltimate extends Application {
         systemTemplateCoordinator.loadSystemTemplates();
     }
 
-    public TierListManager getTierListManager() {
+    public ITierListManager getTierListManager() {
         return tierListManager;
     }
 
-    public TierManager getTierManager() {
+    public ITierManager getTierManager() {
         return tierManager;
     }
 
-    public ItemPlacementManager getItemPlacementManager() {
+    public IItemPlacementManager getItemPlacementManager() {
         return itemPlacementManager;
     }
 
@@ -82,6 +84,7 @@ public class TierListMakerUltimate extends Application {
 
 
     private boolean isTestEnvironment() {
-        return true; // Need to add an environment variable for this
+        return true; // TODO: Need to add an environment variable for this
     }
 }
+

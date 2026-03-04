@@ -1,6 +1,6 @@
 package app.TierListMakerUltimate.business.exception;
 
-public class ValidationException extends RuntimeException {
+public class ValidationException extends BusinessException {
     public ValidationException(String message) {
         super(message);
     }

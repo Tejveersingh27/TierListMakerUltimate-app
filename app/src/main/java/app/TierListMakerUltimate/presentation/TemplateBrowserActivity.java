@@ -12,14 +12,14 @@ import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ItemPlacementManager;
-import app.TierListMakerUltimate.business.services.TierListManager;
+import app.TierListMakerUltimate.business.services.ITierListManager;
 import app.TierListMakerUltimate.models.TierList;
 
 public class TemplateBrowserActivity extends AppCompatActivity implements TemplateBrowserAdapter.TemplateBrowserActionListener {
     private RecyclerView recyclerView;
     private TemplateBrowserAdapter adapter;
 
-    private TierListManager tierListManager;
+    private ITierListManager tierListManager;
     private ITierListCoordinator tierListCoordinator;
 
 

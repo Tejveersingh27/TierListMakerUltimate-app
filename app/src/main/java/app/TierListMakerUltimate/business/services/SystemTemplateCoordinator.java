@@ -10,12 +10,10 @@ import app.TierListMakerUltimate.persistence.ITierListSeedProvider;
 
 public class SystemTemplateCoordinator implements ISystemTemplateCoordinator {
     private final ITierListCoordinator tierListCoordinator;
-    private final ItemPlacementManager itemPlacementManager;
+    private final IItemPlacementManager itemPlacementManager;
     private final ITierListSeedProvider seedProvider;
 
-    public SystemTemplateCoordinator(ITierListCoordinator tierListCoordinator,
-                                     ItemPlacementManager itemPlacementManager,
-                                     ITierListSeedProvider seedProvider) {
+    public SystemTemplateCoordinator(ITierListCoordinator tierListCoordinator, IItemPlacementManager itemPlacementManager, ITierListSeedProvider seedProvider) {
         this.tierListCoordinator = tierListCoordinator;
         this.itemPlacementManager = itemPlacementManager;
         this.seedProvider = seedProvider;

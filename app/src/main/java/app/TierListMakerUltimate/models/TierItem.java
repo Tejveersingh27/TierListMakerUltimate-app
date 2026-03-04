@@ -41,10 +41,7 @@ public class TierItem {
 
     public void setTierId(int tierId) {
         this.tierId = tierId;
-    }
+    } // TODO: remove after updating ItemPlacementManager to not use this
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
 }

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
-import app.TierListMakerUltimate.business.services.TierListManager;
+import app.TierListMakerUltimate.business.services.ITierListManager;
 
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.models.TierList;
@@ -20,7 +20,7 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     private RecyclerView recyclerView;
     private TierListBrowserAdapter adapter;
 
-    private TierListManager tierListManager;
+    private ITierListManager tierListManager;
     private ITierListCoordinator tierListCoordinator;
 
 

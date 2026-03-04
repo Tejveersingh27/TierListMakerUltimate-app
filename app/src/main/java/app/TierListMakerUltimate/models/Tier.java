@@ -46,25 +46,4 @@ public class Tier {
         return isUnranked;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setTierListId(int tierListId) {
-        this.tierListId = tierListId;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setColor(String colorHex) {
-        this.colorHex = colorHex;
-    }
-
-    public void setUnranked(boolean unranked) {
-        isUnranked = unranked;
-    }
-
-
 }
