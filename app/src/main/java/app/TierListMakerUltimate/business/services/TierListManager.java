@@ -7,7 +7,7 @@ import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 
-public class TierListManager {
+public class TierListManager implements ITierListManager {
     private final TierListPersistence tierListStorage;
     private final TierListValidator validator;
 
@@ -19,22 +19,26 @@ public class TierListManager {
         this.validator = validator;
     }
 
+    @Override
     public TierList createTierList(String name) throws ValidationException {
         validator.validateCreateTierList(name);
         TierList newList = new TierList(name);
         return tierListStorage.insertTierList(newList);
     }
 
+    @Override
     public TierList getTierList(int tierListId) throws ValidationException {
         validator.validateTierListId(tierListId);
         return tierListStorage.getTierListById(tierListId);
     }
 
+    @Override
     public void removeTierList(int tierListId) throws ValidationException {
         validator.validateDeleteTierList(tierListId);
         tierListStorage.deleteTierList(tierListId);
     }
 
+    @Override
     public void updateTierList(TierList updatedTierList) throws ValidationException {
         validator.validateUpdateTierList(updatedTierList);
 
@@ -45,8 +49,8 @@ public class TierListManager {
         tierListStorage.updateTierList(updatedTierList);
     }
 
-    public List<TierList> getAllTierLists() {
+    @Override
+    public List<TierList> getAllTierLists() throws ValidationException {
         return tierListStorage.getAllTierLists();
     }
-
 }

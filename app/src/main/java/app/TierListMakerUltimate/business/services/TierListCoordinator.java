@@ -11,6 +11,10 @@ public class TierListCoordinator implements ITierListCoordinator {
     TierListManager tierListManager;
 
     public TierListCoordinator(TierManager tierManager, TierListManager tierListManager) {
+
+        if (tierManager == null || tierListManager == null) {
+            throw new IllegalArgumentException("TierItemPersistence and ItemValidator cannot be null"); // TODO custom exception
+        }
         this.tierManager = tierManager;
         this.tierListManager = tierListManager;
     }
@@ -36,8 +40,6 @@ public class TierListCoordinator implements ITierListCoordinator {
                 return tier;
             }
         }
-
-        // Using ValidationException here to satisfy the grader's requirement for the coordinator
-        throw new ValidationException("Unranked tier not found for TierList ID: " + tierListId);
+        return null;
     }
 }
