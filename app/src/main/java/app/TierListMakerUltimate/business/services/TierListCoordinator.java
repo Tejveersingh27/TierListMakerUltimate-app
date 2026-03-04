@@ -7,8 +7,8 @@ import app.TierListMakerUltimate.business.constants.DefaultTiers;
 import app.TierListMakerUltimate.models.TierList;
 
 public class TierListCoordinator implements ITierListCoordinator {
-    TierManager tierManager;
-    TierListManager tierListManager;
+    private final TierManager tierManager;
+    private final TierListManager tierListManager;
 
     public TierListCoordinator(TierManager tierManager, TierListManager tierListManager) {
         this.tierManager = tierManager;

@@ -60,4 +60,5 @@ public class TierManager {
         validator.validateTierListId(tierListId);
         return tierStorage.getTiersForList(tierListId);
     }
+
 }

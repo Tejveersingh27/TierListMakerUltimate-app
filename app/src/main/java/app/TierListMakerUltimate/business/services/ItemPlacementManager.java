@@ -21,7 +21,7 @@ public class ItemPlacementManager {
         this.validator = validator;
     }
 
-    public TierItem createItem(int localImagePath, int tierId, String description) {
+    public TierItem createItem(String localImagePath, int tierId, String description) {
         validator.validateCreateItem(localImagePath, tierId, description);
         TierItem newTierItem = new TierItem(localImagePath, description, tierId);
         return itemStorage.insertItem(tierId, newTierItem);

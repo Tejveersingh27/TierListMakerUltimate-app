@@ -8,15 +8,15 @@ import app.TierListMakerUltimate.business.exception.ValidationException;
 public class ItemValidator {
     private static final int MAX_LENGTH_DESCRIPTION = 100;
 
-    public void validateCreateItem(int localImagePath, int tierId, String description) {
+    public void validateCreateItem(String localImagePath, int tierId, String description) {
         validateImagePath(localImagePath);
         validateTierId(tierId);
         validateDescription(description);
     }
 
-    public void validateImagePath(int localImagePath) {
+    public void validateImagePath(String localImagePath) {
         //if (localImagePath >= 0) {
-         //   throw new ValidationException("A valid image path is required");
+        //   throw new ValidationException("A valid image path is required");
         //}
     }
 
