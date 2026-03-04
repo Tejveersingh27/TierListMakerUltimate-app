@@ -9,7 +9,7 @@ import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
 
 public class TierListCoordinator implements ITierListCoordinator {
-    private final TierManager tierManager;
+    private final ITierManager tierManager;
     private final TierListManager tierListManager;
 
     public TierListCoordinator(TierManager tierManager, TierListManager tierListManager) throws InitializationException {
@@ -23,7 +23,7 @@ public class TierListCoordinator implements ITierListCoordinator {
     @Override
     public TierList addTierList(String name) throws ValidationException {
         TierList tierList = tierListManager.createTierList(name);
-        tierManager.systemCreateTier(tierList.getId(), "unranked", "#7A7A7A", true);
+        tierManager.createTier(tierList.getId(), "unranked", "#7A7A7A", true);
         return tierList;
     }
 

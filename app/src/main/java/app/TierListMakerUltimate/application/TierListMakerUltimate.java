@@ -2,6 +2,9 @@ package app.TierListMakerUltimate.application;
 
 import android.app.Application;
 
+import app.TierListMakerUltimate.business.services.IItemPlacementManager;
+import app.TierListMakerUltimate.business.services.ITierListManager;
+import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.business.services.ItemPlacementManager;
 import app.TierListMakerUltimate.business.services.TierListManager;
 import app.TierListMakerUltimate.business.services.TierManager;
@@ -24,9 +27,9 @@ public class TierListMakerUltimate extends Application {
     private TierItemPersistence itemStorage;
 
     // Business logic instances
-    private TierListManager tierListManager;
-    private TierManager tierManager;
-    private ItemPlacementManager itemPlacementManager;
+    private ITierListManager tierListManager;
+    private ITierManager tierManager;
+    private IItemPlacementManager itemPlacementManager;
 
 
     @Override
@@ -48,15 +51,15 @@ public class TierListMakerUltimate extends Application {
 
     }
 
-    public TierListManager getTierListManager() {
+    public ITierListManager getTierListManager() {
         return tierListManager;
     }
 
-    public TierManager getTierManager() {
+    public ITierManager getTierManager() {
         return tierManager;
     }
 
-    public ItemPlacementManager getItemPlacementManager() {
+    public IItemPlacementManager getItemPlacementManager() {
         return itemPlacementManager;
     }
 

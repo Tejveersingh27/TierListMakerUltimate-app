@@ -9,6 +9,9 @@ import java.util.List;
 public interface ITierManager {
     Tier createTier(int tierListId, String label, String color) throws ValidationException;
 
+    // Added this overload so the Coordinator can use it via the interface
+    Tier createTier(int tierListId, String label, String color, boolean isUnranked) throws ValidationException;
+
     void removeTier(int tierId) throws ValidationException, NotFoundException;
 
     Tier getTier(int tierId) throws ValidationException, NotFoundException;

@@ -23,10 +23,11 @@ public class TierManager implements ITierManager {
 
     @Override
     public Tier createTier(int tierListId, String label, String color) throws ValidationException {
-        return systemCreateTier(tierListId, label, color, false);
+        return createTier(tierListId, label, color, false);
     }
 
-    Tier systemCreateTier(int tierListId, String label, String color, boolean isUnranked) throws ValidationException {
+    @Override
+    public Tier createTier(int tierListId, String label, String color, boolean isUnranked) throws ValidationException {
         validator.validateCreateTier(label, color);
         Tier newTier = new Tier(tierListId, label, color, isUnranked);
         return tierStorage.insertTier(tierListId, newTier);
