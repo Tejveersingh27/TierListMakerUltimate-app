@@ -12,27 +12,24 @@ public class TierManager {
 
     public TierManager(TierPersistence tierStorage, TierValidator validator) {
         if (tierStorage == null || validator == null) {
-            throw new IllegalArgumentException("TierPersistence and TierValidator cannot be null");
+            throw new IllegalArgumentException("TierPersistence and TierValidator cannot be null"); // TODO custom exception
         }
         this.tierStorage = tierStorage;
         this.validator = validator;
     }
 
     public Tier createTier(int tierListId, String label, String color) {
-        return internalCreateTier(tierListId, label, color, false);
+        return systemCreateTier(tierListId, label, color, false);
     }
 
-    Tier createUnrankedTier(int tierListId, String label, String color) {
-        return internalCreateTier(tierListId, label, color, true);
-    }
-
-    private Tier internalCreateTier(int tierListId, String label, String color, boolean isUnranked) {
-        validator.validateTier(label, color, isUnranked);
+    Tier systemCreateTier(int tierListId, String label, String color, boolean isUnranked) {
+        validator.validateCreateTier(label, color);
         Tier newTier = new Tier(tierListId, label, color, isUnranked);
         return tierStorage.insertTier(tierListId, newTier);
     }
 
     public void removeTier(int tierId) {
+        validator.validateRemoveTier(tierId);
         tierStorage.deleteTier(tierId);
     }
 
@@ -40,24 +37,16 @@ public class TierManager {
         return tierStorage.getTier(tierId);
     }
 
-    public void renameTier(int tierId, String newLabel) {
-        validator.validateLabel(newLabel);
-        Tier tier = tierStorage.getTier(tierId);
-        if (tier != null) {
-            tier.setName(newLabel);
-            tierStorage.updateTier(tier);
-        }
-    }
+    public void updateTier(Tier updatedTier) {
+        validator.validateUpdateTier(updatedTier);
 
-    public void changeTierColor(int tierId, String colorHex) {
-        validator.validateColor(colorHex);
-        Tier tier = tierStorage.getTier(tierId);
-        if (tier != null) {
-            validator.validateWritePermission(tier.isUnranked());
-            tier.setColor(colorHex);
-            tierStorage.updateTier(tier);
+        if (tierStorage.getTier(updatedTier.getId()) == null) {
+            throw new RuntimeException("Tier not found"); // TODO custom exception)
         }
+
+        tierStorage.updateTier(updatedTier);
     }
+    
 
     public List<Tier> getTiersForList(int tierListId) {
         validator.validateTierListId(tierListId);

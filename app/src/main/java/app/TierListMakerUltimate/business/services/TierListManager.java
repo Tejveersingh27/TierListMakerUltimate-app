@@ -12,7 +12,7 @@ public class TierListManager {
 
     public TierListManager(TierListPersistence tierListStorage, TierListValidator validator) {
         if (tierListStorage == null || validator == null) {
-            throw new IllegalArgumentException("TierListPersistence and TierListValidator cannot be null");
+            throw new IllegalArgumentException("TierListPersistence and TierListValidator cannot be null"); // TODO custom exception
         }
         this.tierListStorage = tierListStorage;
         this.validator = validator;
@@ -30,8 +30,18 @@ public class TierListManager {
     }
 
     public void removeTierList(int tierListId) {
-        validator.validateRemoveTierList(tierListId);
+        validator.validateDeleteTierList(tierListId);
         tierListStorage.deleteTierList(tierListId);
+    }
+
+    public void updateTierList(TierList updatedTierList) {
+        validator.validateUpdateTierList(updatedTierList);
+
+        if (tierListStorage.getTierListById(updatedTierList.getId()) == null) {
+            throw new RuntimeException("TierList not found"); // TODO custom exception
+        }
+
+        tierListStorage.updateTierList(updatedTierList);
     }
 
     public List<TierList> getAllTierLists() {

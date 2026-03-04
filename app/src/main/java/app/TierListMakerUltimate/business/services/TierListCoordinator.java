@@ -17,7 +17,7 @@ public class TierListCoordinator implements ITierListCoordinator {
     @Override
     public TierList addTierList(String name) {
         TierList tierList = tierListManager.createTierList(name);
-        tierManager.createUnrankedTier(tierList.getId(), "unranked", "#7A7A7A"); // TODO: Use constants for these
+        tierManager.systemCreateTier(tierList.getId(), "unranked", "#7A7A7A", true); // TODO: Use constants for these
         return tierList;
     }
 

@@ -1,6 +1,7 @@
 package app.TierListMakerUltimate.business.validation;
 
 import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.models.Tier;
 
 public class TierValidator {
     public static final int MAX_LABEL_LENGTH = 60;
@@ -27,9 +28,20 @@ public class TierValidator {
         }
     }
 
-    public void validateTier(String label, String color, boolean isUnranked) {
+    public void validateCreateTier(String label, String color) {
         validateLabel(label);
         validateColor(color);
+    }
+
+    public void validateRemoveTier(int tierId) {
+        validateTierId(tierId);
+    }
+
+    public void validateUpdateTier(Tier tier) {
+        validateTierId(tier.getId());
+        validateLabel(tier.getName());
+        validateColor(tier.getColor());
+        validateWritePermission(tier.isUnranked());
     }
 
 
