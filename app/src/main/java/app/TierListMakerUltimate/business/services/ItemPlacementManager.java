@@ -15,14 +15,14 @@ public class ItemPlacementManager implements IItemPlacementManager {
 
     public ItemPlacementManager(TierItemPersistence itemStorage, ItemValidator validator) throws InitializationException {
         if (itemStorage == null || validator == null) {
-            throw new InitializationException("TierItemPersistence and ItemValidator cannot be null");
+            throw new InitializationException("Managers cannot be null");
         }
         this.itemStorage = itemStorage;
         this.validator = validator;
     }
 
     @Override
-    public TierItem createItem(int localImagePath, int tierId, String description) throws ValidationException {
+    public TierItem createItem(String localImagePath, int tierId, String description) throws ValidationException {
         validator.validateCreateItem(localImagePath, tierId, description);
         TierItem newTierItem = new TierItem(localImagePath, description, tierId);
         return itemStorage.insertItem(tierId, newTierItem);

@@ -26,6 +26,8 @@
         </activity>
 
         <activity android:name="app.TierListMakerUltimate.presentation.MainActivity" />
+        <activity android:name="app.TierListMakerUltimate.presentation.TemplateBrowserActivity" />
+        <activity android:name="app.TierListMakerUltimate.presentation.TierListActivity" />
 
     </application>
 

@@ -7,7 +7,7 @@ import app.TierListMakerUltimate.models.TierItem;
 import java.util.List;
 
 public interface IItemPlacementManager {
-    TierItem createItem(int localImagePath, int tierId, String description) throws ValidationException;
+    TierItem createItem(String localImagePath, int tierId, String description) throws ValidationException;
 
     TierItem moveItemToTier(int itemId, int targetTierId) throws ValidationException, NotFoundException;
 

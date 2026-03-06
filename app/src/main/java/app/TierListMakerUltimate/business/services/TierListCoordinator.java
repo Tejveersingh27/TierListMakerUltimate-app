@@ -2,12 +2,15 @@ package app.TierListMakerUltimate.business.services;
 
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
+import java.io.InputStream;
 import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
+import app.TierListMakerUltimate.business.exception.PersistenceException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
+import app.TierListMakerUltimate.business.constants.DefaultTiers;
 import app.TierListMakerUltimate.models.TierList;
 
 public class TierListCoordinator implements ITierListCoordinator {
@@ -23,15 +26,29 @@ public class TierListCoordinator implements ITierListCoordinator {
     }
 
     @Override
-    public TierList addTierList(String name) throws ValidationException {
-        TierList tierList = tierListManager.createTierList(name);
-        tierManager.createTier(tierList.getId(), "unranked", "#7A7A7A", true);
+    public TierList addTierList(String name, String thumbnailPath) throws ValidationException {
+        TierList tierList = tierListManager.createTierList(name, thumbnailPath);
+        createDefaultTiers(tierList.getId());
         return tierList;
+    }
+
+    public TierList addTierList(String name, String thumbnailPath, InputStream thumbnailData) throws ValidationException, PersistenceException {
+        TierList tierList = tierListManager.createTierList(name, thumbnailPath, thumbnailData);
+        createDefaultTiers(tierList.getId());
+        return tierList;
+    }
+
+
+    private void createDefaultTiers(int tierListId) {
+        for (DefaultTiers tier : DefaultTiers.values()) {
+            tierManager.createTier(tierListId, tier.label, tier.color, tier.isUnranked);
+        }
     }
 
     @Override
     public void removeTierList(int tierListId) throws ValidationException, NotFoundException {
         tierListManager.removeTierList(tierListId);
+        // TODO: Remove all tiers/items in this tier list
     }
 
     @Override

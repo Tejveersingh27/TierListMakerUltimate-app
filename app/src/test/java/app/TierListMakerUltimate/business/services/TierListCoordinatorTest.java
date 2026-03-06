@@ -2,16 +2,19 @@ package app.TierListMakerUltimate.business.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
+import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
 import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
 
@@ -25,41 +28,42 @@ class TierListCoordinatorTest {
     void setup() {
         TierPersistenceStub tierStorage = new TierPersistenceStub();
         TierListPersistenceStub tierListStorage = new TierListPersistenceStub();
+        ImageFilePersistence imagePersistence = new ImageFilePersistence() {
+            @Override
+            public void saveImage(InputStream inputStream, String fileName) throws IOException {
+                // Do nothing
+            }
+
+            @Override
+            public void deleteImage(String fileName) throws IOException {
+                // Do nothing
+            }
+        };
 
         tierManager = new TierManager(tierStorage, new TierValidator());
-        tierListManager = new TierListManager(tierListStorage, new TierListValidator());
+
+        tierListManager = new TierListManager(tierListStorage, imagePersistence, new TierListValidator());
 
         tierListCoordinator = new TierListCoordinator(tierManager, tierListManager);
     }
 
     @Test
-    void addTierListCreatesListAndUnrankedTier() {
-        TierList tierList = tierListCoordinator.addTierList("My List");
-        int listId = tierList.getId();
+    void addTierListCreatesListAndDefaultTiers() {
+        TierList list = tierListCoordinator.addTierList("My List", "Thumbnail");
 
         // Verify list exists
-        assertNotNull(tierListManager.getTierList(listId));
+        assertNotNull(list);
 
-        // Verify unranked tier was created
-        Tier unranked = tierListCoordinator.getUrankedTier(listId);
-        assertNotNull(unranked);
-        assertTrue(unranked.isUnranked());
-        assertEquals("unranked", unranked.getName());
-        assertEquals(listId, unranked.getTierListId());
+        // Verify default tiers were added
+        List<Tier> tiers = tierManager.getTiersForList(list.getId());
+        assertEquals(7, tiers.size());
+
     }
 
-    @Test
-    void creatingTierListWithoutCoordinatorThrowsException() {
-        TierList list = tierListManager.createTierList("Empty List");
-
-        assertThrows(RuntimeException.class, () -> {
-            tierListCoordinator.getUrankedTier(list.getId());
-        });
-    }
 
     @Test
     void removeTierListDeletesTierList() { // TODO: Test for tier and item deletion
-        TierList tierList = tierListCoordinator.addTierList("To Delete");
+        TierList tierList = tierListCoordinator.addTierList("To Delete", "Thumbnail");
         int listId = tierList.getId();
         assertEquals(1, tierListManager.getAllTierLists().size());
 

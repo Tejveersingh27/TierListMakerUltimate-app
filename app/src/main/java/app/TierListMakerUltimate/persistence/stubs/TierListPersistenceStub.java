@@ -27,7 +27,7 @@ public class TierListPersistenceStub implements TierListPersistence {
     @Override
     public TierList insertTierList(TierList currentTierList) {
         int id = nextId++;
-        TierList copy = new TierList(id, currentTierList.getName());
+        TierList copy = new TierList(id, currentTierList.getName(), currentTierList.getThumbnailPath());
         tierLists.put(id, copy);
         return copy;
     }

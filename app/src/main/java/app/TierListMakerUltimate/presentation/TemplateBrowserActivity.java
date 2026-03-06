@@ -8,29 +8,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import app.TierListMakerUltimate.R;
-import app.TierListMakerUltimate.business.services.ITierListCoordinator;
-import app.TierListMakerUltimate.business.services.ITierListManager;
-
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
+import app.TierListMakerUltimate.business.services.ITierListCoordinator;
+import app.TierListMakerUltimate.business.services.ItemPlacementManager;
+import app.TierListMakerUltimate.business.services.ITierListManager;
 import app.TierListMakerUltimate.models.TierList;
 
-public class TierListBrowserActivity extends AppCompatActivity implements TierListBrowserAdapter.TierListBrowserItemActionListener {
+public class TemplateBrowserActivity extends AppCompatActivity implements TemplateBrowserAdapter.TemplateBrowserActionListener {
     private RecyclerView recyclerView;
-    private TierListBrowserAdapter adapter;
+    private TemplateBrowserAdapter adapter;
+    private AppImageLoader imageLoader;
 
     private ITierListManager tierListManager;
+    private ITierListCoordinator tierListCoordinator;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tierlist_browser);
+        setContentView(R.layout.activity_template_browser);
 
         TierListMakerUltimate app = (TierListMakerUltimate) getApplication();
         tierListManager = app.getTierListManager();
+        tierListCoordinator = app.getTierListCoordinator();
 
+        imageLoader = new AppImageLoader(this);
         setupRecyclerView();
         setupAddButton();
     }
@@ -39,31 +42,20 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new TierListBrowserAdapter(tierListManager.getAllTierLists(), this);
+        adapter = new TemplateBrowserAdapter(tierListManager.getAllTierLists(), imageLoader, this);
         recyclerView.setAdapter(adapter);
     }
 
     private void setupAddButton() {
         Button createButton = findViewById(R.id.createTierListButton);
         createButton.setOnClickListener(v -> {
-            Intent intent = new Intent(TierListBrowserActivity.this, TemplateBrowserActivity.class);
-            startActivity(intent);
+            // TODO: hook up to tierlist creation screen
         });
-        // TODO: hook up to tierlist creation screen
-        // TODO: creating tier list should happen on the next screen, not this one.
     }
 
 
     @Override
-    public void onEditButtonClick(TierList tierList) {
-        // TODO: hook up to editor with actual tier list
-        Intent intent = new Intent(TierListBrowserActivity.this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onDeleteButtonClick(int position, TierList tierList) {
-        tierListManager.removeTierList(tierList.getId());
-        adapter.removeItem(position);
+    public void onCardClick(TierList tierList) {
+        //TODO: hook up to tierlist creation screen
     }
 }

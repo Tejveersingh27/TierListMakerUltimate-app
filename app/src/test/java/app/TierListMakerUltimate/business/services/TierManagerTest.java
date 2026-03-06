@@ -37,6 +37,7 @@ class TierManagerTest {
         assertFalse(created.isUnranked(), "Normally created tiers should not be unranked");
     }
 
+
     @Test
     void createTierAssignsIdAndStoresCorrectly() {
         Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
@@ -59,7 +60,7 @@ class TierManagerTest {
     void updateTierUpdatesName() {
         Tier created = tierManager.createTier(1, "Old", "#FFFFFF");
         Tier updated = new Tier(created.getId(), created.getTierListId(), "New", created.getColor(), created.isUnranked());
-        
+
         tierManager.updateTier(updated);
 
         assertEquals("New", tierManager.getTier(created.getId()).getName());
@@ -69,7 +70,7 @@ class TierManagerTest {
     void updateTierUpdatesColor() {
         Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
         Tier updated = new Tier(created.getId(), created.getTierListId(), created.getName(), "#000000", created.isUnranked());
-        
+
         tierManager.updateTier(updated);
 
         assertEquals("#000000", tierManager.getTier(created.getId()).getColor());
@@ -80,7 +81,6 @@ class TierManagerTest {
         int id = tierManager.createTier(1, "S Tier", "#FFFFFF").getId();
         tierManager.removeTier(id);
 
-        // Since getTier now throws NotFoundException when missing, we must assert the throw
         assertThrows(NotFoundException.class, () -> tierManager.getTier(id));
     }
 
@@ -120,7 +120,7 @@ class TierManagerTest {
     @Test
     void updateTierThrowsExceptionIfNotFound() {
         Tier nonExistent = new Tier(999, 1, "Ghost", "#000000", false);
-        
+
         assertThrows(NotFoundException.class, () -> tierManager.updateTier(nonExistent));
     }
 }

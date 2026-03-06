@@ -4,19 +4,19 @@ import java.util.Objects;
 
 public class TierItem {
     private int id;
-    private int imagePath;
+    private String imagePath;
     private String description;
     private int tierId;
 
     // For new items
-    public TierItem(int imagePath, String description, int tierId) {
+    public TierItem(String imagePath, String description, int tierId) {
         this.imagePath = imagePath;
         this.description = description;
         this.tierId = tierId;
     }
 
     // For DB load
-    public TierItem(int id, int imagePath, String description, int tierId) {
+    public TierItem(int id, String imagePath, String description, int tierId) {
         this.id = id;
         this.imagePath = imagePath;
         this.description = description;
@@ -27,7 +27,7 @@ public class TierItem {
         return this.id;
     }
 
-    public int getImagePath() {
+    public String getImagePath() {
         return this.imagePath;
     }
 
