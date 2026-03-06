@@ -25,6 +25,8 @@ public class BusinessConstants {
     public static final String ERROR_NAME_TOO_LONG = "Name must be " + MAX_NAME_LENGTH + " characters or less";
     public static final String ERROR_TIER_LIST_ID_REQUIRED = "TierList Id is required";
     public static final String ERROR_TIER_LIST_NOT_FOUND = "TierList not found with ID: ";
+    public static final String ERROR_THUMBNAIL_PATH_REQUIRED = "Valid Thumbnail path is required";
+
 
     // Initialization
     public static final String ERROR_PERSISTENCE_VALIDATOR_NULL = "Persistence and Validator cannot be null";

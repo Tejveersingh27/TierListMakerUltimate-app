@@ -22,9 +22,7 @@ public class TierListValidator {
     }
 
     public void validateTierListName(String name) throws ValidationException {
-        if (name == null || name.trim().isEmpty()) {
-            throw new ValidationException(ERROR_NAME_REQUIRED);
-        }
+        checkString(name, ERROR_NAME_REQUIRED);
         if (name.length() > MAX_NAME_LENGTH) {
             throw new ValidationException(ERROR_NAME_TOO_LONG);
         }
@@ -34,6 +32,16 @@ public class TierListValidator {
     public void validateTierListId(int tierListId) throws ValidationException {
         if (tierListId <= 0) {
             throw new ValidationException(ERROR_TIER_LIST_ID_REQUIRED);
+        }
+    }
+
+    public void validateTierListThumbnail(String thumbnailPath) throws ValidationException {
+        checkString(thumbnailPath, ERROR_THUMBNAIL_PATH_REQUIRED);
+    }
+
+    private void checkString(String string, String errorMessage) throws ValidationException {
+        if (string == null || string.trim().isEmpty()) {
+            throw new ValidationException(errorMessage);
         }
     }
 }
