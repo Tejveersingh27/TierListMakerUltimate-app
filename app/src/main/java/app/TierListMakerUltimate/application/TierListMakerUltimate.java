@@ -16,6 +16,8 @@ import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.persistence.ITierListSeedProvider;
+import app.TierListMakerUltimate.persistence.ImageFilePersistence;
+import app.TierListMakerUltimate.persistence.ImageFilePersistenceReal;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.persistence.TierPersistence;
@@ -31,6 +33,7 @@ public class TierListMakerUltimate extends Application {
     private TierListPersistence tierListStorage;
     private TierPersistence tierStorage;
     private TierItemPersistence itemStorage;
+    private ImageFilePersistence imageStorage;
     private ITierListSeedProvider seedProvider;
 
     // Business logic instances
@@ -53,7 +56,10 @@ public class TierListMakerUltimate extends Application {
             // Connect to real database
         }
 
-        tierListManager = new TierListManager(tierListStorage, new TierListValidator());
+        imageStorage = new ImageFilePersistenceReal(this);
+
+
+        tierListManager = new TierListManager(tierListStorage, imageStorage, new TierListValidator());
         tierManager = new TierManager(tierStorage, new TierValidator());
         itemPlacementManager = new ItemPlacementManager(itemStorage, new ItemValidator());
         tierListCoordinator = new TierListCoordinator(tierManager, tierListManager);

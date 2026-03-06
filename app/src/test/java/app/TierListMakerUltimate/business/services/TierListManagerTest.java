@@ -9,20 +9,39 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.models.TierList;
+import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
 
 public class TierListManagerTest {
     private TierListPersistence persistence;
+    private ImageFilePersistence imagePersistence;
     private TierListManager manager;
 
     @BeforeEach
     void setup() {
         persistence = new TierListPersistenceStub();
-        manager = new TierListManager(persistence, new TierListValidator());
+
+        // Mock the ImageFilePersistence
+        imagePersistence = new ImageFilePersistence() {
+            @Override
+            public void saveImage(InputStream inputStream, String fileName) throws IOException {
+                // Do nothing
+            }
+
+            @Override
+            public void deleteImage(String fileName) throws IOException {
+                // Do nothing
+            }
+        };
+
+        manager = new TierListManager(persistence, imagePersistence, new TierListValidator());
     }
 
     @Test

@@ -2,31 +2,46 @@ package app.TierListMakerUltimate.business.services;
 
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
+import app.TierListMakerUltimate.business.exception.PersistenceException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 
 public class TierListManager implements ITierListManager {
     private final TierListPersistence tierListStorage;
+    private final ImageFilePersistence imageFilePersistence;
     private final TierListValidator validator;
 
-    public TierListManager(TierListPersistence tierListStorage, TierListValidator validator) throws InitializationException {
-        if (tierListStorage == null || validator == null) {
+    public TierListManager(TierListPersistence tierListStorage, ImageFilePersistence imageFilePersistence, TierListValidator validator) throws InitializationException {
+        if (tierListStorage == null || imageFilePersistence == null || validator == null) {
             throw new InitializationException(ERROR_PERSISTENCE_VALIDATOR_NULL);
         }
         this.tierListStorage = tierListStorage;
+        this.imageFilePersistence = imageFilePersistence;
         this.validator = validator;
     }
 
     @Override
-    public TierList createTierList(String name, String thumbnailImagePath) throws ValidationException {
+    public TierList createTierList(String name, String thumbnailPath, InputStream thumbnailData) throws ValidationException {
+        try {
+            imageFilePersistence.saveImage(thumbnailData, thumbnailPath);
+            return createTierList(name, thumbnailPath);
+        } catch (IOException ioe) {
+            throw new PersistenceException(ERROR_STORING_IMAGE);
+        }
+    }
+
+    public TierList createTierList(String name, String thumbnailPath) throws ValidationException {
         validator.validateCreateTierList(name);
-        TierList newList = new TierList(name, thumbnailImagePath);
+        TierList newList = new TierList(name, thumbnailPath);
         return tierListStorage.insertTierList(newList);
     }
 

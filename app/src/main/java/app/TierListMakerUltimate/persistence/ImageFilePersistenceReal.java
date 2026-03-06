@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.persistence.stubs;
+package app.TierListMakerUltimate.persistence;
 
 import android.content.Context;
 
@@ -6,12 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import app.TierListMakerUltimate.persistence.ImageFilePersistence;
-
-public class ImageFilePersistenceStub implements ImageFilePersistence {
+public class ImageFilePersistenceReal implements ImageFilePersistence {
     private Context context;
 
-    public ImageFilePersistenceStub(Context context) {
+    public ImageFilePersistenceReal(Context context) {
         this.context = context;
     }
 

@@ -2,10 +2,12 @@ package app.TierListMakerUltimate.business.services;
 
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
+import java.io.InputStream;
 import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
+import app.TierListMakerUltimate.business.exception.PersistenceException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
@@ -24,11 +26,18 @@ public class TierListCoordinator implements ITierListCoordinator {
     }
 
     @Override
-    public TierList addTierList(String name, String thumbnailImagePath) throws ValidationException {
-        TierList tierList = tierListManager.createTierList(name, thumbnailImagePath);
+    public TierList addTierList(String name, String thumbnailPath) throws ValidationException {
+        TierList tierList = tierListManager.createTierList(name, thumbnailPath);
         createDefaultTiers(tierList.getId());
         return tierList;
     }
+
+    public TierList addTierList(String name, String thumbnailPath, InputStream thumbnailData) throws ValidationException, PersistenceException {
+        TierList tierList = tierListManager.createTierList(name, thumbnailPath, thumbnailData);
+        createDefaultTiers(tierList.getId());
+        return tierList;
+    }
+
 
     private void createDefaultTiers(int tierListId) {
         for (DefaultTiers tier : DefaultTiers.values()) {
