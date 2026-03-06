@@ -53,7 +53,7 @@ public class TierListMakerUltimate extends Application {
             itemStorage = new TierItemPersistenceStub();
             seedProvider = new SystemTemplateProvider();
         } else {
-            // Connect to real database
+            // TODO: Connect to real database
         }
 
         imageStorage = new ImageFilePersistenceReal(this);
@@ -83,11 +83,7 @@ public class TierListMakerUltimate extends Application {
     public ITierListCoordinator getTierListCoordinator() {
         return tierListCoordinator;
     }
-
-    public ISystemTemplateCoordinator getSystemTemplateCoordinator() {
-        return systemTemplateCoordinator;
-    }
-
+    
 
     private boolean isTestEnvironment() {
         return true; // TODO: Need to add an environment variable for this

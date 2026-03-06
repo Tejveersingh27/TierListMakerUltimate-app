@@ -2,11 +2,11 @@ package app.TierListMakerUltimate.models;
 
 public class SystemTemplateItem {
     private String name;
-    private String imagePath;
+    private String thumbnailPath;
 
-    public SystemTemplateItem(String name, String imagePath) {
+    public SystemTemplateItem(String name, String thumbnailPath) {
         this.name = name;
-        this.imagePath = imagePath;
+        this.thumbnailPath = thumbnailPath;
     }
 
     public String getName() {
@@ -14,6 +14,6 @@ public class SystemTemplateItem {
     }
 
     public String getImagePath() {
-        return imagePath;
+        return thumbnailPath;
     }
 }

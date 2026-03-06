@@ -18,6 +18,7 @@ import app.TierListMakerUltimate.models.TierList;
 public class TemplateBrowserActivity extends AppCompatActivity implements TemplateBrowserAdapter.TemplateBrowserActionListener {
     private RecyclerView recyclerView;
     private TemplateBrowserAdapter adapter;
+    private AppImageLoader imageLoader;
 
     private ITierListManager tierListManager;
     private ITierListCoordinator tierListCoordinator;
@@ -32,7 +33,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
         tierListManager = app.getTierListManager();
         tierListCoordinator = app.getTierListCoordinator();
 
-
+        imageLoader = new AppImageLoader(this);
         setupRecyclerView();
         setupAddButton();
     }
@@ -41,7 +42,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new TemplateBrowserAdapter(tierListManager.getAllTierLists(), this);
+        adapter = new TemplateBrowserAdapter(tierListManager.getAllTierLists(), imageLoader, this);
         recyclerView.setAdapter(adapter);
     }
 

@@ -21,7 +21,6 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     private TierListBrowserAdapter adapter;
 
     private ITierListManager tierListManager;
-    private ITierListCoordinator tierListCoordinator;
 
 
     @Override
@@ -31,7 +30,6 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
 
         TierListMakerUltimate app = (TierListMakerUltimate) getApplication();
         tierListManager = app.getTierListManager();
-        tierListCoordinator = app.getTierListCoordinator();
 
         setupRecyclerView();
         setupAddButton();
@@ -48,8 +46,6 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     private void setupAddButton() {
         Button createButton = findViewById(R.id.createTierListButton);
         createButton.setOnClickListener(v -> {
-            // TierList createdTierList = tierListCoordinator.addTierList("Untitled");
-            // adapter.addItem(createdTierList);
             Intent intent = new Intent(TierListBrowserActivity.this, TemplateBrowserActivity.class);
             startActivity(intent);
         });

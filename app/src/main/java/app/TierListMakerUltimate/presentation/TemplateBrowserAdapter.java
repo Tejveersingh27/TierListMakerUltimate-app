@@ -3,7 +3,6 @@ package app.TierListMakerUltimate.presentation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,9 +19,12 @@ import app.TierListMakerUltimate.models.TierList;
 public class TemplateBrowserAdapter extends RecyclerView.Adapter<TemplateBrowserAdapter.TemplateBrowserViewHolder> {
     private final List<TierList> tierLists;
     private final TemplateBrowserActionListener listener;
+    private final AppImageLoader imageLoader;
 
-    public TemplateBrowserAdapter(List<TierList> tierLists, TemplateBrowserActionListener listener) {
+
+    public TemplateBrowserAdapter(List<TierList> tierLists, AppImageLoader imageLoader, TemplateBrowserActionListener listener) {
         this.tierLists = tierLists;
+        this.imageLoader = imageLoader;
         this.listener = listener;
     }
 
@@ -38,18 +40,13 @@ public class TemplateBrowserAdapter extends RecyclerView.Adapter<TemplateBrowser
     public void onBindViewHolder(@NonNull TemplateBrowserViewHolder holder, int position) {
         TierList tierList = tierLists.get(position);
         holder.tierListName.setText(tierList.getName());
-        holder.cardThumbnail.setImageResource(R.drawable.testimage);
+        imageLoader.load(tierList.getThumbnailPath(), holder.cardThumbnail);
         holder.cardButton.setOnClickListener(v -> listener.onCardClick(tierList));
     }
 
     @Override
     public int getItemCount() {
         return tierLists.size();
-    }
-
-
-    private void setImage(TierList tierList) {
-        // TODO
     }
 
     public static class TemplateBrowserViewHolder extends RecyclerView.ViewHolder {
@@ -67,8 +64,5 @@ public class TemplateBrowserAdapter extends RecyclerView.Adapter<TemplateBrowser
 
     public interface TemplateBrowserActionListener {
         void onCardClick(TierList tierList);
-
     }
-
-
 }

@@ -24,7 +24,7 @@ public class TierList {
         this.thumbnailPath = thumbnailPath;
     }
 
-    public String getThumbnailImagePath() {
+    public String getThumbnailPath() {
         return this.thumbnailPath;
     }
 

@@ -32,16 +32,16 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     // Variables
-    private static final String TAG = "epic_games";     // Used for debugging
-
-    private TierListManager activeList;
-    private TierManager tierManager;
-    private ItemPlacementManager placementManager;
-
-    // Only using 1 tier list for iteration 1
-    private static final int TIER_LIST_ID = 1;
-
-    private int unplacedItemsId;
+//    private static final String TAG = "epic_games";     // Used for debugging
+//
+//    private TierListManager activeList;
+//    private TierManager tierManager;
+//    private ItemPlacementManager placementManager;
+//
+//    // Only using 1 tier list for iteration 1
+//    private static final int TIER_LIST_ID = 1;
+//
+//    private int unplacedItemsId;
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
