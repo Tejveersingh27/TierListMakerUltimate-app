@@ -26,7 +26,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tierlist_browser);
+        setContentView(R.layout.activity_template_browser);
 
         TierListMakerUltimate app = (TierListMakerUltimate) getApplication();
         tierListManager = app.getTierListManager();

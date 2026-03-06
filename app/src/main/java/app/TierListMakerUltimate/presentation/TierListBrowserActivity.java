@@ -16,7 +16,7 @@ import app.TierListMakerUltimate.business.services.ITierListManager;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.models.TierList;
 
-public class TierListBrowserActivity extends AppCompatActivity implements TierListBrowserAdapter.TierListBrowserActionListener {
+public class TierListBrowserActivity extends AppCompatActivity implements TierListBrowserAdapter.TierListBrowserItemActionListener {
     private RecyclerView recyclerView;
     private TierListBrowserAdapter adapter;
 

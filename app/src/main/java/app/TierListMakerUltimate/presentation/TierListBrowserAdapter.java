@@ -1,10 +1,8 @@
 package app.TierListMakerUltimate.presentation;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -18,9 +16,9 @@ import app.TierListMakerUltimate.models.TierList;
 
 public class TierListBrowserAdapter extends RecyclerView.Adapter<TierListBrowserAdapter.TierListBrowserViewHolder> {
     private final List<TierList> tierLists;
-    private final TierListBrowserActionListener listener;
+    private final TierListBrowserItemActionListener listener;
 
-    public TierListBrowserAdapter(List<TierList> tierLists, TierListBrowserActionListener listener) {
+    public TierListBrowserAdapter(List<TierList> tierLists, TierListBrowserItemActionListener listener) {
         this.tierLists = tierLists;
         this.listener = listener;
     }
@@ -78,7 +76,7 @@ public class TierListBrowserAdapter extends RecyclerView.Adapter<TierListBrowser
         }
     }
 
-    public interface TierListBrowserActionListener {
+    public interface TierListBrowserItemActionListener {
         void onEditButtonClick(TierList tierList);
 
         void onDeleteButtonClick(int position, TierList tierList);

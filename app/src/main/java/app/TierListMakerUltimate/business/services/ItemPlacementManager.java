@@ -15,7 +15,7 @@ public class ItemPlacementManager implements IItemPlacementManager {
 
     public ItemPlacementManager(TierItemPersistence itemStorage, ItemValidator validator) throws InitializationException {
         if (itemStorage == null || validator == null) {
-            throw new InitializationException("TierItemPersistence and ItemValidator cannot be null");
+            throw new InitializationException("Managers cannot be null");
         }
         this.itemStorage = itemStorage;
         this.validator = validator;
