@@ -5,7 +5,7 @@ import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
 
 public interface ITierListCoordinator {
-    TierList addTierList(String name) throws ValidationException;
+    TierList addTierList(String name, String thumbnailImagePath) throws ValidationException;
 
     void removeTierList(int tierListId) throws ValidationException;
 

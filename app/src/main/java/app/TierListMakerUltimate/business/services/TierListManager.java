@@ -24,9 +24,9 @@ public class TierListManager implements ITierListManager {
     }
 
     @Override
-    public TierList createTierList(String name) throws ValidationException {
+    public TierList createTierList(String name, String thumbnailImagePath) throws ValidationException {
         validator.validateCreateTierList(name);
-        TierList newList = new TierList(name);
+        TierList newList = new TierList(name, thumbnailImagePath);
         return tierListStorage.insertTierList(newList);
     }
 

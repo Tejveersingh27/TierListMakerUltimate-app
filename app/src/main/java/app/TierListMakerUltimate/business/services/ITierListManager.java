@@ -7,7 +7,7 @@ import app.TierListMakerUltimate.models.TierList;
 import java.util.List;
 
 public interface ITierListManager {
-    TierList createTierList(String name) throws ValidationException;
+    TierList createTierList(String name, String thumbnailImagePath) throws ValidationException;
 
     TierList getTierList(int tierListId) throws ValidationException, NotFoundException;
 

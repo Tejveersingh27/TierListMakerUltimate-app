@@ -34,7 +34,7 @@ class TierListCoordinatorTest {
 
     @Test
     void addTierListCreatesListAndDefaultTiers() {
-        TierList list = tierListCoordinator.addTierList("My List");
+        TierList list = tierListCoordinator.addTierList("My List", "Thumbnail");
 
         // Verify list exists
         assertNotNull(list);
@@ -48,7 +48,7 @@ class TierListCoordinatorTest {
 
     @Test
     void removeTierListDeletesTierList() { // TODO: Test for tier and item deletion
-        TierList tierList = tierListCoordinator.addTierList("To Delete");
+        TierList tierList = tierListCoordinator.addTierList("To Delete", "Thumbnail");
         int listId = tierList.getId();
         assertEquals(1, tierListManager.getAllTierLists().size());
 

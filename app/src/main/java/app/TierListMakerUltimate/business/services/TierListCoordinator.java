@@ -24,8 +24,8 @@ public class TierListCoordinator implements ITierListCoordinator {
     }
 
     @Override
-    public TierList addTierList(String name) throws ValidationException {
-        TierList tierList = tierListManager.createTierList(name);
+    public TierList addTierList(String name, String thumbnailImagePath) throws ValidationException {
+        TierList tierList = tierListManager.createTierList(name, thumbnailImagePath);
         createDefaultTiers(tierList.getId());
         return tierList;
     }

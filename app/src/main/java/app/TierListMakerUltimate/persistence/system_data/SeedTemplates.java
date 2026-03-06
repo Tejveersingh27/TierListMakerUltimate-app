@@ -23,6 +23,10 @@ public class SeedTemplates {
     );
 
     public static final List<SystemTemplate> SYSTEM_TEMPLATES = List.of(
-            new SystemTemplate("Pokemon Starters", POKEMON_STARTERS_ITEMS)
+            new SystemTemplate(
+                    "Pokemon Starters",
+                    "android.resource://app.TierListMakerUltimate/drawable/pokemon_bulbasaur",
+                    POKEMON_STARTERS_ITEMS
+            )
     );
 }
