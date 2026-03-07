@@ -41,7 +41,7 @@ public class TemplateBrowserAdapter extends RecyclerView.Adapter<TemplateBrowser
     public void onBindViewHolder(@NonNull TemplateBrowserViewHolder holder, int position) {
         TierList tierList = tierLists.get(position);
         holder.tierListName.setText(tierList.getName());
-        imageLoader.load(tierList.getThumbnailPath(), holder.cardThumbnail);
+        imageLoader.loadImage(tierList.getThumbnailPath(), holder.cardThumbnail);
         holder.cardButton.setOnClickListener(v -> listener.onCardClick(tierList));
     }
 

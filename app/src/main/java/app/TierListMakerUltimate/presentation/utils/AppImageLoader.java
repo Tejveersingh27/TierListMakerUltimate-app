@@ -13,7 +13,7 @@ public class AppImageLoader {
         this.context = context;
     }
 
-    public void load(String uri, ImageView imageView) {
+    public void loadImage(String uri, ImageView imageView) {
         if (uri == null || uri.isEmpty()) {
             return;
         }

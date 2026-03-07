@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.InputStream;
+
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
@@ -16,7 +18,7 @@ import app.TierListMakerUltimate.presentation.adapters.TemplateBrowserAdapter;
 import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.AppImageLoader;
 
-public class TemplateBrowserActivity extends AppCompatActivity implements TemplateBrowserAdapter.TemplateBrowserActionListener {
+public class TemplateBrowserActivity extends AppCompatActivity implements TemplateBrowserAdapter.TemplateBrowserActionListener, TierListCreationFragment.TierListCreationFragmentActionListener {
     private RecyclerView recyclerView;
     private TemplateBrowserAdapter adapter;
     private AppImageLoader imageLoader;
@@ -49,6 +51,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
 
     private void showFragment() {
         TierListCreationFragment fragment = new TierListCreationFragment();
+        fragment.setActionListener(this);
         fragment.show(getSupportFragmentManager(), "TierListCreationFragment");
     }
 
@@ -63,5 +66,10 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
     @Override
     public void onCardClick(TierList tierList) {
         //TODO: hook up to tierlist creation screen
+    }
+
+    @Override
+    public void onTierListCreate(String name, InputStream imageData) {
+
     }
 }
