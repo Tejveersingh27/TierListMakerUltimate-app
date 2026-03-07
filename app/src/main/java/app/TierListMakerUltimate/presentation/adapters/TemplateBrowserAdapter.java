@@ -50,6 +50,12 @@ public class TemplateBrowserAdapter extends RecyclerView.Adapter<TemplateBrowser
         return tierLists.size();
     }
 
+    public void updateData(List<TierList> newList) {
+        this.tierLists.clear();
+        this.tierLists.addAll(newList);
+        notifyDataSetChanged();
+    }
+
     public static class TemplateBrowserViewHolder extends RecyclerView.ViewHolder {
         TextView tierListName;
         MaterialCardView cardButton;

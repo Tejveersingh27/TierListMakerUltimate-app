@@ -38,6 +38,12 @@ public class TierListBrowserAdapter extends RecyclerView.Adapter<TierListBrowser
         notifyItemChanged(position);
     }
 
+    public void updateData(List<TierList> newList) {
+        this.tierLists.clear();
+        this.tierLists.addAll(newList);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public TierListBrowserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
