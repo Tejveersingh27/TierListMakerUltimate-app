@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.presentation;
+package app.TierListMakerUltimate.presentation.utils;
 
 import android.content.Context;
 import android.net.Uri;

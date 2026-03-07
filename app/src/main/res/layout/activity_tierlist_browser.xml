@@ -35,12 +35,10 @@
 
     <Button
         android:id="@+id/createTierListButton"
+        style="@style/Widget.App.Button.Primary"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_margin="17dp"
         android:text="@string/create_tier_list_button"
-        android:textSize="18sp"
-        app:backgroundTint="#E90053"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

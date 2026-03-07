@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.presentation;
+package app.TierListMakerUltimate.presentation.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,7 @@ import java.util.List;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.models.TierList;
+import app.TierListMakerUltimate.presentation.utils.AppImageLoader;
 
 public class TemplateBrowserAdapter extends RecyclerView.Adapter<TemplateBrowserAdapter.TemplateBrowserViewHolder> {
     private final List<TierList> tierLists;
