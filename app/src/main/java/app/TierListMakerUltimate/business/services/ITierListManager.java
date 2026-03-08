@@ -20,5 +20,7 @@ public interface ITierListManager {
 
     void updateTierList(TierList updatedTierList) throws ValidationException, NotFoundException;
 
+    void updateTierList(TierList updatedTierList, InputStream inputStream, String extension) throws ValidationException, NotFoundException, PersistenceException;
+
     List<TierList> getAllTierLists() throws ValidationException;
 }

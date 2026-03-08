@@ -12,7 +12,8 @@ import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
-import app.TierListMakerUltimate.business.constants.BusinessConstants;
+
+import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
 
 public class ItemPlacementManager implements IItemPlacementManager {
@@ -22,7 +23,7 @@ public class ItemPlacementManager implements IItemPlacementManager {
 
     public ItemPlacementManager(TierItemPersistence itemStorage, ImageFilePersistence imageFilePersistence, ItemValidator validator) throws InitializationException {
         if (itemStorage == null || imageFilePersistence == null || validator == null) {
-            throw new InitializationException(BusinessConstants.ERROR_DEPENDENCIES_NULL);
+            throw new InitializationException(ERROR_DEPENDENCIES_NULL);
         }
         this.imageFilePersistence = imageFilePersistence;
         this.itemStorage = itemStorage;
@@ -31,10 +32,8 @@ public class ItemPlacementManager implements IItemPlacementManager {
 
     @Override
     public TierItem createItem(int tierId, String description, InputStream inputStream, String extension) throws ValidationException, PersistenceException {
-        validator.validateCreateItem(tierId, description);
         String imagePath = storeImage(inputStream, extension);
-        TierItem newTierItem = new TierItem(imagePath, description, tierId);
-        return itemStorage.insertItem(tierId, newTierItem);
+        return createItem(imagePath, tierId, description);
     }
 
     @Override
@@ -72,7 +71,7 @@ public class ItemPlacementManager implements IItemPlacementManager {
         try {
             return imageFilePersistence.saveImage(inputStream, extension);
         } catch (IOException ioe) {
-            throw new PersistenceException(BusinessConstants.ERROR_STORING_IMAGE);
+            throw new PersistenceException(ERROR_STORING_IMAGE);
         }
     }
 
@@ -92,7 +91,7 @@ public class ItemPlacementManager implements IItemPlacementManager {
     private TierItem getVerifiedItem(int itemId) throws NotFoundException {
         TierItem item = itemStorage.getItem(itemId);
         if (item == null) {
-            throw new NotFoundException(BusinessConstants.ERROR_ITEM_NOT_FOUND + itemId);
+            throw new NotFoundException(ERROR_ITEM_NOT_FOUND + itemId);
         }
         return item;
     }
