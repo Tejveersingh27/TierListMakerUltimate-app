@@ -2,7 +2,6 @@ package app.TierListMakerUltimate.business.services;
 
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class TierListCoordinator implements ITierListCoordinator {
 
     public TierListCoordinator(ITierManager tierManager, ITierListManager tierListManager) throws InitializationException {
         if (tierManager == null || tierListManager == null) {
-            throw new InitializationException(ERROR_MANAGERS_NULL);
+            throw new InitializationException(ERROR_DEPENDENCIES_NULL);
         }
         this.tierManager = tierManager;
         this.tierListManager = tierListManager;

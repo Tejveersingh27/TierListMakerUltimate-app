@@ -2,7 +2,6 @@ package app.TierListMakerUltimate.business.services;
 
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -23,7 +22,7 @@ public class TierListManager implements ITierListManager {
 
     public TierListManager(TierListPersistence tierListStorage, ImageFilePersistence imageFilePersistence, TierListValidator validator) throws InitializationException {
         if (tierListStorage == null || imageFilePersistence == null || validator == null) {
-            throw new InitializationException(ERROR_PERSISTENCE_VALIDATOR_NULL);
+            throw new InitializationException(ERROR_DEPENDENCIES_NULL);
         }
         this.tierListStorage = tierListStorage;
         this.imageFilePersistence = imageFilePersistence;

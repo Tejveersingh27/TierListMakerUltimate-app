@@ -17,7 +17,7 @@ public class TierManager implements ITierManager {
 
     public TierManager(TierPersistence tierStorage, TierValidator validator) throws InitializationException {
         if (tierStorage == null || validator == null) {
-            throw new InitializationException(ERROR_PERSISTENCE_VALIDATOR_NULL);
+            throw new InitializationException(ERROR_DEPENDENCIES_NULL);
         }
         this.tierStorage = tierStorage;
         this.validator = validator;

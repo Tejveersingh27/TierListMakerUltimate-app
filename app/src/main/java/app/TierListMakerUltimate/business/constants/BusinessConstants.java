@@ -32,6 +32,5 @@ public class BusinessConstants {
 
 
     // Initialization
-    public static final String ERROR_PERSISTENCE_VALIDATOR_NULL = "Persistence and Validator cannot be null";
-    public static final String ERROR_MANAGERS_NULL = "Managers cannot be null";
+    public static final String ERROR_DEPENDENCIES_NULL = "Dependencies cannot be null";
 }

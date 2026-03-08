@@ -7,8 +7,7 @@ import app.TierListMakerUltimate.models.TierItem;
 
 public class ItemValidator {
 
-    public void validateCreateItem(String localImagePath, int tierId, String description) throws ValidationException {
-        validateImagePath(localImagePath);
+    public void validateCreateItem(int tierId, String description) throws ValidationException {
         validateTierId(tierId);
         validateDescription(description);
     }
@@ -16,7 +15,6 @@ public class ItemValidator {
     public void validateUpdateItem(TierItem updatedItem) throws ValidationException {
         validateItemId(updatedItem.getId());
         validateTierId(updatedItem.getTierId());
-        validateImagePath(updatedItem.getImagePath());
         validateDescription(updatedItem.getDescription());
     }
 
@@ -24,10 +22,6 @@ public class ItemValidator {
         validateItemId(itemId);
     }
 
-
-    public void validateImagePath(String localImagePath) throws ValidationException {
-        // TODO: Implement image path validation
-    }
 
     public void validateTierId(int tierId) throws ValidationException {
         if (tierId <= 0) {
