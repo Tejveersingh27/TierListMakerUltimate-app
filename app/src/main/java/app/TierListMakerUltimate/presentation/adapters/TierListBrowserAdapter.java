@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.presentation;
+package app.TierListMakerUltimate.presentation.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +36,12 @@ public class TierListBrowserAdapter extends RecyclerView.Adapter<TierListBrowser
     public void updateItem(int position, TierList updated) {
         tierLists.set(position, updated);
         notifyItemChanged(position);
+    }
+
+    public void updateData(List<TierList> newList) {
+        this.tierLists.clear();
+        this.tierLists.addAll(newList);
+        notifyDataSetChanged();
     }
 
     @NonNull

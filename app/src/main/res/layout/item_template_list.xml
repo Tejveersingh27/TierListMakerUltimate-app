@@ -33,7 +33,6 @@
             android:layout_margin="16dp"
             android:ellipsize="end"
             android:maxLines="3"
-            android:text="TestTestTest"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"

@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.presentation;
+package app.TierListMakerUltimate.presentation.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,7 @@ import java.util.List;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.models.TierList;
+import app.TierListMakerUltimate.presentation.utils.AppImageLoader;
 
 public class TemplateBrowserAdapter extends RecyclerView.Adapter<TemplateBrowserAdapter.TemplateBrowserViewHolder> {
     private final List<TierList> tierLists;
@@ -40,13 +41,19 @@ public class TemplateBrowserAdapter extends RecyclerView.Adapter<TemplateBrowser
     public void onBindViewHolder(@NonNull TemplateBrowserViewHolder holder, int position) {
         TierList tierList = tierLists.get(position);
         holder.tierListName.setText(tierList.getName());
-        imageLoader.load(tierList.getThumbnailPath(), holder.cardThumbnail);
+        imageLoader.loadImage(tierList.getThumbnailPath(), holder.cardThumbnail);
         holder.cardButton.setOnClickListener(v -> listener.onCardClick(tierList));
     }
 
     @Override
     public int getItemCount() {
         return tierLists.size();
+    }
+
+    public void updateData(List<TierList> newList) {
+        this.tierLists.clear();
+        this.tierLists.addAll(newList);
+        notifyDataSetChanged();
     }
 
     public static class TemplateBrowserViewHolder extends RecyclerView.ViewHolder {

@@ -2,6 +2,7 @@ package app.TierListMakerUltimate.business.services;
 
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -26,14 +27,14 @@ public class TierListCoordinator implements ITierListCoordinator {
     }
 
     @Override
-    public TierList addTierList(String name, String thumbnailPath) throws ValidationException {
+    public TierList createTierListWithDefaults(String name, String thumbnailPath) throws ValidationException {
         TierList tierList = tierListManager.createTierList(name, thumbnailPath);
         createDefaultTiers(tierList.getId());
         return tierList;
     }
 
-    public TierList addTierList(String name, String thumbnailPath, InputStream thumbnailData) throws ValidationException, PersistenceException {
-        TierList tierList = tierListManager.createTierList(name, thumbnailPath, thumbnailData);
+    public TierList createTierListWithDefaults(String name, InputStream inputStream, String extension) throws ValidationException, PersistenceException {
+        TierList tierList = tierListManager.createTierList(name, inputStream, extension);
         createDefaultTiers(tierList.getId());
         return tierList;
     }

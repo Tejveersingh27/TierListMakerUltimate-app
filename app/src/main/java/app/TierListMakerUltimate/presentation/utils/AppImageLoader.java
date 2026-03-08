@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.presentation;
+package app.TierListMakerUltimate.presentation.utils;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,7 +13,7 @@ public class AppImageLoader {
         this.context = context;
     }
 
-    public void load(String uri, ImageView imageView) {
+    public void loadImage(String uri, ImageView imageView) {
         if (uri == null || uri.isEmpty()) {
             return;
         }

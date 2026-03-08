@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.presentation;
+package app.TierListMakerUltimate.presentation.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,13 +8,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
 
 import app.TierListMakerUltimate.R;
-import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierListManager;
 
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.models.TierList;
+import app.TierListMakerUltimate.presentation.MainActivity;
+import app.TierListMakerUltimate.presentation.adapters.TierListBrowserAdapter;
 
 public class TierListBrowserActivity extends AppCompatActivity implements TierListBrowserAdapter.TierListBrowserItemActionListener {
     private RecyclerView recyclerView;
@@ -31,6 +33,16 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
         TierListMakerUltimate app = (TierListMakerUltimate) getApplication();
         tierListManager = app.getTierListManager();
 
+        setupViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshList();
+    }
+
+    private void setupViews() {
         setupRecyclerView();
         setupAddButton();
     }
@@ -41,6 +53,13 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
 
         adapter = new TierListBrowserAdapter(tierListManager.getAllTierLists(), this);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void refreshList() {
+        if (adapter != null) {
+            List<TierList> updatedList = tierListManager.getAllTierLists();
+            adapter.updateData(updatedList);
+        }
     }
 
     private void setupAddButton() {
