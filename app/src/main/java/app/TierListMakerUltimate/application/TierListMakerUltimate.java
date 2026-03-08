@@ -17,7 +17,7 @@ import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.persistence.ITierListSeedProvider;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
-import app.TierListMakerUltimate.persistence.ImageFilePersistenceReal;
+import app.TierListMakerUltimate.persistence.AndroidImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.persistence.TierPersistence;
@@ -25,6 +25,8 @@ import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
 import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
 import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
 import app.TierListMakerUltimate.persistence.system_data.SystemTemplateProvider;
+import app.TierListMakerUltimate.persistence.utils.IUUIDGenerator;
+import app.TierListMakerUltimate.persistence.utils.UUIDGenerator;
 
 
 public class TierListMakerUltimate extends Application {
@@ -47,6 +49,8 @@ public class TierListMakerUltimate extends Application {
     public void onCreate() {
         super.onCreate();
 
+        IUUIDGenerator uuidGenerator = new UUIDGenerator();
+
         if (isTestEnvironment()) {
             tierListStorage = new TierListPersistenceStub();
             tierStorage = new TierPersistenceStub();
@@ -56,7 +60,7 @@ public class TierListMakerUltimate extends Application {
             // TODO: Connect to real database
         }
 
-        imageStorage = new ImageFilePersistenceReal(this);
+        imageStorage = new AndroidImageFilePersistence(this, uuidGenerator);
 
 
         tierListManager = new TierListManager(tierListStorage, imageStorage, new TierListValidator());
@@ -83,7 +87,7 @@ public class TierListMakerUltimate extends Application {
     public ITierListCoordinator getTierListCoordinator() {
         return tierListCoordinator;
     }
-    
+
 
     private boolean isTestEnvironment() {
         return true; // TODO: Need to add an environment variable for this

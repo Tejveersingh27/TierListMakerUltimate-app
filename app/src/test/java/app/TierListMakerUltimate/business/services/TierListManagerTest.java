@@ -31,8 +31,8 @@ public class TierListManagerTest {
         // Mock the ImageFilePersistence
         imagePersistence = new ImageFilePersistence() {
             @Override
-            public void saveImage(InputStream inputStream, String fileName) throws IOException {
-                // Do nothing
+            public String saveImage(InputStream inputStream, String fileName) throws IOException {
+                return "test";
             }
 
             @Override

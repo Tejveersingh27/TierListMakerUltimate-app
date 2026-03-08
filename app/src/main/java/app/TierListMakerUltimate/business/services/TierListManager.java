@@ -2,6 +2,7 @@ package app.TierListMakerUltimate.business.services;
 
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -30,9 +31,9 @@ public class TierListManager implements ITierListManager {
     }
 
     @Override
-    public TierList createTierList(String name, String thumbnailPath, InputStream thumbnailData) throws ValidationException {
+    public TierList createTierList(String name, InputStream inputStream, String extension) throws ValidationException {
         try {
-            imageFilePersistence.saveImage(thumbnailData, thumbnailPath);
+            String thumbnailPath = imageFilePersistence.saveImage(inputStream, extension);
             return createTierList(name, thumbnailPath);
         } catch (IOException ioe) {
             throw new PersistenceException(ERROR_STORING_IMAGE);

@@ -8,9 +8,9 @@ import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
 
 public interface ITierListCoordinator {
-    TierList addTierList(String name, String thumbnailPath, InputStream thumbnailData) throws ValidationException, PersistenceException;
+    TierList createTierListWithDefaults(String name, InputStream inputStream, String extension) throws ValidationException, PersistenceException;
 
-    TierList addTierList(String name, String thumbnailPath) throws ValidationException;
+    TierList createTierListWithDefaults(String name, String thumbnailPath) throws ValidationException;
 
     void removeTierList(int tierListId) throws ValidationException;
 

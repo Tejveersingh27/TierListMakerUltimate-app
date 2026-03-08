@@ -30,8 +30,8 @@ class TierListCoordinatorTest {
         TierListPersistenceStub tierListStorage = new TierListPersistenceStub();
         ImageFilePersistence imagePersistence = new ImageFilePersistence() {
             @Override
-            public void saveImage(InputStream inputStream, String fileName) throws IOException {
-                // Do nothing
+            public String saveImage(InputStream inputStream, String fileName) throws IOException {
+                return "test";
             }
 
             @Override
@@ -49,7 +49,7 @@ class TierListCoordinatorTest {
 
     @Test
     void addTierListCreatesListAndDefaultTiers() {
-        TierList list = tierListCoordinator.addTierList("My List", "Thumbnail");
+        TierList list = tierListCoordinator.createTierListWithDefaults("My List", "Thumbnail");
 
         // Verify list exists
         assertNotNull(list);
@@ -63,7 +63,7 @@ class TierListCoordinatorTest {
 
     @Test
     void removeTierListDeletesTierList() { // TODO: Test for tier and item deletion
-        TierList tierList = tierListCoordinator.addTierList("To Delete", "Thumbnail");
+        TierList tierList = tierListCoordinator.createTierListWithDefaults("To Delete", "Thumbnail");
         int listId = tierList.getId();
         assertEquals(1, tierListManager.getAllTierLists().size());
 

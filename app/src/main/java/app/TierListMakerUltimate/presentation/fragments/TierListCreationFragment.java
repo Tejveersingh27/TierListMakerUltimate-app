@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -115,7 +116,8 @@ public class TierListCreationFragment extends BottomSheetDialogFragment {
     private void createTierList(String name) {
         if (listener != null) {
             try (InputStream inputStream = requireContext().getContentResolver().openInputStream(selectImageUri)) {
-                listener.onTierListCreate(name, inputStream);
+                String extension = getFileExtension();
+                listener.onTierListCreate(name, inputStream, extension);
                 dismiss();
             } catch (IOException ioe) {
                 Toast.makeText(getContext(), PresentationConstants.ERROR_LOADING_IMAGE, Toast.LENGTH_SHORT).show();
@@ -123,11 +125,16 @@ public class TierListCreationFragment extends BottomSheetDialogFragment {
         }
     }
 
+    private String getFileExtension() {
+        String mimeType = requireContext().getContentResolver().getType(selectImageUri);
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
+    }
+
     public void setActionListener(TierListCreationFragmentActionListener listener) {
         this.listener = listener;
     }
 
     public interface TierListCreationFragmentActionListener {
-        void onTierListCreate(String name, InputStream imageData);
+        void onTierListCreate(String name, InputStream imageFile, String extension);
     }
 }

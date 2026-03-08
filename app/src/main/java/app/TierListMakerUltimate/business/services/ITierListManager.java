@@ -5,11 +5,12 @@ import app.TierListMakerUltimate.business.exception.PersistenceException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.TierList;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
 public interface ITierListManager {
-    TierList createTierList(String name, String thumbnailPath, InputStream thumbnailData) throws ValidationException, PersistenceException;
+    TierList createTierList(String name, InputStream inputStream, String extension) throws ValidationException, PersistenceException;
 
     TierList createTierList(String name, String thumbnailPath) throws ValidationException;
 

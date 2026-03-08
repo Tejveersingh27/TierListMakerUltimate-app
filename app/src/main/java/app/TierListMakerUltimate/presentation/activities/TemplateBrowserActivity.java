@@ -85,8 +85,8 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
     }
 
     @Override
-    public void onTierListCreate(String name, InputStream imageData) {
-        tierListCoordinator.addTierList(name, "test", imageData);
+    public void onTierListCreate(String name, InputStream inputStream, String extension) {
+        tierListCoordinator.createTierListWithDefaults(name, inputStream, extension);
         refreshList();
     }
 }
