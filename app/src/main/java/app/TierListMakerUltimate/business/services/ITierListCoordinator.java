@@ -17,13 +17,13 @@ public interface ITierListCoordinator {
     /**
      * Creates and returns a new TierList with default tiers and creates a thumbnail.
      */
-    TierList createTierListWithDefaults(String name, InputStream inputStream, String extension) throws ValidationException, PersistenceException;
+    TierList createTierListWithDefaults(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException, PersistenceException;
 
 
     /**
      * Creates and returns a new TierList with default tiers without a creating a thumbnail.
      */
-    TierList createTierListWithDefaults(String name, String thumbnailPath) throws ValidationException;
+    TierList createTierListWithDefaults(String name, String thumbnailPath, boolean isTemplate) throws ValidationException;
 
     /**
      * Removes a TierList and all associated tiers and items.

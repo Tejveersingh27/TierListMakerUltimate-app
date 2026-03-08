@@ -5,7 +5,6 @@ import app.TierListMakerUltimate.business.exception.PersistenceException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.TierList;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -16,12 +15,13 @@ public interface ITierListManager {
     /**
      * Creates a returns new TierList without creating a thumbnail.
      */
-    TierList createTierList(String name, InputStream inputStream, String extension) throws ValidationException, PersistenceException;
+    TierList createTierList(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException;
 
     /**
      * Creates a new TierList with a thumbnail.
      */
-    TierList createTierList(String name, String thumbnailPath) throws ValidationException;
+    TierList createTierList(String name, String thumbnailPath, boolean isTemplate) throws ValidationException;
+
 
     /**
      * Returns an existing TierList.
@@ -47,4 +47,9 @@ public interface ITierListManager {
      * Returns all TierLists.
      */
     List<TierList> getAllTierLists() throws ValidationException;
+
+    /**
+     * Returns all Templates.
+     */
+    List<TierList> getAllTemplates() throws ValidationException;
 }

@@ -14,9 +14,14 @@ public interface TierListPersistence {
     List<TierList> getTierLists();
 
     /**
+     * Returns all template TierLists.
+     */
+    List<TierList> getTemplates();
+
+    /**
      * Returns an existing TierList.
      */
-    TierList getTierListById(int tierListId);
+    TierList getTierList(int tierListId);
 
     /**
      * Saves and returns a new TierList.
@@ -32,5 +37,5 @@ public interface TierListPersistence {
      * Deletes an existing TierList.
      */
     void deleteTierList(int tierListId);
-    
+
 }

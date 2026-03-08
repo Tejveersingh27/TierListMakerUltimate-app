@@ -28,7 +28,7 @@ public class SystemTemplateCoordinator implements ISystemTemplateCoordinator {
     }
 
     private void processSystemTemplate(SystemTemplate template) {
-        TierList tierList = tierListCoordinator.createTierListWithDefaults(template.getName(), template.getThumbnailPath());
+        TierList tierList = tierListCoordinator.createTierListWithDefaults(template.getName(), template.getThumbnailPath(), true);
         Tier unrankedTier = tierListCoordinator.getUrankedTier(tierList.getId());
         for (SystemTemplateItem item : template.getItems()) {
             itemPlacementManager.createItem(item.getImagePath(), unrankedTier.getId(), item.getName());

@@ -26,14 +26,14 @@ public class TierListCoordinator implements ITierListCoordinator {
     }
 
     @Override
-    public TierList createTierListWithDefaults(String name, String thumbnailPath) throws ValidationException {
-        TierList tierList = tierListManager.createTierList(name, thumbnailPath);
+    public TierList createTierListWithDefaults(String name, String thumbnailPath, boolean isTemplate) throws ValidationException {
+        TierList tierList = tierListManager.createTierList(name, thumbnailPath, isTemplate);
         createDefaultTiers(tierList.getId());
         return tierList;
     }
 
-    public TierList createTierListWithDefaults(String name, InputStream inputStream, String extension) throws ValidationException, PersistenceException {
-        TierList tierList = tierListManager.createTierList(name, inputStream, extension);
+    public TierList createTierListWithDefaults(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException, PersistenceException {
+        TierList tierList = tierListManager.createTierList(name, isTemplate, inputStream, extension);
         createDefaultTiers(tierList.getId());
         return tierList;
     }
