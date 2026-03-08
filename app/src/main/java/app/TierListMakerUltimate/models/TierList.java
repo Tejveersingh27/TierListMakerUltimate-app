@@ -10,17 +10,6 @@ public class TierList {
 
 
     // For new tiers
-    public TierList(String name) {
-        this.name = name;
-        this.isTemplate = false;
-    }
-
-    public TierList(String name, String thumbnailPath) {
-        this.name = name;
-        this.thumbnailPath = thumbnailPath;
-        this.isTemplate = false;
-    }
-
     public TierList(String name, String thumbnailPath, boolean isTemplate) {
         this.name = name;
         this.thumbnailPath = thumbnailPath;
