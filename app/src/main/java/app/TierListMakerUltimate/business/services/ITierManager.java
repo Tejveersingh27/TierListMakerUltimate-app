@@ -6,17 +6,38 @@ import app.TierListMakerUltimate.models.Tier;
 
 import java.util.List;
 
+/**
+ * Manages basic Tier processes.
+ */
 public interface ITierManager {
+    /**
+     * Creates and returns a new Tier.
+     */
     Tier createTier(int tierListId, String label, String color) throws ValidationException;
 
-    // Added this overload so the Coordinator can use it via the interface
+    /**
+     * Creates and returns a new Tier.
+     * Mostly for internal (business layer) use.
+     */
     Tier createTier(int tierListId, String label, String color, boolean isUnranked) throws ValidationException;
 
+    /**
+     * Removes an existing Tier.
+     */
     void removeTier(int tierId) throws ValidationException, NotFoundException;
 
+    /**
+     * Returns an existing Tier.
+     */
     Tier getTier(int tierId) throws ValidationException, NotFoundException;
 
+    /**
+     * Updates an existing Tier.
+     */
     void updateTier(Tier updatedTier) throws ValidationException, NotFoundException;
 
+    /**
+     * Returns all tiers for a given tier list.
+     */
     List<Tier> getTiersForList(int tierListId) throws ValidationException;
 }

@@ -17,7 +17,7 @@ public class TierManager implements ITierManager {
 
     public TierManager(TierPersistence tierStorage, TierValidator validator) throws InitializationException {
         if (tierStorage == null || validator == null) {
-            throw new InitializationException(ERROR_PERSISTENCE_VALIDATOR_NULL);
+            throw new InitializationException(ERROR_DEPENDENCIES_NULL);
         }
         this.tierStorage = tierStorage;
         this.validator = validator;
@@ -38,31 +38,29 @@ public class TierManager implements ITierManager {
     @Override
     public void removeTier(int tierId) throws ValidationException, NotFoundException {
         validator.validateRemoveTier(tierId);
-        if (tierStorage.getTier(tierId) == null) {
-            throw new NotFoundException(ERROR_TIER_NOT_FOUND + tierId);
-        }
+        getVerifiedTier(tierId);
         tierStorage.deleteTier(tierId);
     }
 
     @Override
     public Tier getTier(int tierId) throws ValidationException, NotFoundException {
         validator.validateTierId(tierId);
-        Tier tier = tierStorage.getTier(tierId);
-        if (tier == null) {
-            throw new NotFoundException(ERROR_TIER_NOT_FOUND + tierId);
-        }
-        return tier;
+        return getVerifiedTier(tierId);
     }
 
     @Override
     public void updateTier(Tier updatedTier) throws ValidationException, NotFoundException {
         validator.validateUpdateTier(updatedTier);
-
-        if (tierStorage.getTier(updatedTier.getId()) == null) {
-            throw new NotFoundException(ERROR_TIER_NOT_FOUND + updatedTier.getId());
-        }
-
+        getVerifiedTier(updatedTier.getId());
         tierStorage.updateTier(updatedTier);
+    }
+
+    private Tier getVerifiedTier(int tierId) throws NotFoundException {
+        Tier tier = tierStorage.getTier(tierId);
+        if (tier == null) {
+            throw new NotFoundException(ERROR_TIER_NOT_FOUND + tierId);
+        }
+        return tier;
     }
 
     @Override

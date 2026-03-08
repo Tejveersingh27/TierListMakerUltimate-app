@@ -4,7 +4,6 @@ import java.util.List;
 
 
 import app.TierListMakerUltimate.models.SystemTemplate;
-import app.TierListMakerUltimate.persistence.ITierListSeedProvider;
 
 public class SystemTemplateProvider implements ITierListSeedProvider {
 

@@ -9,12 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.models.TierItem;
+import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
 
@@ -22,12 +25,27 @@ public class ItemPlacementManagerTest {
     private TierItemPersistence persistence;
     private ItemValidator validator;
     private ItemPlacementManager manager;
+    private ImageFilePersistence imagePersistence;
+
 
     @BeforeEach
     void setup() {
+
+        imagePersistence = new ImageFilePersistence() {
+            @Override
+            public String saveImage(InputStream inputStream, String fileName) throws IOException {
+                return "test";
+            }
+
+            @Override
+            public void deleteImage(String fileName) throws IOException {
+                // Do nothing
+            }
+        };
+
         persistence = new TierItemPersistenceStub();
         validator = new ItemValidator();
-        manager = new ItemPlacementManager(persistence, validator);
+        manager = new ItemPlacementManager(persistence, imagePersistence, validator);
     }
 
     @Test

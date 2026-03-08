@@ -15,7 +15,7 @@ import app.TierListMakerUltimate.business.services.TierManager;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
-import app.TierListMakerUltimate.persistence.ITierListSeedProvider;
+import app.TierListMakerUltimate.persistence.system_data.ITierListSeedProvider;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.AndroidImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
@@ -65,7 +65,7 @@ public class TierListMakerUltimate extends Application {
 
         tierListManager = new TierListManager(tierListStorage, imageStorage, new TierListValidator());
         tierManager = new TierManager(tierStorage, new TierValidator());
-        itemPlacementManager = new ItemPlacementManager(itemStorage, new ItemValidator());
+        itemPlacementManager = new ItemPlacementManager(itemStorage, imageStorage, new ItemValidator());
         tierListCoordinator = new TierListCoordinator(tierManager, tierListManager);
         systemTemplateCoordinator = new SystemTemplateCoordinator(tierListCoordinator, itemPlacementManager, seedProvider);
 
