@@ -15,7 +15,7 @@ import app.TierListMakerUltimate.business.services.TierManager;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
-import app.TierListMakerUltimate.persistence.ITierListSeedProvider;
+import app.TierListMakerUltimate.persistence.system_data.ITierListSeedProvider;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.AndroidImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;

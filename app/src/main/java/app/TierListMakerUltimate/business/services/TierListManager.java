@@ -88,6 +88,6 @@ public class TierListManager implements ITierListManager {
 
     @Override
     public List<TierList> getAllTierLists() throws ValidationException {
-        return tierListStorage.getAllTierLists();
+        return tierListStorage.getTierLists();
     }
 }

@@ -6,7 +6,7 @@ import app.TierListMakerUltimate.models.SystemTemplate;
 import app.TierListMakerUltimate.models.SystemTemplateItem;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
-import app.TierListMakerUltimate.persistence.ITierListSeedProvider;
+import app.TierListMakerUltimate.persistence.system_data.ITierListSeedProvider;
 
 public class SystemTemplateCoordinator implements ISystemTemplateCoordinator {
     private final ITierListCoordinator tierListCoordinator;
