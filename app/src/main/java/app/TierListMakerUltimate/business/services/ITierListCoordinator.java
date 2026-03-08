@@ -7,12 +7,31 @@ import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
 
+
+/**
+ * Coordinates TierList processes by using TierListManager ,TierManager and ItemPlacementManager
+ * to handle multi step processes like creating a TierList with its default tiers.
+ */
 public interface ITierListCoordinator {
+
+    /**
+     * Creates and returns a new TierList with default tiers and creates a thumbnail.
+     */
     TierList createTierListWithDefaults(String name, InputStream inputStream, String extension) throws ValidationException, PersistenceException;
 
+
+    /**
+     * Creates and returns a new TierList with default tiers without a creating a thumbnail.
+     */
     TierList createTierListWithDefaults(String name, String thumbnailPath) throws ValidationException;
 
+    /**
+     * Removes a TierList and all associated tiers and items.
+     */
     void removeTierList(int tierListId) throws ValidationException;
 
+    /**
+     * Returns the unranked tier for a given tier list.
+     */
     Tier getUrankedTier(int tierListId) throws ValidationException;
 }
