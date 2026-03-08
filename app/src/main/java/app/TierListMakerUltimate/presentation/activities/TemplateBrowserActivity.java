@@ -55,13 +55,13 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new TemplateBrowserAdapter(tierListManager.getAllTierLists(), imageLoader, this);
+        adapter = new TemplateBrowserAdapter(tierListManager.getAllTemplates(), imageLoader, this);
         recyclerView.setAdapter(adapter);
     }
 
     private void refreshList() {
         if (adapter != null) {
-            List<TierList> updatedList = tierListManager.getAllTierLists();
+            List<TierList> updatedList = tierListManager.getAllTemplates();
             adapter.updateData(updatedList);
         }
     }
@@ -86,7 +86,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
 
     @Override
     public void onTierListCreate(String name, InputStream inputStream, String extension) {
-        tierListCoordinator.createTierListWithDefaults(name, inputStream, extension);
+        tierListCoordinator.createTierListWithDefaults(name, false, inputStream, extension);
         refreshList();
     }
 }

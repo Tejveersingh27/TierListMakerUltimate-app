@@ -38,10 +38,6 @@ public class TierItem {
     public int getTierId() {
         return this.tierId;
     }
-
-    public void setTierId(int tierId) {
-        this.tierId = tierId;
-    } // TODO: remove after updating ItemPlacementManager to not use this
-
+    
 
 }

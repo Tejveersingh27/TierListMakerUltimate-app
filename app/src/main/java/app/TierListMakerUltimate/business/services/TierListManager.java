@@ -30,17 +30,18 @@ public class TierListManager implements ITierListManager {
     }
 
     @Override
-    public TierList createTierList(String name, InputStream inputStream, String extension) throws ValidationException {
+    public TierList createTierList(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException {
         String thumbnailPath = storeImage(inputStream, extension);
-        return createTierList(name, thumbnailPath);
+        return createTierList(name, thumbnailPath, isTemplate);
     }
 
     @Override
-    public TierList createTierList(String name, String thumbnailPath) throws ValidationException {
+    public TierList createTierList(String name, String thumbnailPath, boolean isTemplate) throws ValidationException {
         validator.validateCreateTierList(name);
-        TierList newList = new TierList(name, thumbnailPath);
+        TierList newList = new TierList(name, thumbnailPath, isTemplate);
         return tierListStorage.insertTierList(newList);
     }
+
 
     @Override
     public TierList getTierList(int tierListId) throws ValidationException, NotFoundException {
@@ -67,7 +68,7 @@ public class TierListManager implements ITierListManager {
         validator.validateUpdateTierList(updatedTierList);
         getVerifiedTierList(updatedTierList.getId());
         String thumbnailPath = storeImage(inputStream, extension);
-        updateTierList(new TierList(updatedTierList.getId(), updatedTierList.getName(), thumbnailPath));
+        updateTierList(new TierList(updatedTierList.getId(), updatedTierList.getName(), thumbnailPath, updatedTierList.isTemplate()));
     }
 
     private String storeImage(InputStream inputStream, String extension) {
@@ -79,7 +80,7 @@ public class TierListManager implements ITierListManager {
     }
 
     private TierList getVerifiedTierList(int tierListId) throws NotFoundException {
-        TierList tierList = tierListStorage.getTierListById(tierListId);
+        TierList tierList = tierListStorage.getTierList(tierListId);
         if (tierList == null) {
             throw new NotFoundException(ERROR_TIER_LIST_NOT_FOUND + tierListId);
         }
@@ -89,5 +90,10 @@ public class TierListManager implements ITierListManager {
     @Override
     public List<TierList> getAllTierLists() throws ValidationException {
         return tierListStorage.getTierLists();
+    }
+
+    @Override
+    public List<TierList> getAllTemplates() throws ValidationException {
+        return tierListStorage.getTemplates();
     }
 }
