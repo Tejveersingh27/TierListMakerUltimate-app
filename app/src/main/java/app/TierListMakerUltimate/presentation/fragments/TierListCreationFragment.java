@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.presentation.fragments;
 
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
+
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -7,7 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -20,11 +21,8 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import app.TierListMakerUltimate.R;
-import app.TierListMakerUltimate.presentation.constants.PresentationConstants;
+import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
 
 
 public class TierListCreationFragment extends BottomSheetDialogFragment {
@@ -36,7 +34,6 @@ public class TierListCreationFragment extends BottomSheetDialogFragment {
     private TierListCreationFragmentActionListener listener;
 
     public TierListCreationFragment() {
-
     }
 
     @Override
@@ -62,6 +59,7 @@ public class TierListCreationFragment extends BottomSheetDialogFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        selectImageUri = Uri.parse(DEFAULT_TIER_LIST_IMAGE_PATH);
         super.onViewCreated(view, savedInstanceState);
         setupViews(view);
     }
@@ -85,56 +83,17 @@ public class TierListCreationFragment extends BottomSheetDialogFragment {
 
     private void setupCreateButton() {
         createListButton.setOnClickListener(v -> {
-            String name = (nameInput.getEditText() != null)
-                    ? nameInput.getEditText().getText().toString().trim()
-                    : "";
-
-            if (validateInputs(name)) {
-                createTierList(name);
-            }
+            String name = TextInputExtractor.getTrimmedText(nameInput);
+            listener.onTierListCreate(name, selectImageUri);
         });
     }
 
-    private boolean validateInputs(String name) {
-        boolean isValid = true;
 
-        if (name.isEmpty()) {
-            nameInput.setError(PresentationConstants.ERROR_NAME_REQUIRED);
-            isValid = false;
-        } else {
-            nameInput.setError(null);
-        }
-
-        if (selectImageUri == null) {
-            Toast.makeText(getContext(), PresentationConstants.ERROR_IMAGE_REQUIRED, Toast.LENGTH_SHORT).show();
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    private void createTierList(String name) {
-        if (listener != null) {
-            try (InputStream inputStream = requireContext().getContentResolver().openInputStream(selectImageUri)) {
-                String extension = getFileExtension();
-                listener.onTierListCreate(name, inputStream, extension);
-                dismiss();
-            } catch (IOException ioe) {
-                Toast.makeText(getContext(), PresentationConstants.ERROR_LOADING_IMAGE, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private String getFileExtension() {
-        String mimeType = requireContext().getContentResolver().getType(selectImageUri);
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
-    }
-
-    public void setActionListener(TierListCreationFragmentActionListener listener) {
+    public void setUpListener(TierListCreationFragmentActionListener listener) {
         this.listener = listener;
     }
 
     public interface TierListCreationFragmentActionListener {
-        void onTierListCreate(String name, InputStream imageFile, String extension);
+        void onTierListCreate(String name, Uri uri);
     }
 }

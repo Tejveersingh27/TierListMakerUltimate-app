@@ -2,14 +2,15 @@ package app.TierListMakerUltimate.presentation.utils;
 
 import android.content.Context;
 import android.net.Uri;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 
 import java.io.File;
 
-public class AppImageLoader {
+public class ImageHelper {
     private final Context context;
 
-    public AppImageLoader(Context context) {
+    public ImageHelper(Context context) {
         this.context = context;
     }
 
@@ -17,7 +18,6 @@ public class AppImageLoader {
         if (uri == null || uri.isEmpty()) {
             return;
         }
-
 
         if (uri.startsWith("android.resource://")) {
             // Load drawable resources
@@ -30,4 +30,10 @@ public class AppImageLoader {
             }
         }
     }
+
+    public String getFileExtension(String uri) {
+        String mimeType = context.getContentResolver().getType(Uri.parse(uri));
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
+    }
+
 }
