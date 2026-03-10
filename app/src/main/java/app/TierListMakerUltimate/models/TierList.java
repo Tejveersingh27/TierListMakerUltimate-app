@@ -5,16 +5,31 @@ import java.util.Objects;
 public class TierList {
     private int id;
     private String name;
+    private String thumbnailPath;
+    private boolean isTemplate;
+
 
     // For new tiers
-    public TierList(String name) {
+    public TierList(String name, String thumbnailPath, boolean isTemplate) {
         this.name = name;
+        this.thumbnailPath = thumbnailPath;
+        this.isTemplate = isTemplate;
     }
 
     // For DB load
-    public TierList(int id, String name) {
+    public TierList(int id, String name, String thumbnailPath, boolean isTemplate) {
         this.id = id;
         this.name = name;
+        this.thumbnailPath = thumbnailPath;
+        this.isTemplate = isTemplate;
+    }
+
+    public String getThumbnailPath() {
+        return this.thumbnailPath;
+    }
+
+    public boolean isTemplate() {
+        return this.isTemplate;
     }
 
     public int getId() {
@@ -25,29 +40,4 @@ public class TierList {
         return this.name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-
-        TierList tierList = (TierList) obj;
-        return id == tierList.id &&
-                name.equals(tierList.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
 }

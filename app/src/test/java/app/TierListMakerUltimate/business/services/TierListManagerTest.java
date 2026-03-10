@@ -9,43 +9,65 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.models.TierList;
+import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
 
 public class TierListManagerTest {
     private TierListPersistence persistence;
+    private ImageFilePersistence imagePersistence;
     private TierListManager manager;
 
     @BeforeEach
     void setup() {
         persistence = new TierListPersistenceStub();
-        manager = new TierListManager(persistence, new TierListValidator());
+
+        // Mock the ImageFilePersistence
+        imagePersistence = new ImageFilePersistence() {
+            @Override
+            public String saveImage(InputStream inputStream, String fileName) throws IOException {
+                return "test";
+            }
+
+            @Override
+            public void deleteImage(String fileName) throws IOException {
+                // Do nothing
+            }
+        };
+
+        manager = new TierListManager(persistence, imagePersistence, new TierListValidator());
     }
 
     @Test
     void testCreateTierListSuccess() {
-        TierList tierListItem = manager.createTierList("Favourite Netflix Series List");
+        int id = manager.createTierList("Favourite Netflix Series List", "Thumbnail", false).getId();
+        assertTrue(id > 0);
+
+        TierList tierListItem = persistence.getTierList(id);
+        assertNotNull(tierListItem);
         assertEquals("Favourite Netflix Series List", tierListItem.getName());
-        assertTrue(tierListItem.getId() > 0);
     }
 
     @Test
     void testCreateTierListInvalidNameThrowsException() {
         assertThrows(ValidationException.class, () -> {
-            manager.createTierList("");
+            manager.createTierList("", "Thumbnail", false);
         });
     }
 
     @Test
     void testRemoveTierList() {
-        TierList newList = manager.createTierList("Test List");
-        int id = newList.getId();
-        assertNotNull(persistence.getTierListById(id));
+        int id = manager.createTierList("Test List", "Thumbnail", false).getId();
+        assertNotNull(persistence.getTierList(id));
+
         manager.removeTierList(id);
-        assertNull(persistence.getTierListById(id));
+        assertNull(persistence.getTierList(id));
     }
 
     @Test

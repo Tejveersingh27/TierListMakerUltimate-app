@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Sample_project">
 
         <activity
-            android:name="app.TierListMakerUltimate.presentation.MainActivity"
+            android:name="app.TierListMakerUltimate.presentation.activities.TierListBrowserActivity"
             android:exported="true"
             android:theme="@style/Theme.Sample_project">
 
@@ -24,6 +24,10 @@
             </intent-filter>
 
         </activity>
+
+        <activity android:name="app.TierListMakerUltimate.presentation.MainActivity" />
+        <activity android:name="app.TierListMakerUltimate.presentation.activities.TemplateBrowserActivity" />
+        <activity android:name="app.TierListMakerUltimate.presentation.TierListActivity" />
 
     </application>
 

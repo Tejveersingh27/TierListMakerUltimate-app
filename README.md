@@ -1,15 +1,100 @@
-# A02-G11 RuntimeTerrors
-This is the group repository for our project "Tier List Maker Ultimate".
+# Tier List Maker Ultimate - RuntimeTerrors (A02-G11)
 
-## Vision Statement
-Tier List Maker Ultimate is a tier list creation tool where users will be able to create and share their own completed lists or list templates. 
+## Project Directory
 
-Tier lists are a commonly used method online used to compare and rank different items in a certain order. Our app will allow users to create these lists. Users will be able to accomplish this by intuitively organizing and ranking images into their respective tiers much like how they would in similar tier list creation apps.
+Project documentation and standards:
 
-The intended audience for this app is anyone who may want to create a tier list, this may include people like content creators, gamers, and people who are part of online communities. We plan to include features that appear in tier list makers to make using our app as intuitive as possible to such people who may already be familiar with those other makers. These features include editing tier names and colors, exporting lists to an image, and utilizing custom templates. But we have additional features catered towards people who wish to share their lists with others but do not have the proper online platform to provide explanations for their choice of ranking. 
+- **[Vision Statement](docs/VISION.md)**: Detailed project vision statement.
+- **[Architecture Documentation](docs/ARCHITECTURE.md)**: System architectural patterns.
+- **[Coding Standards](docs/PROGRAMMING_STANDARDS.md)**: Programming guidelines.
+- **[Version Control Standards](docs/VERSION_CONTROL_STANDARDS.md)**: Git workflow
+  standards.
 
-A problem with other tier list makers is that when a user shares the list, it is only an image, so any viewers can only take it at face value. This can lead to a situation where the placement of an item in a less subjective ranking does not match the thoughts of the viewer, and they think the list maker does not know what they are talking about. When if they could see the explanation, they might be able to understand the placement better. To fix this, the creator of the list would have to make a video or text with explanations and upload it on some other platform. But not everyone has an online audience and someone that sees the list is not guaranteed to see the explanation.
+---
 
-With our app, users will be able to couple their reasoning straight into the list itself and then post it on our sharing network to be seen by other users or they can externally link to it so people can go see the explanations. We will also still provide the ability to export as PNG for those users who have a platform, or who simply don't care to explain themselves.
+## SDK & Tooling Requirements
 
-Success will be measured by the average upload count of templates or completed lists per user in a month. The goal for this statistic is an average of 3 uploads per user. At that point, we feel that users are satisfied with the app.
+### Android SDK
+
+- `compileSdk = 35`
+- `targetSdk = 35`
+- `minSdk = 34`
+
+### Java
+
+- **Java 17**
+- JDK 17 or higher must be installed
+- Kotlin is **not used** in this project
+
+### Tools
+
+- Android Studio (current stable)
+- Android Emulator (Pixel 9 device profile recommended)
+- Gradle Wrapper (included)
+
+---
+
+## Setup & Execution
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g11-runtimeterrors
+   ```
+2. **Open in Android Studio**: Select the root directory of the project.
+3. **Sync Gradle**: download dependencies.
+4. **Run**: Use the `app` run configuration to run the app.
+
+---
+
+## Dependencies
+
+The project relies on the following libraries:
+
+* **AndroidX & Material Components**: For UI elements like ConstraintLayout.
+* **JUnit 5 (Jupiter)**: For JVM unit testing.*
+* **Espresso**: For UI testing on emulators.
+
+---
+
+## Architecture & Package Structure
+
+This project enforces strict separation of concerns.
+
+```
+app.TierListMakerUltimate
+│
+├── presentation/      // Android UI (Activities, Adapters, UI logic)
+│
+├── business/           // Domain logic, services, validation
+│
+├── persistence/        // Repository interfaces + implementations
+│   ├── fake/           // In-memory repositories (Hashmap)
+│   └── real/           // SQLite repositories
+│
+├── models/             // Plain data objects (Item, Keyword)
+│
+└── application/        // Composition root (wiring dependencies)
+
+```
+
+### Dependency Rules
+
+- `presentation → business → persistence`
+- **No Android imports** (`android.*`, `androidx.*`) are allowed in the `business` or `persistence`
+- Android-specific code belongs strictly in the `presentation` and `application` layers.
+
+---
+
+## Testing Strategy
+
+### 1. Unit Tests (JVM)
+
+**Location:** `app/src/test/java`
+
+- Focuses on `business`
+- Uses **JUnit 5**
+- Runs against `persistence/stubs` to avoid external dependencies.
+- **Run with:** `./gradlew testDebugUnitTest`
+
+---
+

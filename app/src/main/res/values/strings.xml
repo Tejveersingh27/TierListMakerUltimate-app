@@ -13,6 +13,22 @@
     <string name="button_save">Save</string>
 
 
+    <!-- TierList Browser Menu-->
+    <string name="tier_list_browser_title">Saved Tier Lists</string>
+    <string name="create_tier_list_button">Create New Tier List</string>
+    <string name="edit_tier_list_button">Edit Tier List</string>
+    <string name="delete_tier_list_button">Delete Tier List</string>
+    <!-- TierList Browser Recycler View-->
+    <string name="edit_alt_text">Edit</string>
+    <string name="delete_alt_text" delete_alt_text="Delete">Delete</string>
+
+    <!-- Template Browser Menu-->
+    <string name="template_browser_title">Choose a Template</string>
+    <string name="new_template_button">Start from Scratch</string>
+    <!-- Template Browser Recycler View-->
+    <string name="template_thumbnail">Template Thumbnail</string>
+
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -59,4 +75,12 @@
     <string name="item_title">Title</string>
     <string name="item_hint_tags_comma_separated">Tags (comma separated)</string>
     <string name="button_add_to_do">Add To-Do</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_template">Create Template</string>
+    <string name="tier_list_name_hint">Tier List Name</string>
+    <string name="select_image">Select Image</string>
+    <string name="select_thumbnail_image">Select thumbnail image</string>
+    <string name="create_button">Create</string>
+    <string name="or">Or</string>
 </resources>

@@ -4,14 +4,38 @@ import app.TierListMakerUltimate.models.TierList;
 
 import java.util.List;
 
+/**
+ * Handles persistence for TierLists.
+ */
 public interface TierListPersistence {
+    /**
+     * Returns all TierLists.
+     */
     List<TierList> getTierLists();
 
-    TierList getTierListById(int tierListId);
+    /**
+     * Returns all template TierLists.
+     */
+    List<TierList> getTemplates();
 
-    int insertTierList(TierList currentTierList); // Returns ID
+    /**
+     * Returns an existing TierList.
+     */
+    TierList getTierList(int tierListId);
 
-    void updateTierList(TierList currentTierList);
+    /**
+     * Saves and returns a new TierList.
+     */
+    TierList insertTierList(TierList currentTierList);
 
+    /**
+     * Updates an existing TierList and returns it.
+     */
+    TierList updateTierList(TierList currentTierList);
+
+    /**
+     * Deletes an existing TierList.
+     */
     void deleteTierList(int tierListId);
+
 }

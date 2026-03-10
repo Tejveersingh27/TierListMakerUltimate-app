@@ -20,27 +20,41 @@ public class TierListPersistenceStub implements TierListPersistence {
     }
 
     @Override
-    public TierList getTierListById(int tierListId) {
+    public List<TierList> getTemplates() {
+        List<TierList> templates = new ArrayList<>();
+        for (TierList tierList : tierLists.values()) {
+            if (tierList.isTemplate()) {
+                templates.add(tierList);
+            }
+        }
+        return templates;
+    }
+
+    @Override
+    public TierList getTierList(int tierListId) {
         return tierLists.get(tierListId);
     }
 
     @Override
-    public int insertTierList(TierList currentTierList) {
+    public TierList insertTierList(TierList currentTierList) {
         int id = nextId++;
-        TierList copy = new TierList(id, currentTierList.getName());
+        TierList copy = new TierList(id, currentTierList.getName(), currentTierList.getThumbnailPath(), currentTierList.isTemplate());
         tierLists.put(id, copy);
-        return id;
+        return copy;
     }
 
     @Override
-    public void updateTierList(TierList currentTierList) {
+    public TierList updateTierList(TierList currentTierList) {
         if (tierLists.containsKey(currentTierList.getId())) {
             tierLists.put(currentTierList.getId(), currentTierList);
+            return currentTierList;
         }
+        return null;
     }
 
     @Override
     public void deleteTierList(int tierListId) {
         tierLists.remove(tierListId);
     }
+
 }
