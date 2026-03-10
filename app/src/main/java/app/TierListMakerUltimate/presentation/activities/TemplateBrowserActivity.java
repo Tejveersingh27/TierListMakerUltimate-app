@@ -98,7 +98,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
             refreshList();
             fragment.dismiss();
         } catch (IOException ioe) {
-            Toast.makeText(this, ERROR_IMAGE_REQUIRED, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ERROR_LOADING_IMAGE, Toast.LENGTH_SHORT).show();
         } catch (ValidationException ve) {
             Toast.makeText(this, ve.getMessage(), Toast.LENGTH_SHORT).show();
         }
