@@ -1,11 +1,9 @@
 package app.TierListMakerUltimate.presentation.fragments;
 
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.DEFAULT_TIER_LIST_IMAGE_PATH;
 
 import android.net.Uri;
 import android.os.Bundle;
-
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +22,16 @@ import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
 
 
-public class TierListCreationFragment extends BottomSheetDialogFragment {
+public class TierItemCreationFragment extends BottomSheetDialogFragment {
     private ActivityResultLauncher<PickVisualMediaRequest> imagePicker;
     private ImageButton selectImageButton;
     private Button createListButton;
+    private TextInputLayout descriptionInput;
     private TextInputLayout nameInput;
     private Uri selectImageUri;
-    private TierListCreationFragmentActionListener listener;
+    private TierItemCreationFragmentActionListener listener;
 
-    public TierListCreationFragment() {
+    public TierItemCreationFragment() {
     }
 
     @Override
@@ -41,20 +40,18 @@ public class TierListCreationFragment extends BottomSheetDialogFragment {
 
         // Needs to be registered here, or app will crash
         imagePicker = registerForActivityResult(new PickVisualMedia(), uri -> {
-            if (uri != null) {
-                selectImageUri = uri;
-                int padding = getResources().getDimensionPixelSize(R.dimen.image_padding);
-                selectImageButton.setPadding(padding, padding, padding, padding);
-                selectImageButton.setImageURI(uri);
-                selectImageButton.setBackground(null);
-            }
+            selectImageUri = uri;
+            int padding = getResources().getDimensionPixelSize(R.dimen.image_padding);
+            selectImageButton.setPadding(padding, padding, padding, padding);
+            selectImageButton.setImageURI(uri);
+            selectImageButton.setBackground(null);
         });
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tierlist_creator, container, false);
+        return inflater.inflate(R.layout.fragment_item_creator, container, false);
     }
 
     @Override
@@ -66,8 +63,9 @@ public class TierListCreationFragment extends BottomSheetDialogFragment {
 
     private void setupViews(View view) {
         nameInput = view.findViewById(R.id.textInputLayout);
+        descriptionInput = view.findViewById(R.id.descriptionInputLayout);
         selectImageButton = view.findViewById(R.id.selectImageButton);
-        createListButton = view.findViewById(R.id.createTierListButton);
+        createListButton = view.findViewById(R.id.createItemButton);
 
         setupCreateButton();
         setupSelectImageButton();
@@ -84,16 +82,17 @@ public class TierListCreationFragment extends BottomSheetDialogFragment {
     private void setupCreateButton() {
         createListButton.setOnClickListener(v -> {
             String name = TextInputExtractor.getTrimmedText(nameInput);
-            listener.onTierListCreate(name, selectImageUri);
+            String description = TextInputExtractor.getTrimmedText(descriptionInput);
+            listener.onTierItemCreate(name, description, selectImageUri);
         });
     }
 
 
-    public void setUpListener(TierListCreationFragmentActionListener listener) {
+    public void setUpListener(TierItemCreationFragmentActionListener listener) {
         this.listener = listener;
     }
 
-    public interface TierListCreationFragmentActionListener {
-        void onTierListCreate(String name, Uri uri);
+    public interface TierItemCreationFragmentActionListener {
+        void onTierItemCreate(String name, String description, Uri uri);
     }
 }

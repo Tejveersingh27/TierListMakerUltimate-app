@@ -76,7 +76,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
     private void showFragment() {
         fragment = new TierListCreationFragment();
         fragment.setUpListener(this);
-        fragment.show(getSupportFragmentManager(), "TierListCreationFragment");
+        fragment.show(getSupportFragmentManager(), "");
     }
 
     private void setupAddButton() {

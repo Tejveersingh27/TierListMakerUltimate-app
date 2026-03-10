@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.presentation.utils;
 
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
+
 import android.content.Context;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
@@ -19,7 +21,7 @@ public class ImageHelper {
             return;
         }
 
-        if (uri.startsWith("android.resource://")) {
+        if (uri.startsWith(ANDROID_RESOURCE_PREFIX)) {
             // Load drawable resources
             imageView.setImageURI(Uri.parse(uri));
         } else {
