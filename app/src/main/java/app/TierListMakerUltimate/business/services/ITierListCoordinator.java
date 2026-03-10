@@ -29,9 +29,5 @@ public interface ITierListCoordinator {
      * Removes a TierList and all associated tiers and items.
      */
     void removeTierList(int tierListId) throws ValidationException;
-
-    /**
-     * Returns the unranked tier for a given tier list.
-     */
-    Tier getUrankedTier(int tierListId) throws ValidationException;
+    
 }

@@ -50,16 +50,5 @@ public class TierListCoordinator implements ITierListCoordinator {
         tierListManager.removeTierList(tierListId);
         // TODO: Remove all tiers/items in this tier list
     }
-
-    @Override
-    public Tier getUrankedTier(int tierListId) throws ValidationException, NotFoundException {
-        List<Tier> tiers = tierManager.getTiersForList(tierListId);
-        for (Tier tier : tiers) {
-            if (tier.isUnranked()) {
-                return tier;
-            }
-        }
-
-        throw new NotFoundException(ERROR_TIER_NOT_FOUND + "unranked for list " + tierListId);
-    }
+    
 }
