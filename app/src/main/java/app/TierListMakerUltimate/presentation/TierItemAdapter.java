@@ -1,7 +1,7 @@
 package app.TierListMakerUltimate.presentation;
 
 import android.content.ClipData;
-import android.view.DragEvent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,9 +56,9 @@ public class TierItemAdapter extends RecyclerView.Adapter<TierItemAdapter.TierIt
         }
 
         public void bind(TierItem item) {
-            int image = item.getImagePath();
+            String image = item.getImagePath();
 
-            imageView.setImageResource(image);
+            imageView.setImageURI(Uri.parse(image));
 
             // Set up long click listener to start drag
             itemView.setOnLongClickListener(v -> {
