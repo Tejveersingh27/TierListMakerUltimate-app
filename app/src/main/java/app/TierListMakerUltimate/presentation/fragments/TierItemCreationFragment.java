@@ -32,6 +32,11 @@ public class TierItemCreationFragment extends BaseCreationFragment {
         setupViews(view);
     }
 
+    @Override
+    protected String getDefaultImagePath() {
+        return null;
+    }
+
     private void setupViews(View view) {
         descriptionInput = view.findViewById(R.id.descriptionInputLayout);
         confirmButton = view.findViewById(R.id.createItemButton);
@@ -41,10 +46,9 @@ public class TierItemCreationFragment extends BaseCreationFragment {
 
     private void setupCreateButton() {
         confirmButton.setOnClickListener(v -> {
-            String name = TextInputExtractor.getTrimmedText(nameInput);
             String description = TextInputExtractor.getTrimmedText(descriptionInput);
             if (listener != null) {
-                listener.onTierItemCreate(name, description, selectImageUri);
+                listener.onTierItemCreate(description, selectImageUri);
             }
         });
     }
@@ -54,6 +58,6 @@ public class TierItemCreationFragment extends BaseCreationFragment {
     }
 
     public interface TierItemCreationFragmentActionListener {
-        void onTierItemCreate(String name, String description, Uri uri);
+        void onTierItemCreate(String description, Uri uri);
     }
 }

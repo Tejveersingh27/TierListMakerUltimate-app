@@ -30,7 +30,7 @@ public class ItemValidator {
     }
 
     public void validateDescription(String description) throws ValidationException {
-        if (description == null) {
+        if (description == null || description.isEmpty()) {
             throw new ValidationException(ERROR_DESCRIPTION_NULL);
         }
         if (description.length() > MAX_LENGTH_DESCRIPTION) {

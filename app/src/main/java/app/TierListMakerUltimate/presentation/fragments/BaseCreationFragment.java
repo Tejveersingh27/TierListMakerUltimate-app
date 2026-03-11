@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.net.URI;
+
 import app.TierListMakerUltimate.R;
 
 public abstract class BaseCreationFragment extends BottomSheetDialogFragment {
@@ -24,6 +26,7 @@ public abstract class BaseCreationFragment extends BottomSheetDialogFragment {
     protected Button confirmButton;
     protected TextInputLayout nameInput;
     protected Uri selectImageUri;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,9 @@ public abstract class BaseCreationFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        selectImageUri = Uri.parse(DEFAULT_TIER_LIST_IMAGE_PATH);
+        if (getDefaultImagePath() != null) {
+            selectImageUri = Uri.parse(getDefaultImagePath());
+        }
         nameInput = view.findViewById(R.id.textInputLayout);
         selectImageButton = view.findViewById(R.id.selectImageButton);
         setupSelectImageButton();
@@ -53,6 +58,9 @@ public abstract class BaseCreationFragment extends BottomSheetDialogFragment {
                     .build());
         });
     }
+
+    protected abstract String getDefaultImagePath();
+
 
     private void setImageViewProperties(Uri uri) {
         selectImageUri = uri;

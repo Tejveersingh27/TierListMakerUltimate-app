@@ -1,5 +1,9 @@
 package app.TierListMakerUltimate.presentation;
 
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.View;
@@ -11,17 +15,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
+import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.business.services.IItemPlacementManager;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
+import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
+import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener {
     // Static Variables
     public static int tierlistID = 0;                   // The value of the current tierlist ID. If 1 then default data is loaded.
     private static final String TAG = "epic_games";     // Used for debugging
@@ -30,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private ITierListCoordinator activeList;
     private ITierManager tierManager;
     private TierAdapter tierAdapter;
+    private TierItemCreationFragment tierItemCreationFragment;
+    private ImageHelper imageHelper = new ImageHelper(this);
+
     private TierItemAdapter unrankedAdapter;
     private IItemPlacementManager placementManager;
     private HashMap<String, View> menuItems;
@@ -54,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             initializeDefaultData();
 
         setupRecyclerView();
+        setUpAddButton();
 
         refreshList();
     }
@@ -89,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
             public void moveTier(int direction) {
                 shiftTier(direction);
             }
-        });
+        }, imageHelper);
 
-        unrankedAdapter = new TierItemAdapter();
+        unrankedAdapter = new TierItemAdapter(imageHelper);
 
         menuItems.get("unrankedContainer").setOnDragListener((v, event) -> {
             switch (event.getAction()) {
@@ -122,6 +135,12 @@ public class MainActivity extends AppCompatActivity {
         unrankedItems.setAdapter(unrankedAdapter);
     }
 
+    private void setupTierItemCreationFragment() {
+        tierItemCreationFragment = new TierItemCreationFragment();
+        tierItemCreationFragment.setUpListener(this);
+        tierItemCreationFragment.show(getSupportFragmentManager(), "");
+    }
+
     // Implement these later
 
     // Opens the tier settings menu
@@ -134,6 +153,40 @@ public class MainActivity extends AppCompatActivity {
         return;
     }
 
+
+    // Open tier item creation fragment
+    private void setUpAddButton() {
+        menuItems.get("plusIcon").setOnClickListener(v -> {
+            setupTierItemCreationFragment();
+        });
+    }
+
+
+    // Save tier item
+    @Override
+    public void onTierItemCreate(String description, Uri uri) {
+
+        // URI is validated here rather than in the business layer to avoid
+        // passing Android-specific imports (URI).
+        // The business layer receives an InputStream instead.
+        if (uri == null) {
+            Toast.makeText(this, NO_IMAGE_SELECTED, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try (InputStream inputStream = getContentResolver().openInputStream(uri)) {
+            placementManager.createItem(tierManager.getUnrankedTierForList(tierlistID).getId(), description, inputStream, "png");
+            tierItemCreationFragment.dismiss();
+            refreshList();
+        } catch (IOException ioe) {
+            Toast.makeText(this, ERROR_LOADING_IMAGE, Toast.LENGTH_SHORT).show();
+        } catch (ValidationException ve) {
+            Toast.makeText(this, ve.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
     // Moves an item to a target tier
     private void moveItem(int itemId, int targetTierId) {
         try {
@@ -143,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Error moving item: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
 
     // This function should make the tier physically move up or down on the list
     // based on the direction parameter

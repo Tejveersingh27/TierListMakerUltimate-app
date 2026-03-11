@@ -21,17 +21,20 @@ import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.presentation.TierItemAdapter;
+import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
-public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder>
-{
+public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder> {
     private List<Tier> tiers;                           // List that contains the tiers to be displayed.
     private Map<Integer, List<TierItem>> tierItemsMap;  // Contains a list of all items in use and which tier they are in.
     private TierActions actions;                        // A class which contains functions we can call when a certain event happens.
-                                                        // Separated into another class so we can customize the functions dynamically.
-    public TierAdapter(TierActions actions)
-    {
+    // Separated into another class so we can customize the functions dynamically.
+
+    private final ImageHelper imageHelper;
+
+    public TierAdapter(TierActions actions, ImageHelper imageHelper) {
         this.tiers = new ArrayList<>();
         this.actions = actions;
+        this.imageHelper = imageHelper;
     }
 
     public void setTiers(List<Tier> tiers, Map<Integer, List<TierItem>> tierItemsMap) {
@@ -45,7 +48,7 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
     public TierViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.tier_layout, parent, false);
-        return new TierViewHolder(view);
+        return new TierViewHolder(view, imageHelper);
     }
 
     @Override
@@ -60,8 +63,7 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
         return tiers.size();
     }
 
-    static class TierViewHolder extends RecyclerView.ViewHolder
-    {
+    static class TierViewHolder extends RecyclerView.ViewHolder {
         private final LinearLayout tierContainer;
         private final TextView tierLabel;
         private final ImageButton settingBtn;
@@ -70,7 +72,7 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
         private final RecyclerView itemsRecyclerView;
         private final TierItemAdapter itemAdapter;
 
-        public TierViewHolder(@NonNull View itemView) {
+        public TierViewHolder(@NonNull View itemView, ImageHelper imageHelper) {
             super(itemView);
             tierContainer = itemView.findViewById(R.id.layout0);
             tierLabel = itemView.findViewById(R.id.tierTitle);
@@ -80,7 +82,7 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
             itemsRecyclerView = itemView.findViewById(R.id.itemHolder);
 
             // Setup horizontal RecyclerView for items
-            itemAdapter = new TierItemAdapter();
+            itemAdapter = new TierItemAdapter(imageHelper);
             itemsRecyclerView.setLayoutManager(
                     new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false)
             );
@@ -149,8 +151,11 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
 
     public interface TierActions {
         void onDeleteTier(Tier tier);
+
         void onItemDropped(int itemId, int targetTierId);
+
         void openTierSettings(Tier tier);
+
         void moveTier(int direction);   // 1 for up, -1 for down
     }
 }

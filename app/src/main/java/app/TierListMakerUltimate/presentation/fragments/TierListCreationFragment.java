@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.presentation.fragments;
 
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.DEFAULT_TIER_LIST_IMAGE_PATH;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+
+import java.net.URI;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
@@ -27,6 +31,11 @@ public class TierListCreationFragment extends BaseCreationFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupViews(view);
+    }
+
+    @Override
+    protected String getDefaultImagePath() {
+        return DEFAULT_TIER_LIST_IMAGE_PATH;
     }
 
     private void setupViews(View view) {
