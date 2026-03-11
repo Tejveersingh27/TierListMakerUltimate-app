@@ -77,6 +77,8 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     public void onEditButtonClick(TierList tierList) {
         // TODO: hook up to editor with actual tier list
         Intent intent = new Intent(TierListBrowserActivity.this, MainActivity.class);
+        MainActivity.tierlistID = tierList.getId();
+        System.out.println(tierList.getId() + "ASSSS");
         startActivity(intent);
     }
 
