@@ -21,13 +21,22 @@ public class TierListPersistenceStub implements TierListPersistence {
 
     @Override
     public List<TierList> getTemplates() {
-        List<TierList> templates = new ArrayList<>();
+        return getListHelper(true);
+    }
+
+    @Override
+    public List<TierList> getNonTemplateTierLists() {
+        return getListHelper(false);
+    }
+
+    private List<TierList> getListHelper(boolean isTemplates) {
+        List<TierList> list = new ArrayList<>();
         for (TierList tierList : tierLists.values()) {
-            if (tierList.isTemplate()) {
-                templates.add(tierList);
+            if (tierList.isTemplate() == isTemplates) {
+                list.add(tierList);
             }
         }
-        return templates;
+        return list;
     }
 
     @Override

@@ -49,6 +49,11 @@ public interface ITierListManager {
     List<TierList> getAllTierLists() throws ValidationException;
 
     /**
+     * Returns all non-template TierLists.
+     */
+    List<TierList> getAllNonTemplateTierLists() throws ValidationException;
+
+    /**
      * Returns all Templates.
      */
     List<TierList> getAllTemplates() throws ValidationException;

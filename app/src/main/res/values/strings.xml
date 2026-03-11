@@ -14,7 +14,7 @@
 
 
     <!-- TierList Browser Menu-->
-    <string name="tier_list_browser_title">Saved Tier Lists</string>
+    <string name="tier_list_browser_title">Your Tier Lists</string>
     <string name="create_tier_list_button">Create New Tier List</string>
     <string name="edit_tier_list_button">Edit Tier List</string>
     <string name="delete_tier_list_button">Delete Tier List</string>
