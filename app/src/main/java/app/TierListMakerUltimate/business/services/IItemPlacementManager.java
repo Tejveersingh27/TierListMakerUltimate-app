@@ -41,6 +41,11 @@ public interface IItemPlacementManager {
     void updateItem(TierItem updatedItem) throws ValidationException, NotFoundException;
 
     /**
+     * Copies an existing TierItem to a new tier and returns the new TierItem.
+     */
+    TierItem copyItem(int itemId, int targetTierId) throws ValidationException, NotFoundException;
+
+    /**
      * Removes an existing TierItem.
      */
     void removeItem(int itemId) throws ValidationException, NotFoundException;

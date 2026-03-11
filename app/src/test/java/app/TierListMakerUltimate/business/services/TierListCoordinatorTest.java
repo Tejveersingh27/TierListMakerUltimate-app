@@ -10,11 +10,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
+import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
 import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
 import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
 
@@ -43,8 +45,9 @@ class TierListCoordinatorTest {
         tierManager = new TierManager(tierStorage, new TierValidator());
 
         tierListManager = new TierListManager(tierListStorage, imagePersistence, new TierListValidator());
+        ItemPlacementManager itemPlacementManager = new ItemPlacementManager(new TierItemPersistenceStub(), imagePersistence, new ItemValidator());
 
-        tierListCoordinator = new TierListCoordinator(tierManager, tierListManager);
+        tierListCoordinator = new TierListCoordinator(tierManager, tierListManager, itemPlacementManager);
     }
 
     @Test

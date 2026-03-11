@@ -56,6 +56,12 @@ public class TierManager implements ITierManager {
         tierStorage.updateTier(updatedTier);
     }
 
+    @Override
+    public Tier copyTier(int tierId, int targetTierListId) throws ValidationException, NotFoundException {
+        Tier verifiedTier = getVerifiedTier(tierId);
+        return createTier(targetTierListId, verifiedTier.getName(), verifiedTier.getColor(), verifiedTier.isUnranked());
+    }
+
     private Tier getVerifiedTier(int tierId) throws NotFoundException {
         Tier tier = tierStorage.getTier(tierId);
         if (tier == null) {

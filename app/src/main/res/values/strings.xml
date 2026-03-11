@@ -85,4 +85,5 @@
     <string name="or">Or</string>
     <string name="add_an_item">Add an Item</string>
     <string name="item_name">Item Name</string>
+    <string name="default_toolbar_title">TierList</string>
 </resources>

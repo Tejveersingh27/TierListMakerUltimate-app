@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
             initializeDefaultData();
 
         setupRecyclerView();
-        setUpAddButton();
+        setupAddButton();
 
         refreshList();
     }
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
 
     // Open tier item creation fragment
-    private void setUpAddButton() {
+    private void setupAddButton() {
         menuItems.get("plusIcon").setOnClickListener(v -> {
             setupTierItemCreationFragment();
         });

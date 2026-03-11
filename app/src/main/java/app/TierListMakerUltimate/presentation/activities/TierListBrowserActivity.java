@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import androidx.appcompat.widget.Toolbar;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +37,7 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
         TierListMakerUltimate app = (TierListMakerUltimate) getApplication();
         tierListManager = app.getTierListManager();
 
+        setupToolbar();
         setupViews();
     }
 
@@ -47,6 +50,12 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     private void setupViews() {
         setupRecyclerView();
         setupAddButton();
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbarMaterial);
+        toolbar.setTitle(R.string.tier_list_browser_title);
+        setSupportActionBar(toolbar);
     }
 
     private void setupRecyclerView() {

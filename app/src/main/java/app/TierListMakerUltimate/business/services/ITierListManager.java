@@ -44,6 +44,11 @@ public interface ITierListManager {
     void updateTierList(TierList updatedTierList, InputStream inputStream, String extension) throws ValidationException, NotFoundException, PersistenceException;
 
     /**
+     * Copies an existing TierList to a new tier list and returns the new TierList.
+     */
+    TierList copy(int tierListId) throws ValidationException, NotFoundException;
+
+    /**
      * Returns all TierLists.
      */
     List<TierList> getAllTierLists() throws ValidationException;
