@@ -31,29 +31,33 @@ public class ItemPlacementManager implements IItemPlacementManager {
     }
 
     @Override
-    public TierItem createItem(int tierId, String description, InputStream inputStream, String extension) throws ValidationException, PersistenceException {
+    public TierItem createItem(int tierId, String name, String description, InputStream inputStream, String extension) throws ValidationException, PersistenceException {
         String imagePath = storeImage(inputStream, extension);
-        return createItem(imagePath, tierId, description);
+        return createItem(imagePath, name, tierId, description);
     }
 
     @Override
-    public TierItem createItem(String imagePath, int tierId, String description) throws ValidationException {
-        validator.validateCreateItem(tierId, description);
-        TierItem newTierItem = new TierItem(imagePath, description, tierId);
+    public TierItem createItem(String imagePath, String name, int tierId, String description) throws ValidationException {
+        validator.validateCreateItem(tierId, name, description);
+        TierItem newTierItem = new TierItem(imagePath, name, description, tierId);
         return itemStorage.insertItem(tierId, newTierItem);
     }
 
-    public TierItem createItem(String imagePath, int id, int tierId, String description) throws ValidationException {
-        validator.validateCreateItem(tierId, description);
-        TierItem newTierItem = new TierItem(id, imagePath, description, tierId);
+
+    // TODO: REMOVE THIS
+    @Override
+    public TierItem createItem(String imagePath, int id, int tierId, String name, String description) throws ValidationException {
+        validator.validateCreateItem(tierId, name, description);
+        TierItem newTierItem = new TierItem(imagePath, name, description, tierId);
         return itemStorage.insertItem(tierId, newTierItem);
     }
+
 
     @Override
     public TierItem moveItemToTier(int itemId, int targetTierId) throws ValidationException, NotFoundException {
         validator.validateMoveItemToTier(itemId, targetTierId);
         TierItem currentItem = getVerifiedItem(itemId);
-        TierItem updatedItem = new TierItem(currentItem.getId(), currentItem.getImagePath(), currentItem.getDescription(), targetTierId);
+        TierItem updatedItem = new TierItem(currentItem.getId(), currentItem.getImagePath(), currentItem.getName(), currentItem.getDescription(), targetTierId);
         updateItem(updatedItem);
         return itemStorage.updateItem(updatedItem);
     }
@@ -70,7 +74,7 @@ public class ItemPlacementManager implements IItemPlacementManager {
         validator.validateUpdateItem(updatedItem);
         getVerifiedItem(updatedItem.getId());
         String imagePath = storeImage(inputStream, extension);
-        updateItem(new TierItem(updatedItem.getId(), imagePath, updatedItem.getDescription(), updatedItem.getTierId()));
+        updateItem(new TierItem(updatedItem.getId(), imagePath, updatedItem.getName(), updatedItem.getDescription(), updatedItem.getTierId()));
     }
 
     private String storeImage(InputStream inputStream, String extension) {

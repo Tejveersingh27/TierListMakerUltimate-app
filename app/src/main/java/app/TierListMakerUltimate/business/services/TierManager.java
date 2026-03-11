@@ -48,6 +48,7 @@ public class TierManager implements ITierManager {
         return getVerifiedTier(tierId);
     }
 
+
     @Override
     public void updateTier(Tier updatedTier) throws ValidationException, NotFoundException {
         validator.validateUpdateTier(updatedTier);
@@ -67,5 +68,17 @@ public class TierManager implements ITierManager {
     public List<Tier> getTiersForList(int tierListId) throws ValidationException {
         validator.validateTierListId(tierListId);
         return tierStorage.getTiersForList(tierListId);
+    }
+
+    @Override
+    public Tier getUnrankedTierForList(int tierListId) throws ValidationException, NotFoundException {
+        validator.validateTierListId(tierListId);
+        List<Tier> tiers = tierStorage.getTiersForList(tierListId);
+        for (Tier tier : tiers) {
+            if (tier.isUnranked()) {
+                return tier;
+            }
+        }
+        throw new NotFoundException(ERROR_TIER_NOT_FOUND);
     }
 }

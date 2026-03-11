@@ -12,15 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.models.TierItem;
+import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TierItemAdapter extends RecyclerView.Adapter<TierItemAdapter.TierItemViewHolder> {
     private List<TierItem> items;
+    private ImageHelper imageHelper;
 
-    public TierItemAdapter() {
+    public TierItemAdapter(ImageHelper imageHelper) {
         items = new ArrayList<>();
+        this.imageHelper = imageHelper;
     }
 
     public void setItems(List<TierItem> items) {
@@ -33,7 +36,7 @@ public class TierItemAdapter extends RecyclerView.Adapter<TierItemAdapter.TierIt
     public TierItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.tier_image, parent, false);
-        return new TierItemViewHolder(view);
+        return new TierItemViewHolder(view, imageHelper);
     }
 
     @Override
@@ -49,16 +52,19 @@ public class TierItemAdapter extends RecyclerView.Adapter<TierItemAdapter.TierIt
 
     static class TierItemViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
+        private ImageHelper imageHelper;
 
-        public TierItemViewHolder(@NonNull View itemView) {
+
+        public TierItemViewHolder(@NonNull View itemView, ImageHelper imageHelper) {
             super(itemView);
             imageView = itemView.findViewById(R.id.tier_image);
+            this.imageHelper = imageHelper;
         }
 
         public void bind(TierItem item) {
             String image = item.getImagePath();
 
-            imageView.setImageURI(Uri.parse(image));
+            imageHelper.loadImage(image, imageView);
 
             // Set up long click listener to start drag
             itemView.setOnLongClickListener(v -> {

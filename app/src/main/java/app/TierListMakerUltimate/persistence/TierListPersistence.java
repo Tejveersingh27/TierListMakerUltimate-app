@@ -38,4 +38,8 @@ public interface TierListPersistence {
      */
     void deleteTierList(int tierListId);
 
+    /**
+     * Returns all non-template TierLists.
+     */
+    List<TierList> getNonTemplateTierLists();
 }

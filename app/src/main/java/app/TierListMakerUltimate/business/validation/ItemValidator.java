@@ -7,8 +7,9 @@ import app.TierListMakerUltimate.models.TierItem;
 
 public class ItemValidator {
 
-    public void validateCreateItem(int tierId, String description) throws ValidationException {
+    public void validateCreateItem(int tierId, String name, String description) throws ValidationException {
         validateTierId(tierId);
+        validateName(name);
         validateDescription(description);
     }
 
@@ -16,6 +17,7 @@ public class ItemValidator {
         validateItemId(updatedItem.getId());
         validateTierId(updatedItem.getTierId());
         validateDescription(updatedItem.getDescription());
+        validateName(updatedItem.getName());
     }
 
     public void validateRemoveItem(int itemId) throws ValidationException {
@@ -36,6 +38,17 @@ public class ItemValidator {
         if (description.length() > MAX_LENGTH_DESCRIPTION) {
             throw new ValidationException(ERROR_DESCRIPTION_TOO_LONG);
         }
+    }
+
+    public void validateName(String tierName) throws ValidationException {
+        if (tierName == null || tierName.trim().isEmpty()) {
+            throw new ValidationException(ERROR_NAME_REQUIRED);
+        }
+
+        if (tierName.length() > MAX_NAME_LENGTH) {
+            throw new ValidationException(ERROR_NAME_TOO_LONG);
+        }
+
     }
 
     public void validateMoveItemToTier(int itemId, int targetTierId) throws ValidationException {

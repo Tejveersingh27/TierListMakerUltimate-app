@@ -14,7 +14,7 @@
 
 
     <!-- TierList Browser Menu-->
-    <string name="tier_list_browser_title">Saved Tier Lists</string>
+    <string name="tier_list_browser_title">Your Tier Lists</string>
     <string name="create_tier_list_button">Create New Tier List</string>
     <string name="edit_tier_list_button">Edit Tier List</string>
     <string name="delete_tier_list_button">Delete Tier List</string>
@@ -80,7 +80,9 @@
     <string name="create_template">Create Template</string>
     <string name="tier_list_name_hint">Tier List Name</string>
     <string name="select_image">Select Image</string>
-    <string name="select_thumbnail_image">Select thumbnail image</string>
+    <string name="select_thumbnail_image">Thumbnail (Optional) </string>
     <string name="create_button">Create</string>
     <string name="or">Or</string>
+    <string name="add_an_item">Add an Item</string>
+    <string name="item_name">Item Name</string>
 </resources>

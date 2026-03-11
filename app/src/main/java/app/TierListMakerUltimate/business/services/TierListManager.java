@@ -93,6 +93,11 @@ public class TierListManager implements ITierListManager {
     }
 
     @Override
+    public List<TierList> getAllNonTemplateTierLists() throws ValidationException {
+        return tierListStorage.getNonTemplateTierLists();
+    }
+
+    @Override
     public List<TierList> getAllTemplates() throws ValidationException {
         return tierListStorage.getTemplates();
     }

@@ -15,15 +15,15 @@ import java.util.List;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.models.TierList;
-import app.TierListMakerUltimate.presentation.utils.AppImageLoader;
+import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
 public class TemplateBrowserAdapter extends RecyclerView.Adapter<TemplateBrowserAdapter.TemplateBrowserViewHolder> {
     private final List<TierList> tierLists;
     private final TemplateBrowserActionListener listener;
-    private final AppImageLoader imageLoader;
+    private final ImageHelper imageLoader;
 
 
-    public TemplateBrowserAdapter(List<TierList> tierLists, AppImageLoader imageLoader, TemplateBrowserActionListener listener) {
+    public TemplateBrowserAdapter(List<TierList> tierLists, ImageHelper imageLoader, TemplateBrowserActionListener listener) {
         this.tierLists = tierLists;
         this.imageLoader = imageLoader;
         this.listener = listener;

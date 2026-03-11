@@ -40,4 +40,9 @@ public interface ITierManager {
      * Returns all tiers for a given tier list.
      */
     List<Tier> getTiersForList(int tierListId) throws ValidationException;
+
+    /**
+     * Returns the unranked tier for a given tier list.
+     */
+    Tier getUnrankedTierForList(int tierListId) throws ValidationException, NotFoundException;
 }

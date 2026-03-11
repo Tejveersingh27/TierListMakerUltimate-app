@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.TierListCreationFragment">
+    tools:context=".presentation.fragments.TierItemCreationFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mainCardView"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="40dp"
                 android:layout_marginTop="14dp"
-                android:text="@string/create_template"
+                android:text="@string/add_an_item"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold"
@@ -53,7 +53,7 @@
                 app:layout_constraintWidth_max="488dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:hint="@string/tier_list_name_hint"
+                android:hint="@string/item_name"
                 android:textColorHint="#BDBDBD"
                 app:hintTextColor="@color/white"
                 app:boxStrokeColor="@color/white"
@@ -69,20 +69,47 @@
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:maxLines="3" />
-
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/descriptionInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_max="488dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="@string/item_description"
+                android:textColorHint="#BDBDBD"
+                app:hintTextColor="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nameInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/descriptionInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:imeOptions="actionDone"
+                    android:gravity="top"
+                    android:minLines="4"
+                    android:maxLines="4"
+                    android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <TextView
                 android:id="@+id/selectImageLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="@string/select_thumbnail_image"
+                android:text="@string/select_image"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameInputLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/descriptionInputLayout" />
 
             <ImageButton
                 android:id="@+id/selectImageButton"
@@ -100,7 +127,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/selectImageLabel" />
 
             <Button
-                android:id="@+id/createTierListButton"
+                android:id="@+id/createItemButton"
                 style="@style/Widget.App.Button.Primary"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_max="320dp"
