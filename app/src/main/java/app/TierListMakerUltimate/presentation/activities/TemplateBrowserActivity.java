@@ -3,23 +3,18 @@ package app.TierListMakerUltimate.presentation.activities;
 import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
-import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierListManager;
 import app.TierListMakerUltimate.models.TierList;
@@ -104,18 +99,9 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
 
 
     @Override
-    public void onTierListCreate(String name, Uri uri) {
-        try (InputStream inputStream = getContentResolver().openInputStream(uri)) {
-            TierList newTierList = tierListCoordinator.createTierListWithDefaults(name, false, inputStream, imageHelper.getFileExtension(uri.toString()));
-            refreshList();
-            switchToTierListEditor(newTierList);
-            fragment.dismiss();
-
-        } catch (IOException ioe) {
-            Toast.makeText(this, ERROR_LOADING_IMAGE, Toast.LENGTH_SHORT).show();
-        } catch (ValidationException ve) {
-            Toast.makeText(this, ve.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+    public void onTierListCreatedSuccessfully(TierList newTierList) {
+        refreshList();
+        switchToTierListEditor(newTierList);
     }
 
     private void switchToTierListEditor(TierList tierList) {

@@ -23,26 +23,12 @@ public class TierListBrowserAdapter extends RecyclerView.Adapter<TierListBrowser
         this.listener = listener;
     }
 
-    public void removeItem(int position) {
-        tierLists.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public void addItem(TierList tierList) {
-        tierLists.add(tierList);
-        notifyItemInserted(tierLists.size() - 1);
-    }
-
-    public void updateItem(int position, TierList updated) {
-        tierLists.set(position, updated);
-        notifyItemChanged(position);
-    }
-
     public void updateData(List<TierList> newList) {
         this.tierLists.clear();
         this.tierLists.addAll(newList);
         notifyDataSetChanged();
     }
+
 
     @NonNull
     @Override
@@ -57,10 +43,8 @@ public class TierListBrowserAdapter extends RecyclerView.Adapter<TierListBrowser
         holder.tierListName.setText(tierList.getName());
 
         holder.editButton.setOnClickListener(v -> listener.onEditButtonClick(tierList));
-        holder.deleteButton.setOnClickListener(v -> {
-            int currentBoundPosition = holder.getBindingAdapterPosition();
-            listener.onDeleteButtonClick(currentBoundPosition, tierList);
-        });
+        holder.deleteButton.setOnClickListener(v -> listener.onDeleteButtonClick(tierList));
+        holder.configButton.setOnClickListener(v -> listener.onConfigButtonClick(tierList));
     }
 
     @Override
@@ -72,12 +56,14 @@ public class TierListBrowserAdapter extends RecyclerView.Adapter<TierListBrowser
     public static class TierListBrowserViewHolder extends RecyclerView.ViewHolder {
         TextView tierListName;
         ImageButton editButton;
+        ImageButton configButton;
         ImageButton deleteButton;
 
         public TierListBrowserViewHolder(@NonNull View itemView) {
             super(itemView);
             tierListName = itemView.findViewById(R.id.titleText);
             editButton = itemView.findViewById(R.id.editButton);
+            configButton = itemView.findViewById(R.id.configButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
         }
     }
@@ -85,7 +71,9 @@ public class TierListBrowserAdapter extends RecyclerView.Adapter<TierListBrowser
     public interface TierListBrowserItemActionListener {
         void onEditButtonClick(TierList tierList);
 
-        void onDeleteButtonClick(int position, TierList tierList);
+        void onConfigButtonClick(TierList tierList);
+
+        void onDeleteButtonClick(TierList tierList);
     }
 
 

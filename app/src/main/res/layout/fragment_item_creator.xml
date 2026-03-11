@@ -120,7 +120,7 @@
                 android:contentDescription="@string/select_thumbnail_image"
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="60dp"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 android:src="@drawable/add_icon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

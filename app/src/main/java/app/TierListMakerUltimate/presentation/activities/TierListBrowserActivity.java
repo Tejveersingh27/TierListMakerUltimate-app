@@ -21,8 +21,9 @@ import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.presentation.MainActivity;
 import app.TierListMakerUltimate.presentation.adapters.TierListBrowserAdapter;
+import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
 
-public class TierListBrowserActivity extends AppCompatActivity implements TierListBrowserAdapter.TierListBrowserItemActionListener {
+public class TierListBrowserActivity extends AppCompatActivity implements TierListBrowserAdapter.TierListBrowserItemActionListener, TierListCreationFragment.TierListCreationFragmentActionListener {
     private RecyclerView recyclerView;
     private TierListBrowserAdapter adapter;
 
@@ -79,22 +80,30 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
             Intent intent = new Intent(TierListBrowserActivity.this, TemplateBrowserActivity.class);
             startActivity(intent);
         });
-        // TODO: hook up to tierlist creation screen
-        // TODO: creating tier list should happen on the next screen, not this one.
     }
 
 
     @Override
     public void onEditButtonClick(TierList tierList) {
-        // TODO: hook up to editor with actual tier list
         Intent intent = new Intent(TierListBrowserActivity.this, MainActivity.class);
         intent.putExtra(INTENT_TIER_LIST_ID, tierList.getId());
         startActivity(intent);
     }
 
     @Override
-    public void onDeleteButtonClick(int position, TierList tierList) {
+    public void onConfigButtonClick(TierList tierList) {
+        TierListCreationFragment fragment = TierListCreationFragment.newInstance(tierList.getId());
+        fragment.show(getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void onDeleteButtonClick(TierList tierList) {
         tierListManager.removeTierList(tierList.getId());
-        adapter.removeItem(position);
+        adapter.updateData(tierListManager.getAllTierLists());
+    }
+
+    @Override
+    public void onTierListCreatedSuccessfully(TierList newTierList) {
+        refreshList();
     }
 }

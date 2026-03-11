@@ -17,7 +17,7 @@ public interface ImageFilePersistence {
     /**
      * Deletes an image from the file system.
      */
-    void deleteImage(String fileName) throws IOException;
+    void deleteImage(String fileName);
 }
 
 

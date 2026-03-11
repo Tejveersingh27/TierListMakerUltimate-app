@@ -80,10 +80,11 @@
     <string name="create_template">Create Template</string>
     <string name="tier_list_name_hint">Tier List Name</string>
     <string name="select_image">Select Image</string>
-    <string name="select_thumbnail_image">Thumbnail (Optional) </string>
-    <string name="create_button">Create</string>
+    <string name="select_thumbnail_image">Thumbnail</string>
+    <string name="create_button">Confirm</string>
     <string name="or">Or</string>
     <string name="add_an_item">Add an Item</string>
     <string name="item_name">Item Name</string>
     <string name="default_toolbar_title">TierList</string>
+    <string name="configure_tier_list">configure tier list</string>
 </resources>

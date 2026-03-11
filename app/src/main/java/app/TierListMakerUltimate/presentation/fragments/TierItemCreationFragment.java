@@ -1,24 +1,65 @@
 package app.TierListMakerUltimate.presentation.fragments;
 
-import android.net.Uri;
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.ERROR_LOADING_IMAGE;
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.NO_IMAGE_SELECTED;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import app.TierListMakerUltimate.R;
+import app.TierListMakerUltimate.application.TierListMakerUltimate;
+import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.services.IItemPlacementManager;
+import app.TierListMakerUltimate.business.services.ITierManager;
+import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
 
-
 public class TierItemCreationFragment extends BaseCreationFragment {
+    private static final String ARG_TIERLIST_ID = "ID";
+
     private TextInputLayout descriptionInput;
     private TierItemCreationFragmentActionListener listener;
 
+    private IItemPlacementManager placementManager;
+    private ITierManager tierManager;
+    private ImageHelper imageHelper;
+    private int tierlistID;
+
     public TierItemCreationFragment() {
+
+    }
+
+    public static TierItemCreationFragment newInstance(int tierlistID) {
+        TierItemCreationFragment fragment = new TierItemCreationFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_TIERLIST_ID, tierlistID);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            tierlistID = getArguments().getInt(ARG_TIERLIST_ID);
+        }
+
+        TierListMakerUltimate app = (TierListMakerUltimate) requireActivity().getApplication();
+        placementManager = app.getItemPlacementManager();
+        tierManager = app.getTierManager();
+        imageHelper = new ImageHelper(requireContext());
     }
 
     @Override
@@ -31,16 +72,11 @@ public class TierItemCreationFragment extends BaseCreationFragment {
         super.onViewCreated(view, savedInstanceState);
         setupViews(view);
     }
-
-    @Override
-    protected String getDefaultImagePath() {
-        return null;
-    }
+    
 
     private void setupViews(View view) {
         descriptionInput = view.findViewById(R.id.descriptionInputLayout);
         confirmButton = view.findViewById(R.id.createItemButton);
-
         setupCreateButton();
     }
 
@@ -48,8 +84,24 @@ public class TierItemCreationFragment extends BaseCreationFragment {
         confirmButton.setOnClickListener(v -> {
             String description = TextInputExtractor.getTrimmedText(descriptionInput);
             String name = TextInputExtractor.getTrimmedText(nameInput);
-            if (listener != null) {
-                listener.onTierItemCreate(name, description, selectImageUri);
+
+            if (selectImageUri == null) {
+                Toast.makeText(requireContext(), NO_IMAGE_SELECTED, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try (InputStream inputStream = requireContext().getContentResolver().openInputStream(selectImageUri)) {
+                String extension = imageHelper.getFileExtension(selectImageUri.toString());
+                placementManager.createItem(tierManager.getUnrankedTierForList(tierlistID).getId(), name, description, inputStream, extension);
+
+                listener.onTierItemCreatedSuccessfully();
+
+                dismiss();
+
+            } catch (IOException ioe) {
+                Toast.makeText(requireContext(), ERROR_LOADING_IMAGE, Toast.LENGTH_SHORT).show();
+            } catch (ValidationException ve) {
+                Toast.makeText(requireContext(), ve.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -59,6 +111,6 @@ public class TierItemCreationFragment extends BaseCreationFragment {
     }
 
     public interface TierItemCreationFragmentActionListener {
-        void onTierItemCreate(String name, String description, Uri uri);
+        void onTierItemCreatedSuccessfully();
     }
 }
