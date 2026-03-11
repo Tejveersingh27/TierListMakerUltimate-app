@@ -81,22 +81,40 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <TextView
-                android:id="@+id/tierTitle"
+            <LinearLayout
+                android:id="@+id/unrankedContainerHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:padding="4dp"
-                android:text="Unranked"
-                android:textAlignment="viewStart"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:background="#7A7A7A"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/tierTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Unranked"
+                    android:textAlignment="viewStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/plusIconItem"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    app:tint="#191919"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/plus" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/itemHolderUnranked"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="#2A2A2A"
                 android:padding="4dp"
                 android:scrollbars="none"
