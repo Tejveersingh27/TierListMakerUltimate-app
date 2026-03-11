@@ -37,7 +37,7 @@ class TierListCoordinatorTest {
             }
 
             @Override
-            public void deleteImage(String fileName) throws IOException {
+            public void deleteImage(String fileName) {
                 // Do nothing
             }
         };

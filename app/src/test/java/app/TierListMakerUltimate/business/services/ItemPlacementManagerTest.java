@@ -38,7 +38,7 @@ public class ItemPlacementManagerTest {
             }
 
             @Override
-            public void deleteImage(String fileName) throws IOException {
+            public void deleteImage(String fileName) {
                 // Do nothing
             }
         };

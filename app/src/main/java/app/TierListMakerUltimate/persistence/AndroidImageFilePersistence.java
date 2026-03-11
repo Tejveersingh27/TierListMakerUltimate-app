@@ -34,7 +34,7 @@ public class AndroidImageFilePersistence implements ImageFilePersistence {
     }
 
     @Override
-    public void deleteImage(String fileName) throws IOException {
+    public void deleteImage(String fileName) {
         context.deleteFile(fileName);
     }
 }

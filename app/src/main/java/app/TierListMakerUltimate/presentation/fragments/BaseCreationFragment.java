@@ -1,7 +1,5 @@
 package app.TierListMakerUltimate.presentation.fragments;
 
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.DEFAULT_TIER_LIST_IMAGE_PATH;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -15,8 +13,6 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.net.URI;
 
 import app.TierListMakerUltimate.R;
 
@@ -43,9 +39,6 @@ public abstract class BaseCreationFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (getDefaultImagePath() != null) {
-            selectImageUri = Uri.parse(getDefaultImagePath());
-        }
         nameInput = view.findViewById(R.id.nameInputLayout);
         selectImageButton = view.findViewById(R.id.selectImageButton);
         setupSelectImageButton();
@@ -59,10 +52,8 @@ public abstract class BaseCreationFragment extends BottomSheetDialogFragment {
         });
     }
 
-    protected abstract String getDefaultImagePath();
 
-
-    private void setImageViewProperties(Uri uri) {
+    protected void setImageViewProperties(Uri uri) {
         selectImageUri = uri;
         int padding = getResources().getDimensionPixelSize(R.dimen.image_padding);
         selectImageButton.setPadding(padding, padding, padding, padding);

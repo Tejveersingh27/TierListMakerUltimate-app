@@ -15,17 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
-import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.business.services.IItemPlacementManager;
-import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -138,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     }
 
     private void setupTierItemCreationFragment() {
-        tierItemCreationFragment = new TierItemCreationFragment();
+        tierItemCreationFragment = TierItemCreationFragment.newInstance(tierlistID);
         tierItemCreationFragment.setUpListener(this);
         tierItemCreationFragment.show(getSupportFragmentManager(), "");
     }
@@ -166,26 +162,8 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     // Save tier item
     @Override
-    public void onTierItemCreate(String name, String description, Uri uri) {
-
-        // URI is validated here rather than in the business layer to avoid
-        // passing Android-specific imports (URI).
-        // The business layer receives an InputStream instead.
-        if (uri == null) {
-            Toast.makeText(this, NO_IMAGE_SELECTED, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try (InputStream inputStream = getContentResolver().openInputStream(uri)) {
-            placementManager.createItem(tierManager.getUnrankedTierForList(tierlistID).getId(), name, description, inputStream, "png");
-            tierItemCreationFragment.dismiss();
-            refreshList();
-        } catch (IOException ioe) {
-            Toast.makeText(this, ERROR_LOADING_IMAGE, Toast.LENGTH_SHORT).show();
-        } catch (ValidationException ve) {
-            Toast.makeText(this, ve.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
+    public void onTierItemCreatedSuccessfully() {
+        refreshList();
     }
 
 
