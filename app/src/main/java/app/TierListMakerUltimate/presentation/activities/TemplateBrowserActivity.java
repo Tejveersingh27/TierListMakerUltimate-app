@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +47,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
         tierListManager = app.getTierListManager();
         tierListCoordinator = app.getTierListCoordinator();
         imageHelper = new ImageHelper(this);
+        setupToolbar();
         setupViews();
     }
 
@@ -53,6 +55,13 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
     protected void onResume() {
         super.onResume();
         refreshList();
+    }
+
+
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbarMaterial);
+        toolbar.setTitle(R.string.template_browser_title);
+        setSupportActionBar(toolbar);
     }
 
     private void setupViews() {
@@ -90,7 +99,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
 
     @Override
     public void onCardClick(TierList tierList) {
-        switchToTierListEditor(tierList);
+        switchToTierListEditor(tierListCoordinator.deepCopyAsTemplate(tierList.getId(), false));
     }
 
 

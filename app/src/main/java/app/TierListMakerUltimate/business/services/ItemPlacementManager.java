@@ -77,6 +77,12 @@ public class ItemPlacementManager implements IItemPlacementManager {
         updateItem(new TierItem(updatedItem.getId(), imagePath, updatedItem.getName(), updatedItem.getDescription(), updatedItem.getTierId()));
     }
 
+    @Override
+    public TierItem copyItem(int itemId, int targetTierId) throws ValidationException, NotFoundException {
+        TierItem verifiedItem = getVerifiedItem(itemId);
+        return createItem(verifiedItem.getImagePath(), verifiedItem.getName(), targetTierId, verifiedItem.getDescription());
+    }
+
     private String storeImage(InputStream inputStream, String extension) {
         try {
             return imageFilePersistence.saveImage(inputStream, extension);

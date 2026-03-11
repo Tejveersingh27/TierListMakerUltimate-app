@@ -37,6 +37,11 @@ public interface ITierManager {
     void updateTier(Tier updatedTier) throws ValidationException, NotFoundException;
 
     /**
+     * Copies an existing Tier to a new tier list and returns the new Tier.
+     */
+    Tier copyTier(int tierId, int targetTierListId) throws ValidationException, NotFoundException;
+
+    /**
      * Returns all tiers for a given tier list.
      */
     List<Tier> getTiersForList(int tierListId) throws ValidationException;

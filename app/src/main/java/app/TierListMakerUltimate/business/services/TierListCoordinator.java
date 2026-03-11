@@ -11,18 +11,23 @@ import app.TierListMakerUltimate.business.exception.PersistenceException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
+import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.models.TierList;
 
 public class TierListCoordinator implements ITierListCoordinator {
     private final ITierManager tierManager;
     private final ITierListManager tierListManager;
 
-    public TierListCoordinator(ITierManager tierManager, ITierListManager tierListManager) throws InitializationException {
-        if (tierManager == null || tierListManager == null) {
+    private final IItemPlacementManager itemPlacementManager;
+
+
+    public TierListCoordinator(ITierManager tierManager, ITierListManager tierListManager, IItemPlacementManager itemPlacementManager) throws InitializationException {
+        if (tierManager == null || tierListManager == null || itemPlacementManager == null) {
             throw new InitializationException(ERROR_DEPENDENCIES_NULL);
         }
         this.tierManager = tierManager;
         this.tierListManager = tierListManager;
+        this.itemPlacementManager = itemPlacementManager;
     }
 
     @Override
@@ -48,7 +53,44 @@ public class TierListCoordinator implements ITierListCoordinator {
     @Override
     public void removeTierList(int tierListId) throws ValidationException, NotFoundException {
         tierListManager.removeTierList(tierListId);
-        // TODO: Remove all tiers/items in this tier list
+        for (Tier tier : tierManager.getTiersForList(tierListId)) {
+            tierManager.removeTier(tier.getId());
+
+            for (TierItem item : itemPlacementManager.getItemsForTier(tier.getId())) {
+                itemPlacementManager.removeItem(item.getId());
+            }
+        }
     }
-    
+
+    @Override
+    public TierList deepCopyAsTemplate(int tierListId, boolean resultIsTemplate) throws ValidationException, NotFoundException {
+        TierList newTierList = copyTierList(tierListId, resultIsTemplate);
+        copyAllItems(tierListId, newTierList.getId());
+        return newTierList;
+    }
+
+    private TierList copyTierList(int tierListId, boolean resultIsTemplate) throws ValidationException, NotFoundException {
+        TierList currentTierList = tierListManager.getTierList(tierListId);
+        TierList newTierList = tierListManager.copy(currentTierList.getId(), resultIsTemplate);
+
+        List<Tier> currentTiers = tierManager.getTiersForList(tierListId);
+        for (Tier tier : currentTiers) {
+            tierManager.copyTier(tier.getId(), newTierList.getId());
+        }
+
+        return newTierList;
+    }
+
+    private void copyAllItems(int sourceTierListId, int newTierListId) throws ValidationException, NotFoundException {
+        Tier newUnrankedTier = tierManager.getUnrankedTierForList(newTierListId);
+        List<Tier> sourceTiers = tierManager.getTiersForList(sourceTierListId);
+
+        for (Tier tier : sourceTiers) {
+            List<TierItem> items = itemPlacementManager.getItemsForTier(tier.getId());
+            for (TierItem item : items) {
+                itemPlacementManager.copyItem(item.getId(), newUnrankedTier.getId());
+            }
+        }
+    }
+
 }

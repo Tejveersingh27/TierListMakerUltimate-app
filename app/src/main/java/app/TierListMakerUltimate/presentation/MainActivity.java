@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
             initializeDefaultData();
 
         setupRecyclerView();
-        setUpAddButton();
+        setupAddButton();
 
         refreshList();
     }
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         menuItems.put("tierSettings", findViewById(R.id.tierSettings));
         menuItems.put("tierContainer", findViewById(R.id.tierContainer));
         menuItems.put("unrankedContainer", findViewById(R.id.unrankedContainer));
+        menuItems.put("plusIconItem", findViewById(R.id.plusIconItem));
         menuItems.put("unrankedItems", findViewById(R.id.itemHolderUnranked));
     }
 
@@ -156,8 +157,8 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
 
     // Open tier item creation fragment
-    private void setUpAddButton() {
-        menuItems.get("plusIcon").setOnClickListener(v -> {
+    private void setupAddButton() {
+        menuItems.get("plusIconItem").setOnClickListener(v -> {
             setupTierItemCreationFragment();
         });
     }
