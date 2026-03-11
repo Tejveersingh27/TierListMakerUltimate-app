@@ -43,6 +43,12 @@ public class ItemPlacementManager implements IItemPlacementManager {
         return itemStorage.insertItem(tierId, newTierItem);
     }
 
+    public TierItem createItem(String imagePath, int id, int tierId, String description) throws ValidationException {
+        validator.validateCreateItem(tierId, description);
+        TierItem newTierItem = new TierItem(id, imagePath, description, tierId);
+        return itemStorage.insertItem(tierId, newTierItem);
+    }
+
     @Override
     public TierItem moveItemToTier(int itemId, int targetTierId) throws ValidationException, NotFoundException {
         validator.validateMoveItemToTier(itemId, targetTierId);

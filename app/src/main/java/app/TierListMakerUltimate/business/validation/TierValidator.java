@@ -46,7 +46,7 @@ public class TierValidator {
 
 
     public void validateTierId(int tierId) throws ValidationException {
-        if (tierId <= 0) {
+        if (tierId < 0) {
             throw new ValidationException(ERROR_TIER_ID_REQUIRED);
         }
     }

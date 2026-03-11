@@ -17,6 +17,10 @@ public interface IItemPlacementManager {
      */
     TierItem createItem(String imagePath, int tierId, String description) throws ValidationException;
 
+    /**
+     * Creates and returns a new TierItem without creating a new image.
+     */
+    TierItem createItem(String imagePath, int itemId, int tierId, String description) throws ValidationException;
 
     /**
      * Creates and returns a new TierItem with a new image.
