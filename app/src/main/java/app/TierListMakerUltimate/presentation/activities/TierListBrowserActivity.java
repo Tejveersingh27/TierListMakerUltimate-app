@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.presentation.activities;
 
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.INTENT_TIER_LIST_ID;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -77,8 +79,7 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     public void onEditButtonClick(TierList tierList) {
         // TODO: hook up to editor with actual tier list
         Intent intent = new Intent(TierListBrowserActivity.this, MainActivity.class);
-        MainActivity.tierlistID = tierList.getId();
-        System.out.println(tierList.getId() + "ASSSS");
+        intent.putExtra(INTENT_TIER_LIST_ID, tierList.getId());
         startActivity(intent);
     }
 

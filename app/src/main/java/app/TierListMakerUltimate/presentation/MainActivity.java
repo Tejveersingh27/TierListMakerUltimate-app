@@ -32,11 +32,10 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener {
     // Static Variables
-    public static int tierlistID = 0;                   // The value of the current tierlist ID. If 1 then default data is loaded.
+    private static int tierlistID = 0;                   // The value of the current tierlist ID. If 1 then default data is loaded.
     private static final String TAG = "epic_games";     // Used for debugging
 
     // Instance Variables
-    private ITierListCoordinator activeList;
     private ITierManager tierManager;
     private TierAdapter tierAdapter;
     private TierItemCreationFragment tierItemCreationFragment;
@@ -53,13 +52,15 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
         TierListMakerUltimate app = (TierListMakerUltimate) getApplication();
 
-        activeList = app.getTierListCoordinator();
         tierManager = app.getTierManager();
         placementManager = app.getItemPlacementManager();
 
         menuItems = new HashMap<>();
 
         getMenuItems();
+
+        Intent intent = getIntent();
+        tierlistID = intent.getIntExtra(INTENT_TIER_LIST_ID, 0);
 
         // id of 0 means default fallback tierlist is generated
         if (tierlistID == 0)
