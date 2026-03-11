@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     // Save tier item
     @Override
-    public void onTierItemCreate(String description, Uri uri) {
+    public void onTierItemCreate(String name, String description, Uri uri) {
 
         // URI is validated here rather than in the business layer to avoid
         // passing Android-specific imports (URI).
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         }
 
         try (InputStream inputStream = getContentResolver().openInputStream(uri)) {
-            placementManager.createItem(tierManager.getUnrankedTierForList(tierlistID).getId(), description, inputStream, "png");
+            placementManager.createItem(tierManager.getUnrankedTierForList(tierlistID).getId(), name, description, inputStream, "png");
             tierItemCreationFragment.dismiss();
             refreshList();
         } catch (IOException ioe) {
@@ -219,23 +219,23 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         int ftierid = tierManager.createTier(0, "F Tier", "#E12FE4").getId();
 
         // Default items (My personal ranking) XOTWOD
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/hob", -2, stierid, "Sample Item -2");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/thursday", -1, atierid, "Sample Item -1");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/echoes", 0, atierid, "Sample Item 0");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/kissland", 1, stierid, "Sample Item 1");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/bbtm", 2, btierid, "Sample Item 2");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/starboy", 3, btierid, "Sample Item 3");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/mdm", 4, atierid, "Sample Item 4");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/afterhours", 5, stierid, "Sample Item 5");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/dawnfm", 6, atierid, "Sample Item 6");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/hut", 7, stierid, "Sample Item 7");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/hob", -2, stierid, "", "Sample Item -2");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/thursday", -1, atierid, "", "Sample Item -1");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/echoes", 0, atierid, "", "Sample Item 0");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/kissland", 1, stierid, "", "Sample Item 1");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/bbtm", 2, btierid, "", "Sample Item 2");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/starboy", 3, btierid, "", "Sample Item 3");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/mdm", 4, atierid, "", "Sample Item 4");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/afterhours", 5, stierid, "", "Sample Item 5");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/dawnfm", 6, atierid, "", "Sample Item 6");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/hut", 7, stierid, "", "Sample Item 7");
 
         // Other placeholders to showcase the unranked items and lower tiers
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", ftierid, "Sample Item 8");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", unplacedItemsId, "Sample Item 9");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", unplacedItemsId, "Sample Item 10");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", unplacedItemsId, "Sample Item 11");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", unplacedItemsId, "Sample Item 12");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", "", ftierid, "Sample Item 8");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", "", unplacedItemsId, "Sample Item 9");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", "", unplacedItemsId, "Sample Item 10");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", "", unplacedItemsId, "Sample Item 11");
+        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", "", unplacedItemsId, "Sample Item 12");
     }
 
     // Refreshes the tierlist to reflect item movements.

@@ -46,7 +46,7 @@ public abstract class BaseCreationFragment extends BottomSheetDialogFragment {
         if (getDefaultImagePath() != null) {
             selectImageUri = Uri.parse(getDefaultImagePath());
         }
-        nameInput = view.findViewById(R.id.textInputLayout);
+        nameInput = view.findViewById(R.id.nameInputLayout);
         selectImageButton = view.findViewById(R.id.selectImageButton);
         setupSelectImageButton();
     }

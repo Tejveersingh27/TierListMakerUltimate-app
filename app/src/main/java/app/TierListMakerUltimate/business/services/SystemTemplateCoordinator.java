@@ -33,7 +33,7 @@ public class SystemTemplateCoordinator implements ISystemTemplateCoordinator {
         TierList tierList = tierListCoordinator.createTierListWithDefaults(template.getName(), template.getThumbnailPath(), true);
         Tier unrankedTier = tierManager.getUnrankedTierForList(tierList.getId());
         for (SystemTemplateItem item : template.getItems()) {
-            itemPlacementManager.createItem(item.getImagePath(), unrankedTier.getId(), item.getName());
+            itemPlacementManager.createItem(item.getImagePath(), item.getName(), unrankedTier.getId(), item.getDescription());
         }
     }
 }

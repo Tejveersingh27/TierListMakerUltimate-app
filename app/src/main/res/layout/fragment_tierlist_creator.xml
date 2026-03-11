@@ -47,7 +47,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/handle" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
+                android:id="@+id/nameInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_max="488dp"
@@ -62,7 +62,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/fragmentTitle">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tierListNameInput"
+                    android:id="@+id/nameInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
@@ -82,7 +82,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/nameInputLayout" />
 
             <ImageButton
                 android:id="@+id/selectImageButton"

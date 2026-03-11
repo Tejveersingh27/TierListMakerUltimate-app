@@ -47,8 +47,9 @@ public class TierItemCreationFragment extends BaseCreationFragment {
     private void setupCreateButton() {
         confirmButton.setOnClickListener(v -> {
             String description = TextInputExtractor.getTrimmedText(descriptionInput);
+            String name = TextInputExtractor.getTrimmedText(nameInput);
             if (listener != null) {
-                listener.onTierItemCreate(description, selectImageUri);
+                listener.onTierItemCreate(name, description, selectImageUri);
             }
         });
     }
@@ -58,6 +59,6 @@ public class TierItemCreationFragment extends BaseCreationFragment {
     }
 
     public interface TierItemCreationFragmentActionListener {
-        void onTierItemCreate(String description, Uri uri);
+        void onTierItemCreate(String name, String description, Uri uri);
     }
 }
