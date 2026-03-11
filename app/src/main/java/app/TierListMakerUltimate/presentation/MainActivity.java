@@ -59,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Puts any relevant menu items in a hashmap for easy access.
-    private void getMenuItems()
-    {
+    private void getMenuItems() {
         menuItems.put("mainLayout", findViewById(R.id.mainLayout));
         menuItems.put("tierListTitle", findViewById(R.id.tierListTitle));
         menuItems.put("plusIcon", findViewById(R.id.plusIcon));
@@ -108,17 +107,17 @@ public class MainActivity extends AppCompatActivity {
                 case DragEvent.ACTION_DROP:
                     String itemIdStr = event.getClipData().getItemAt(0).getText().toString();
                     int itemId = Integer.parseInt(itemIdStr);
-                    moveItem(itemId, activeList.getUrankedTier(tierlistID).getId());
+                    moveItem(itemId, tierManager.getUnrankedTierForList(tierlistID).getId());
                     return true;
             }
             return false;
         });
 
-        RecyclerView tierContainer = (RecyclerView)menuItems.get("tierContainer");
+        RecyclerView tierContainer = (RecyclerView) menuItems.get("tierContainer");
         tierContainer.setLayoutManager(new LinearLayoutManager(this));
         tierContainer.setAdapter(tierAdapter);
 
-        RecyclerView unrankedItems = (RecyclerView)menuItems.get("unrankedItems");
+        RecyclerView unrankedItems = (RecyclerView) menuItems.get("unrankedItems");
         unrankedItems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         unrankedItems.setAdapter(unrankedAdapter);
     }
@@ -200,8 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 unrankedAdapter.setItems(items);
                 unrankedID = tier.getId();
                 unrankedIndex = i;
-            }
-            else
+            } else
                 tierItemsMap.put(tier.getId(), items);
         }
 

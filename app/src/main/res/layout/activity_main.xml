@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="1"
@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/tierListTitle"
                 android:layout_width="0dp"
@@ -36,7 +37,8 @@
                 android:textStyle="bold"
                 android:textAlignment="viewStart"
                 android:ellipsize="end"
-                android:maxLines="1"/>
+                android:maxLines="1" />
+
             <ImageButton
                 android:id="@+id/plusIcon"
                 android:layout_width="50dp"
@@ -45,7 +47,8 @@
                 android:background="@null"
                 app:tint="#191919"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/plus"/>
+                app:srcCompat="@drawable/plus" />
+
             <ImageButton
                 android:id="@+id/tierSettings"
                 android:layout_width="50dp"
@@ -54,22 +57,21 @@
                 android:background="@null"
                 app:tint="#191919"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/tiersettings"/>
+                app:srcCompat="@drawable/tiersettings" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tierContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight="1"
             android:background="#2A2A2A"
             android:paddingLeft="4dp"
             android:paddingTop="8dp"
             android:paddingRight="4dp"
-            android:paddingBottom="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-        />
+            android:paddingBottom="8dp" />
 
         <LinearLayout
             android:id="@+id/unrankedContainer"
@@ -98,7 +100,7 @@
                 android:background="#2A2A2A"
                 android:padding="4dp"
                 android:scrollbars="none"
-                app:layout_constrainedHeight="true"/>
+                app:layout_constrainedHeight="true" />
         </LinearLayout>
     </LinearLayout>
 
