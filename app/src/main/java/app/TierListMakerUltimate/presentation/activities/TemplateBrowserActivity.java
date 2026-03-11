@@ -99,7 +99,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
 
     @Override
     public void onCardClick(TierList tierList) {
-        switchToTierListEditor(tierList);
+        switchToTierListEditor(tierListCoordinator.deepCopyAsTemplate(tierList.getId(), false));
     }
 
 

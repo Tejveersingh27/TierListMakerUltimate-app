@@ -46,7 +46,7 @@ public interface ITierListManager {
     /**
      * Copies an existing TierList to a new tier list and returns the new TierList.
      */
-    TierList copy(int tierListId) throws ValidationException, NotFoundException;
+    TierList copy(int tierListId, boolean resultIsTemplate) throws ValidationException, NotFoundException;
 
     /**
      * Returns all TierLists.

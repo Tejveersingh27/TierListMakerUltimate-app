@@ -72,9 +72,9 @@ public class TierListManager implements ITierListManager {
     }
 
     @Override
-    public TierList copy(int tierListId) throws ValidationException, NotFoundException {
+    public TierList copy(int tierListId, boolean resultIsTemplate) throws ValidationException, NotFoundException {
         TierList verifiedTierList = getVerifiedTierList(tierListId);
-        return createTierList(verifiedTierList.getName(), verifiedTierList.getThumbnailPath(), verifiedTierList.isTemplate());
+        return createTierList(verifiedTierList.getName(), verifiedTierList.getThumbnailPath(), resultIsTemplate);
     }
 
     private String storeImage(InputStream inputStream, String extension) {

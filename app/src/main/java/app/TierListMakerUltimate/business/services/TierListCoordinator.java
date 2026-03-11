@@ -63,15 +63,15 @@ public class TierListCoordinator implements ITierListCoordinator {
     }
 
     @Override
-    public TierList deepCopyAsTemplate(int tierListId) throws ValidationException, NotFoundException {
-        TierList newTierList = copyTierList(tierListId);
+    public TierList deepCopyAsTemplate(int tierListId, boolean resultIsTemplate) throws ValidationException, NotFoundException {
+        TierList newTierList = copyTierList(tierListId, resultIsTemplate);
         copyAllItems(tierListId, newTierList.getId());
         return newTierList;
     }
 
-    private TierList copyTierList(int tierListId) throws ValidationException, NotFoundException {
+    private TierList copyTierList(int tierListId, boolean resultIsTemplate) throws ValidationException, NotFoundException {
         TierList currentTierList = tierListManager.getTierList(tierListId);
-        TierList newTierList = tierListManager.copy(currentTierList.getId());
+        TierList newTierList = tierListManager.copy(currentTierList.getId(), resultIsTemplate);
 
         List<Tier> currentTiers = tierManager.getTiersForList(tierListId);
         for (Tier tier : currentTiers) {

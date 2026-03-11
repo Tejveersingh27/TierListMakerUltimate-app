@@ -35,5 +35,5 @@ public interface ITierListCoordinator {
      * Copies a TierList and all associated tiers and items.
      * Items copied to unranked tier.
      */
-    TierList deepCopyAsTemplate(int tierListId) throws ValidationException, NotFoundException;
+    TierList deepCopyAsTemplate(int tierListId, boolean resultIsTemplate) throws ValidationException, NotFoundException;
 }
