@@ -51,7 +51,7 @@ public class ItemPlacementManagerTest {
         manager = new ItemPlacementManager(persistence, imagePersistence, validator);
     }
 
-    // --- Constructor Tests ---
+
     @Test
     void testConstructorNullStorageThrowsException() {
         assertThrows(InitializationException.class, () -> {
