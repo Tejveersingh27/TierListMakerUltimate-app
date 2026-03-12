@@ -7,7 +7,7 @@ import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.PersistenceException;
+import app.TierListMakerUltimate.business.exception.ImageException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
@@ -37,7 +37,7 @@ public class TierListCoordinator implements ITierListCoordinator {
         return tierList;
     }
 
-    public TierList createTierListWithDefaults(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException, PersistenceException {
+    public TierList createTierListWithDefaults(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException, ImageException {
         TierList tierList = tierListManager.createTierList(name, isTemplate, inputStream, extension);
         createDefaultTiers(tierList.getId());
         return tierList;
