@@ -93,4 +93,14 @@ public class TierListCoordinator implements ITierListCoordinator {
         }
     }
 
+    @Override
+    public void removeTierAndMoveAllItemsToUnranked(int tierId) throws ValidationException, NotFoundException {
+        List<TierItem> items = itemPlacementManager.getItemsForTier(tierId);
+        Tier tier = tierManager.getTier(tierId);
+        for (TierItem item : items) {
+            itemPlacementManager.moveItemToTier(item.getId(), tierManager.getUnrankedTierForList(tier.getTierListId()).getId());
+        }
+        tierManager.removeTier(tierId);
+    }
+
 }

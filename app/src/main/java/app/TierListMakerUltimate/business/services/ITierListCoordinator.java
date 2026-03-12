@@ -36,4 +36,9 @@ public interface ITierListCoordinator {
      * Items copied to unranked tier.
      */
     TierList deepCopyAsTemplate(int tierListId, boolean resultIsTemplate) throws ValidationException, NotFoundException;
+
+    /**
+     * Removes a Tier and moves all items to the unranked tier for the same tier list.
+     */
+    void removeTierAndMoveAllItemsToUnranked(int tierId) throws ValidationException, NotFoundException;
 }

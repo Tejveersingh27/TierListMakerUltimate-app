@@ -22,6 +22,7 @@ import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
@@ -31,6 +32,7 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
     private static final String ARG_TIER_ID = "ID";
 
     private ITierManager tierManager;
+    private ITierListCoordinator tierListCoordinator;
 
     private Button confirmButton;
     private TextInputLayout nameInput;
@@ -53,9 +55,9 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         TierListMakerUltimate app = (TierListMakerUltimate) requireActivity().getApplication();
         tierManager = app.getTierManager();
+        tierListCoordinator = app.getTierListCoordinator();
     }
 
     @Override
@@ -90,6 +92,7 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
         nameInput = view.findViewById(R.id.nameInputLayout);
         colorGrid = view.findViewById(R.id.flow);
         setupCreateButton();
+        setupDeleteButton();
         setupColorGrid(view);
 
     }
@@ -104,7 +107,7 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
                 }
 
                 selectedCard = card;
-                card.setStrokeColor(R.color.white);
+                card.setStrokeColor(card.getCardBackgroundColor());
                 card.setStrokeWidth(SELECTED_STROKE_WIDTH);
             });
         }
@@ -117,7 +120,7 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
                 String hexColor = selectedCard != null ? selectedCard.getTag().toString() : currentTier.getColor();
                 String name = TextInputExtractor.getTrimmedText(nameInput);
                 tierManager.updateTier(new Tier(getArguments().getInt(ARG_TIER_ID), currentTier.getTierListId(), name, hexColor, false));
-                listener.onTierEditorFragmentActionListener();
+                listener.onTierEditorFragmentEditSuccess();
                 dismiss();
             } catch (ValidationException | NotFoundException e) {
                 Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -128,9 +131,12 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
     private void setupDeleteButton() {
         deleteButton.setOnClickListener(v -> {
             try {
-                tierManager.removeTier(getArguments().getInt(ARG_TIER_ID));
+                tierListCoordinator.removeTierAndMoveAllItemsToUnranked(getArguments().getInt(ARG_TIER_ID));
+                listener.onTierEditorFragmentDeleteSuccess();
+                dismiss();
             } catch (ValidationException | NotFoundException e) {
                 Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                dismiss();
             }
         });
     }
@@ -140,6 +146,9 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
     }
 
     public interface TierEditorFragmentActionListener {
-        void onTierEditorFragmentActionListener();
+        void onTierEditorFragmentEditSuccess();
+
+        void onTierEditorFragmentDeleteSuccess();
+
     }
 }

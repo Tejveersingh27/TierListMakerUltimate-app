@@ -170,9 +170,15 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     }
 
     @Override
-    public void onTierEditorFragmentActionListener() {
+    public void onTierEditorFragmentEditSuccess() {
         refreshList();
     }
+
+    @Override
+    public void onTierEditorFragmentDeleteSuccess() {
+        refreshList();
+    }
+
 
     // Moves an item to a target tier
     private void moveItem(int itemId, int targetTierId) {
