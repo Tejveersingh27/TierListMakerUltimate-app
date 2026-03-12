@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,22 +20,24 @@ import app.TierListMakerUltimate.business.services.IItemPlacementManager;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
+import app.TierListMakerUltimate.presentation.fragments.TierEditorFragment;
 import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
+import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener {
+public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener {
     // Static Variables
     private static int tierlistID = 0;                   // The value of the current tierlist ID. If 1 then default data is loaded.
+    private static String tierlistName;             // The name of the current tierlist.
     private static final String TAG = "epic_games";     // Used for debugging
 
     // Instance Variables
     private ITierManager tierManager;
     private TierAdapter tierAdapter;
-    private TierItemCreationFragment tierItemCreationFragment;
     private ImageHelper imageHelper = new ImageHelper(this);
 
     private TierItemAdapter unrankedAdapter;
@@ -57,14 +60,17 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
         Intent intent = getIntent();
         tierlistID = intent.getIntExtra(INTENT_TIER_LIST_ID, 0);
+        tierlistName = intent.getStringExtra(INTENT_TIER_LIST_NAME);
+
 
         // id of 0 means default fallback tierlist is generated
         if (tierlistID == 0)
             initializeDefaultData();
 
         setupRecyclerView();
-        setupAddButton();
-
+        setupAddItemButton();
+        setupAddTierButton();
+        ((TextView) menuItems.get("tierListTitle")).setText(tierlistName);
         refreshList();
     }
 
@@ -133,17 +139,13 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         unrankedItems.setAdapter(unrankedAdapter);
     }
 
-    private void setupTierItemCreationFragment() {
-        tierItemCreationFragment = TierItemCreationFragment.newInstance(tierlistID);
-        tierItemCreationFragment.setUpListener(this);
-        tierItemCreationFragment.show(getSupportFragmentManager(), "");
-    }
-
     // Implement these later
 
     // Opens the tier settings menu
     private void openTierEditor(Tier tier) {
-        return;
+        TierEditorFragment fragment = TierEditorFragment.newInstance(tier.getId());
+        fragment.setUpListener(this);
+        showSingleDialog(fragment, FRAGMENT_TIER_EDITOR);
     }
 
     // Should delete tier and move all items in that tier to unranked
@@ -153,9 +155,26 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
 
     // Open tier item creation fragment
-    private void setupAddButton() {
+    private void setupAddItemButton() {
         menuItems.get("plusIconItem").setOnClickListener(v -> {
-            setupTierItemCreationFragment();
+            TierItemCreationFragment fragment = TierItemCreationFragment.newInstance(tierlistID);
+            fragment.setUpListener(this);
+            showSingleDialog(fragment, FRAGMENT_TIER_ITEM_CREATION);
+        });
+    }
+
+    private void showSingleDialog(androidx.fragment.app.DialogFragment fragment, String tag) {
+        if (getSupportFragmentManager().findFragmentByTag(tag) != null) {
+            return; // It's already on screen, do nothing!
+        }
+        fragment.show(getSupportFragmentManager(), tag);
+    }
+
+    // Add new default tier
+    private void setupAddTierButton() {
+        menuItems.get("plusIcon").setOnClickListener(v -> {
+            tierManager.createDefaultTier(tierlistID);
+            refreshList();
         });
     }
 
@@ -163,6 +182,16 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     // Save tier item
     @Override
     public void onTierItemCreatedSuccessfully() {
+        refreshList();
+    }
+
+    @Override
+    public void onTierEditorFragmentEditSuccess() {
+        refreshList();
+    }
+
+    @Override
+    public void onTierEditorFragmentDeleteSuccess() {
         refreshList();
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.PersistenceException;
+import app.TierListMakerUltimate.business.exception.ImageException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
@@ -31,7 +31,7 @@ public class ItemPlacementManager implements IItemPlacementManager {
     }
 
     @Override
-    public TierItem createItem(int tierId, String name, String description, InputStream inputStream, String extension) throws ValidationException, PersistenceException {
+    public TierItem createItem(int tierId, String name, String description, InputStream inputStream, String extension) throws ValidationException, ImageException {
         String imagePath = storeImage(inputStream, extension);
         return createItem(imagePath, name, tierId, description);
     }
@@ -70,7 +70,7 @@ public class ItemPlacementManager implements IItemPlacementManager {
     }
 
     @Override
-    public void updateItem(TierItem updatedItem, InputStream inputStream, String extension) throws ValidationException, NotFoundException, PersistenceException {
+    public void updateItem(TierItem updatedItem, InputStream inputStream, String extension) throws ValidationException, NotFoundException, ImageException {
         validator.validateUpdateItem(updatedItem);
         getVerifiedItem(updatedItem.getId());
         String imagePath = storeImage(inputStream, extension);
@@ -87,7 +87,7 @@ public class ItemPlacementManager implements IItemPlacementManager {
         try {
             return imageFilePersistence.saveImage(inputStream, extension);
         } catch (IOException ioe) {
-            throw new PersistenceException(ERROR_STORING_IMAGE);
+            throw new ImageException(ERROR_STORING_IMAGE);
         }
     }
 

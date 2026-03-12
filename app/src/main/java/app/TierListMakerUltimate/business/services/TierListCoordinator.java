@@ -7,7 +7,7 @@ import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.PersistenceException;
+import app.TierListMakerUltimate.business.exception.ImageException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
@@ -37,7 +37,8 @@ public class TierListCoordinator implements ITierListCoordinator {
         return tierList;
     }
 
-    public TierList createTierListWithDefaults(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException, PersistenceException {
+    @Override
+    public TierList createTierListWithDefaults(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException, ImageException {
         TierList tierList = tierListManager.createTierList(name, isTemplate, inputStream, extension);
         createDefaultTiers(tierList.getId());
         return tierList;
@@ -52,14 +53,13 @@ public class TierListCoordinator implements ITierListCoordinator {
 
     @Override
     public void removeTierList(int tierListId) throws ValidationException, NotFoundException {
-        tierListManager.removeTierList(tierListId);
         for (Tier tier : tierManager.getTiersForList(tierListId)) {
-            tierManager.removeTier(tier.getId());
-
             for (TierItem item : itemPlacementManager.getItemsForTier(tier.getId())) {
                 itemPlacementManager.removeItem(item.getId());
             }
+            tierManager.removeTier(tier.getId());
         }
+        tierListManager.removeTierList(tierListId);
     }
 
     @Override
@@ -91,6 +91,16 @@ public class TierListCoordinator implements ITierListCoordinator {
                 itemPlacementManager.copyItem(item.getId(), newUnrankedTier.getId());
             }
         }
+    }
+
+    @Override
+    public void removeTierAndMoveAllItemsToUnranked(int tierId) throws ValidationException, NotFoundException {
+        List<TierItem> items = itemPlacementManager.getItemsForTier(tierId);
+        Tier tier = tierManager.getTier(tierId);
+        for (TierItem item : items) {
+            itemPlacementManager.moveItemToTier(item.getId(), tierManager.getUnrankedTierForList(tier.getTierListId()).getId());
+        }
+        tierManager.removeTier(tierId);
     }
 
 }

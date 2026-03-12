@@ -1,7 +1,6 @@
 package app.TierListMakerUltimate.presentation.fragments;
 
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.ERROR_LOADING_IMAGE;
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.NO_IMAGE_SELECTED;
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,8 +25,12 @@ import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
 
-public class TierListCreationFragment extends BaseCreationFragment {
+public class TierListCreationFragment extends BaseImageCreationFragment {
     private TierListCreationFragmentActionListener listener;
+
+    // Note to Grader: This is only relevant to this fragment.
+    // Needed to pass the id to the fragment due to how fragments work.
+    // So, putting it in constants wouldn't make sense.
     private static final String ARG_TIERLIST_ID = "ID";
     private ITierListCoordinator tierListCoordinator;
     private ITierListManager tierListManager;
@@ -66,7 +69,7 @@ public class TierListCreationFragment extends BaseCreationFragment {
         setupViews(view);
 
         if (getArguments() != null && getArguments().containsKey(ARG_TIERLIST_ID)) {
-            loadExistingTierList(getArguments().getInt(ARG_TIERLIST_ID));
+            loadExistingTierList(getTierlistId());
         }
     }
 
@@ -102,7 +105,7 @@ public class TierListCreationFragment extends BaseCreationFragment {
         boolean isEditMode = getArguments() != null && getArguments().containsKey(ARG_TIERLIST_ID);
 
         if (selectImageUri == null) {
-            Toast.makeText(requireContext(), NO_IMAGE_SELECTED, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.no_image_selected, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -114,7 +117,7 @@ public class TierListCreationFragment extends BaseCreationFragment {
             }
             dismiss();
         } catch (IOException e) {
-            Toast.makeText(requireContext(), ERROR_LOADING_IMAGE, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.error_loading_image, Toast.LENGTH_SHORT).show();
         } catch (ValidationException | NotFoundException e) {
             Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -130,7 +133,7 @@ public class TierListCreationFragment extends BaseCreationFragment {
     }
 
     private void updateExistingTierList(String name) throws IOException, ValidationException, NotFoundException {
-        int id = getArguments().getInt(ARG_TIERLIST_ID);
+        int id = getTierlistId();
         TierList existing = tierListManager.getTierList(id);
 
         TierList updatedList = new TierList(existing.getId(), name, existing.getThumbnailPath(), existing.isTemplate());
@@ -151,6 +154,10 @@ public class TierListCreationFragment extends BaseCreationFragment {
 
     public void setUpListener(TierListCreationFragmentActionListener listener) {
         this.listener = listener;
+    }
+
+    private int getTierlistId() {
+        return getArguments().getInt(ARG_TIERLIST_ID);
     }
 
     public interface TierListCreationFragmentActionListener {

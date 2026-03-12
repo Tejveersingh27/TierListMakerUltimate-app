@@ -32,10 +32,6 @@
         <activity
             android:name="app.TierListMakerUltimate.presentation.activities.TemplateBrowserActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="app.TierListMakerUltimate.presentation.TierListActivity"
-            android:screenOrientation="portrait" />
-
     </application>
 
 </manifest>
