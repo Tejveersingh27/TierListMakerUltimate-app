@@ -4,7 +4,6 @@ import static app.TierListMakerUltimate.presentation.constants.PresentationConst
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
+import app.TierListMakerUltimate.business.exception.BusinessException;
 import app.TierListMakerUltimate.business.services.IItemPlacementManager;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
@@ -28,20 +28,19 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener, TierItemDragController.DragDropListener {
-    // Static Variables
-    private static int tierlistID = 0;                   // The value of the current tierlist ID. If 1 then default data is loaded.
-    private static String tierlistName;             // The name of the current tierlist.
-    private static final String TAG = "epic_games";     // Used for debugging
+public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener, TierItemDragController.DragDropListener, TierAdapter.TierActions {
+    private int tierlistID;
+    private String tierlistName;
 
     // Instance Variables
     private ITierManager tierManager;
     private TierAdapter tierAdapter;
-    private ImageHelper imageHelper = new ImageHelper(this);
+    private ImageHelper imageHelper;
 
     private TierItemAdapter unrankedAdapter;
     private IItemPlacementManager placementManager;
 
+    // Views
     TextView tierListTitle;
     ImageButton addTierItemButton;
     ImageButton tierConfigButton;
@@ -55,28 +54,28 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        imageHelper = new ImageHelper(this);
         TierListMakerUltimate app = (TierListMakerUltimate) getApplication();
 
         tierManager = app.getTierManager();
         placementManager = app.getItemPlacementManager();
 
 
-        getMenuItems();
-
         Intent intent = getIntent();
         tierlistID = intent.getIntExtra(INTENT_TIER_LIST_ID, 0);
         tierlistName = intent.getStringExtra(INTENT_TIER_LIST_NAME);
-
+        bindViews();
         tierListTitle.setText(tierlistName);
 
-        setupRecyclerView();
+        setupTiersRecycler();
+        setupUnrankedRecycler();
         setupAddItemButton();
         setupAddTierButton();
         refreshList();
     }
 
     // Puts any relevant menu items in a hashmap for easy access.
-    private void getMenuItems() {
+    private void bindViews() {
         tierListTitle = findViewById(R.id.tierListTitle);
         addTierItemButton = findViewById(R.id.plusIconItem);
         addTierButton = findViewById(R.id.plusIcon);
@@ -85,38 +84,19 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         unrankedItemsRecycler = findViewById(R.id.itemHolderUnranked);
     }
 
-    private void setupRecyclerView() {
-        tierAdapter = new TierAdapter(new TierAdapter.TierActions() {
-            @Override
-            public void openTierSettings(Tier tier) {
-                openTierEditor(tier);
-            }
+    private void setupTiersRecycler() {
+        tierAdapter = new TierAdapter(this, imageHelper);
+        tierRecycler.setLayoutManager(new LinearLayoutManager(this));
+        tierRecycler.setAdapter(tierAdapter);
 
-            @Override
-            public void onDeleteTier(Tier tier) {
-                confirmDeleteTier(tier);
-            }
+    }
 
-            @Override
-            public void onItemDropped(int itemId, int targetTierId) {
-                moveItem(itemId, targetTierId);
-            }
-
-            public void moveTier(int direction) {
-                shiftTier(direction);
-            }
-        }, imageHelper);
-
+    private void setupUnrankedRecycler() {
         unrankedAdapter = new TierItemAdapter(imageHelper);
 
         TierItemDragController unrankedDragController = new TierItemDragController(this, tierManager.getUnrankedTierForList(tierlistID).getId());
 
         unrankedItemsRecycler.setOnDragListener(unrankedDragController);
-
-
-        tierRecycler.setLayoutManager(new LinearLayoutManager(this));
-        tierRecycler.setAdapter(tierAdapter);
-
         unrankedItemsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         unrankedItemsRecycler.setAdapter(unrankedAdapter);
     }
@@ -147,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     private void showSingleDialog(androidx.fragment.app.DialogFragment fragment, String tag) {
         if (getSupportFragmentManager().findFragmentByTag(tag) != null) {
-            return; // It's already on screen, do nothing!
+            return;
         }
         fragment.show(getSupportFragmentManager(), tag);
     }
@@ -161,34 +141,12 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     }
 
 
-    // Save tier item
-    @Override
-    public void onTierItemCreatedSuccessfully() {
-        refreshList();
-    }
-
-    @Override
-    public void onTierEditorFragmentEditSuccess() {
-        refreshList();
-    }
-
-    @Override
-    public void onTierEditorFragmentDeleteSuccess() {
-        refreshList();
-    }
-
-    @Override
-    public void onItemDropped(int itemId, int targetTierId) {
-        moveItem(itemId, targetTierId);
-    }
-
-
     // Moves an item to a target tier
     private void moveItem(int itemId, int targetTierId) {
         try {
             placementManager.moveItemToTier(itemId, targetTierId);
             refreshList();
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             Toast.makeText(this, "Error moving item: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -219,6 +177,52 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
         tierAdapter.setTiers(tiers, tierItemsMap);
 
+    }
+
+
+    // Tier Adapter Overrides
+    @Override
+    public void openTierSettings(Tier tier) {
+        openTierEditor(tier);
+    }
+
+    @Override
+    public void onDeleteTier(Tier tier) {
+        confirmDeleteTier(tier);
+    }
+
+    @Override
+    public void onItemDroppedTierOnTier(int itemId, int targetTierId) {
+        moveItem(itemId, targetTierId);
+    }
+
+    @Override
+    public void moveTier(int direction) {
+        shiftTier(direction);
+    }
+
+    // Tier Item Creation Fragment Overrides
+    @Override
+    public void onTierItemCreatedSuccessfully() {
+        refreshList();
+    }
+
+
+    // Tier Editor Fragment Overrides
+    @Override
+    public void onTierEditorFragmentEditSuccess() {
+        refreshList();
+    }
+
+    @Override
+    public void onTierEditorFragmentDeleteSuccess() {
+        refreshList();
+    }
+
+    // Drag Controller Overrides
+    @Override
+    public void onItemDropped(int itemId, int targetTierId) {
+        moveItem(itemId, targetTierId);
     }
 
 }

@@ -1,7 +1,6 @@
 package app.TierListMakerUltimate.presentation;
 
 import android.graphics.Color;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import java.util.Map;
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
-import app.TierListMakerUltimate.presentation.TierItemAdapter;
 import app.TierListMakerUltimate.presentation.controllers.TierItemDragController;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
@@ -133,13 +131,13 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
 
     @Override
     public void onItemDropped(int itemId, int targetTierId) {
-        actions.onItemDropped(itemId, targetTierId);
+        actions.onItemDroppedTierOnTier(itemId, targetTierId);
     }
 
     public interface TierActions {
         void onDeleteTier(Tier tier);
 
-        void onItemDropped(int itemId, int targetTierId);
+        void onItemDroppedTierOnTier(int itemId, int targetTierId);
 
         void openTierSettings(Tier tier);
 
