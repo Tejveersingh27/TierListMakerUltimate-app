@@ -24,7 +24,7 @@ import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
 
-public class TierItemCreationFragment extends BaseCreationFragment {
+public class TierItemCreationFragment extends BaseImageCreationFragment {
     private static final String ARG_TIERLIST_ID = "ID";
 
     private TextInputLayout descriptionInput;

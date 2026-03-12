@@ -26,7 +26,7 @@ import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
 
-public class TierListCreationFragment extends BaseCreationFragment {
+public class TierListCreationFragment extends BaseImageCreationFragment {
     private TierListCreationFragmentActionListener listener;
     private static final String ARG_TIERLIST_ID = "ID";
     private ITierListCoordinator tierListCoordinator;

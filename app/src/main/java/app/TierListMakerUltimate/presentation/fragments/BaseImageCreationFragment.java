@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import app.TierListMakerUltimate.R;
 
-public abstract class BaseCreationFragment extends BottomSheetDialogFragment {
+public abstract class BaseImageCreationFragment extends BottomSheetDialogFragment {
     protected ActivityResultLauncher<PickVisualMediaRequest> imagePicker;
     protected ImageButton selectImageButton;
     protected Button confirmButton;
