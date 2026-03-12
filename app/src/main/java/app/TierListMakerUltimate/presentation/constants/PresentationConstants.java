@@ -10,4 +10,8 @@ public class PresentationConstants {
 
     // Paths and Prefixes
     public static final String ANDROID_RESOURCE_PREFIX = "android.resource://";
+
+    // Selections
+    public static int NOT_SELECTED_STROKE_WIDTH = 0;
+    public static int SELECTED_STROKE_WIDTH = 10;
 }

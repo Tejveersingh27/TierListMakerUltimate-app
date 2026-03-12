@@ -19,6 +19,7 @@ import app.TierListMakerUltimate.business.services.IItemPlacementManager;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
+import app.TierListMakerUltimate.presentation.fragments.TierEditorFragment;
 import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener {
+public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener {
     // Static Variables
     private static int tierlistID = 0;                   // The value of the current tierlist ID. If 1 then default data is loaded.
     private static final String TAG = "epic_games";     // Used for debugging
@@ -143,7 +144,9 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     // Opens the tier settings menu
     private void openTierEditor(Tier tier) {
-        return;
+        TierEditorFragment fragment = TierEditorFragment.newInstance(tier.getId());
+        fragment.setUpListener(this);
+        fragment.show(getSupportFragmentManager(), "");
     }
 
     // Should delete tier and move all items in that tier to unranked
@@ -166,6 +169,10 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         refreshList();
     }
 
+    @Override
+    public void onTierEditorFragmentActionListener() {
+        refreshList();
+    }
 
     // Moves an item to a target tier
     private void moveItem(int itemId, int targetTierId) {

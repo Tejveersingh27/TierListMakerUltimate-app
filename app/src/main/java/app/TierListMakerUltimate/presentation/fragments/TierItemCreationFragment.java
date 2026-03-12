@@ -1,7 +1,6 @@
 package app.TierListMakerUltimate.presentation.fragments;
 
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.ERROR_LOADING_IMAGE;
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.NO_IMAGE_SELECTED;
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -72,7 +71,7 @@ public class TierItemCreationFragment extends BaseCreationFragment {
         super.onViewCreated(view, savedInstanceState);
         setupViews(view);
     }
-    
+
 
     private void setupViews(View view) {
         descriptionInput = view.findViewById(R.id.descriptionInputLayout);

@@ -87,4 +87,7 @@
     <string name="item_name">Item Name</string>
     <string name="default_toolbar_title">TierList</string>
     <string name="configure_tier_list">configure tier list</string>
+    <string name="choose_a_color">Choose a Color</string>
+    <string name="edit_tier">Edit Tier</string>
+    <string name="tier_label">Tier Label</string>
 </resources>
