@@ -88,7 +88,9 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
     private void setupAddButton() {
         Button createButton = findViewById(R.id.createTierListButton);
         createButton.setOnClickListener(v -> {
-            showFragment();
+            fragment = new TierListCreationFragment();
+            fragment.setUpListener(this);
+            fragment.show(getSupportFragmentManager(), "");
         });
     }
 
@@ -107,6 +109,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
     private void switchToTierListEditor(TierList tierList) {
         Intent intent = new Intent(TemplateBrowserActivity.this, MainActivity.class);
         intent.putExtra(INTENT_TIER_LIST_ID, tierList.getId());
+        intent.putExtra(INTENT_TIER_LIST_NAME, tierList.getName());
         startActivity(intent);
     }
 }

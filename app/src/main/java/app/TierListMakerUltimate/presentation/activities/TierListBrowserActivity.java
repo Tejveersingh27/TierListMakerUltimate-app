@@ -1,6 +1,6 @@
 package app.TierListMakerUltimate.presentation.activities;
 
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.INTENT_TIER_LIST_ID;
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,13 +63,13 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new TierListBrowserAdapter(tierListManager.getAllTierLists(), this);
+        adapter = new TierListBrowserAdapter(tierListManager.getAllNonTemplateTierLists(), this);
         recyclerView.setAdapter(adapter);
     }
 
     private void refreshList() {
         if (adapter != null) {
-            List<TierList> updatedList = tierListManager.getAllTierLists();
+            List<TierList> updatedList = tierListManager.getAllNonTemplateTierLists();
             adapter.updateData(updatedList);
         }
     }
@@ -87,19 +87,21 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     public void onEditButtonClick(TierList tierList) {
         Intent intent = new Intent(TierListBrowserActivity.this, MainActivity.class);
         intent.putExtra(INTENT_TIER_LIST_ID, tierList.getId());
+        intent.putExtra(INTENT_TIER_LIST_NAME, tierList.getName());
         startActivity(intent);
     }
 
     @Override
     public void onConfigButtonClick(TierList tierList) {
         TierListCreationFragment fragment = TierListCreationFragment.newInstance(tierList.getId());
+        fragment.setUpListener(this);
         fragment.show(getSupportFragmentManager(), "");
     }
 
     @Override
     public void onDeleteButtonClick(TierList tierList) {
         tierListManager.removeTierList(tierList.getId());
-        adapter.updateData(tierListManager.getAllTierLists());
+        adapter.updateData(tierListManager.getAllNonTemplateTierLists());
     }
 
     @Override

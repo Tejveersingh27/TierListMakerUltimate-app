@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener {
     // Static Variables
     private static int tierlistID = 0;                   // The value of the current tierlist ID. If 1 then default data is loaded.
+    private static String tierlistName;             // The name of the current tierlist.
     private static final String TAG = "epic_games";     // Used for debugging
 
     // Instance Variables
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
         Intent intent = getIntent();
         tierlistID = intent.getIntExtra(INTENT_TIER_LIST_ID, 0);
+        tierlistName = intent.getStringExtra(INTENT_TIER_LIST_NAME);
+
 
         // id of 0 means default fallback tierlist is generated
         if (tierlistID == 0)
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         setupRecyclerView();
         setupAddItemButton();
         setupAddTierButton();
+        ((TextView) menuItems.get("tierListTitle")).setText(tierlistName);
         refreshList();
     }
 
