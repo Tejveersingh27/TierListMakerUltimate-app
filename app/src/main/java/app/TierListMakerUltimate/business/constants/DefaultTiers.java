@@ -9,6 +9,9 @@ public enum DefaultTiers {
     F("F", "#7A0000", false),
     UNRANKED("Unranked", "#808080", true);
 
+    public static final String DEFAULT_NAME = "New Tier";
+    public static final String DEFAULT_COLOR = "#808080";
+
     public final String label;
     public final String color;
     public final boolean isUnranked;

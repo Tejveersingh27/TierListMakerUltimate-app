@@ -2,6 +2,7 @@ package app.TierListMakerUltimate.business.services;
 
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
+import app.TierListMakerUltimate.business.constants.DefaultTiers;
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
@@ -33,6 +34,11 @@ public class TierManager implements ITierManager {
         validator.validateCreateTier(label, color);
         Tier newTier = new Tier(tierListId, label, color, isUnranked);
         return tierStorage.insertTier(tierListId, newTier);
+    }
+
+    @Override
+    public Tier createDefaultTier(int tierListId) {
+        return createTier(tierListId, DefaultTiers.DEFAULT_NAME, DefaultTiers.DEFAULT_COLOR);
     }
 
     @Override
