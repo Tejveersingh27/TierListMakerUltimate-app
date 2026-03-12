@@ -19,6 +19,7 @@ import app.TierListMakerUltimate.business.services.IItemPlacementManager;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
+import app.TierListMakerUltimate.presentation.controllers.TierItemDragController;
 import app.TierListMakerUltimate.presentation.fragments.TierEditorFragment;
 import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener {
+public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener, TierItemDragController.DragDropListener {
     // Static Variables
     private static int tierlistID = 0;                   // The value of the current tierlist ID. If 1 then default data is loaded.
     private static String tierlistName;             // The name of the current tierlist.
@@ -108,25 +109,9 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
         unrankedAdapter = new TierItemAdapter(imageHelper);
 
-        unrankedItemsRecycler.setOnDragListener((v, event) -> {
-            switch (event.getAction()) {
-                case DragEvent.ACTION_DRAG_STARTED:
-                    return true;
-                case DragEvent.ACTION_DRAG_ENTERED:
-                    v.setAlpha(0.7f);
-                    return true;
-                case DragEvent.ACTION_DRAG_EXITED:
-                case DragEvent.ACTION_DRAG_ENDED:
-                    v.setAlpha(1.0f);
-                    return true;
-                case DragEvent.ACTION_DROP:
-                    String itemIdStr = event.getClipData().getItemAt(0).getText().toString();
-                    int itemId = Integer.parseInt(itemIdStr);
-                    moveItem(itemId, tierManager.getUnrankedTierForList(tierlistID).getId());
-                    return true;
-            }
-            return false;
-        });
+        TierItemDragController unrankedDragController = new TierItemDragController(this, tierManager.getUnrankedTierForList(tierlistID).getId());
+
+        unrankedItemsRecycler.setOnDragListener(unrankedDragController);
 
 
         tierRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -190,6 +175,11 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     @Override
     public void onTierEditorFragmentDeleteSuccess() {
         refreshList();
+    }
+
+    @Override
+    public void onItemDropped(int itemId, int targetTierId) {
+        moveItem(itemId, targetTierId);
     }
 
 

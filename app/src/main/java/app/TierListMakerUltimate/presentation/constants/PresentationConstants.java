@@ -4,7 +4,7 @@ public class PresentationConstants {
     // Intent Keys
     public static final String INTENT_TIER_LIST_ID = "tierListId";
     public static final String INTENT_TIER_LIST_NAME = "tierListName";
-    
+
 
     // Fragment Tags
     public static final String FRAGMENT_TIER_LIST_CREATION = "tierListCreation";
@@ -18,4 +18,6 @@ public class PresentationConstants {
     // Selections
     public static int NOT_SELECTED_STROKE_WIDTH = 0;
     public static int SELECTED_STROKE_WIDTH = 10;
+    public static float NOT_SELECTED_ALPHA = 1.0f;
+    public static float SELECTED_ALPHA = 0.7f;
 }

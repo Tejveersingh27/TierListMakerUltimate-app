@@ -21,9 +21,10 @@ import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.presentation.TierItemAdapter;
+import app.TierListMakerUltimate.presentation.controllers.TierItemDragController;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
-public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder> {
+public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder> implements TierItemDragController.DragDropListener {
     private List<Tier> tiers;                           // List that contains the tiers to be displayed.
     private Map<Integer, List<TierItem>> tierItemsMap;  // Contains a list of all items in use and which tier they are in.
     private TierActions actions;                        // A class which contains functions we can call when a certain event happens.
@@ -55,7 +56,7 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
     public void onBindViewHolder(@NonNull TierViewHolder holder, int position) {
         Tier tier = tiers.get(position);
         List<TierItem> items = tierItemsMap != null ? tierItemsMap.get(tier.getId()) : new ArrayList<>();
-        holder.bind(tier, items, actions);
+        holder.bind(tier, items, actions, new TierItemDragController(this, tier.getId()));
     }
 
     @Override
@@ -71,6 +72,7 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
         private final ImageButton downBtn;
         private final RecyclerView itemsRecyclerView;
         private final TierItemAdapter itemAdapter;
+
 
         public TierViewHolder(@NonNull View itemView, ImageHelper imageHelper) {
             super(itemView);
@@ -89,7 +91,7 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
             itemsRecyclerView.setAdapter(itemAdapter);
         }
 
-        public void bind(Tier tier, List<TierItem> items, TierActions actions) {
+        public void bind(Tier tier, List<TierItem> items, TierActions actions, TierItemDragController dragController) {
             // Set tier label
             tierLabel.setText(tier.getName());
 
@@ -103,28 +105,8 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
             // Set items
             itemAdapter.setItems(items);
 
-            // Setup Drag and Drop
-            tierContainer.setOnDragListener((v, event) -> {
-                switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        return true;
-                    case DragEvent.ACTION_DRAG_ENTERED:
-                        v.setAlpha(0.7f);
-                        return true;
-                    case DragEvent.ACTION_DRAG_EXITED:
-                    case DragEvent.ACTION_DRAG_ENDED:
-                        v.setAlpha(1.0f);
-                        return true;
-                    case DragEvent.ACTION_DROP:
-                        String itemIdStr = event.getClipData().getItemAt(0).getText().toString();
-                        int itemId = Integer.parseInt(itemIdStr);
-                        if (actions != null) {
-                            actions.onItemDropped(itemId, tier.getId());
-                        }
-                        return true;
-                }
-                return false;
-            });
+            tierContainer.setOnDragListener(dragController);
+
 
             // Settings button
             settingBtn.setOnClickListener(v -> {
@@ -147,6 +129,11 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
                 }
             });
         }
+    }
+
+    @Override
+    public void onItemDropped(int itemId, int targetTierId) {
+        actions.onItemDropped(itemId, targetTierId);
     }
 
     public interface TierActions {
