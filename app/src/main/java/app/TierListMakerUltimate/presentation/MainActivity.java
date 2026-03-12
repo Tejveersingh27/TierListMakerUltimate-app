@@ -3,10 +3,9 @@ package app.TierListMakerUltimate.presentation;
 import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.DragEvent;
-import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +21,6 @@ import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.presentation.fragments.TierEditorFragment;
 import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
-import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
 import java.util.List;
@@ -42,7 +40,14 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     private TierItemAdapter unrankedAdapter;
     private IItemPlacementManager placementManager;
-    private HashMap<String, View> menuItems;
+
+    TextView tierListTitle;
+    ImageButton addTierItemButton;
+    ImageButton tierConfigButton;
+    RecyclerView tierRecycler;
+    RecyclerView unrankedItemsRecycler;
+    ImageButton addTierButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         tierManager = app.getTierManager();
         placementManager = app.getItemPlacementManager();
 
-        menuItems = new HashMap<>();
 
         getMenuItems();
 
@@ -62,28 +66,22 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         tierlistID = intent.getIntExtra(INTENT_TIER_LIST_ID, 0);
         tierlistName = intent.getStringExtra(INTENT_TIER_LIST_NAME);
 
-
-        // id of 0 means default fallback tierlist is generated
-        if (tierlistID == 0)
-            initializeDefaultData();
+        tierListTitle.setText(tierlistName);
 
         setupRecyclerView();
         setupAddItemButton();
         setupAddTierButton();
-        ((TextView) menuItems.get("tierListTitle")).setText(tierlistName);
         refreshList();
     }
 
     // Puts any relevant menu items in a hashmap for easy access.
     private void getMenuItems() {
-        menuItems.put("mainLayout", findViewById(R.id.mainLayout));
-        menuItems.put("tierListTitle", findViewById(R.id.tierListTitle));
-        menuItems.put("plusIcon", findViewById(R.id.plusIcon));
-        menuItems.put("tierSettings", findViewById(R.id.tierSettings));
-        menuItems.put("tierContainer", findViewById(R.id.tierContainer));
-        menuItems.put("unrankedContainer", findViewById(R.id.unrankedContainer));
-        menuItems.put("plusIconItem", findViewById(R.id.plusIconItem));
-        menuItems.put("unrankedItems", findViewById(R.id.itemHolderUnranked));
+        tierListTitle = findViewById(R.id.tierListTitle);
+        addTierItemButton = findViewById(R.id.plusIconItem);
+        addTierButton = findViewById(R.id.plusIcon);
+        tierConfigButton = findViewById(R.id.tierSettings);
+        tierRecycler = findViewById(R.id.tierContainer);
+        unrankedItemsRecycler = findViewById(R.id.itemHolderUnranked);
     }
 
     private void setupRecyclerView() {
@@ -110,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
         unrankedAdapter = new TierItemAdapter(imageHelper);
 
-        menuItems.get("unrankedContainer").setOnDragListener((v, event) -> {
+        unrankedItemsRecycler.setOnDragListener((v, event) -> {
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
                     return true;
@@ -130,13 +128,12 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
             return false;
         });
 
-        RecyclerView tierContainer = (RecyclerView) menuItems.get("tierContainer");
-        tierContainer.setLayoutManager(new LinearLayoutManager(this));
-        tierContainer.setAdapter(tierAdapter);
 
-        RecyclerView unrankedItems = (RecyclerView) menuItems.get("unrankedItems");
-        unrankedItems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        unrankedItems.setAdapter(unrankedAdapter);
+        tierRecycler.setLayoutManager(new LinearLayoutManager(this));
+        tierRecycler.setAdapter(tierAdapter);
+
+        unrankedItemsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        unrankedItemsRecycler.setAdapter(unrankedAdapter);
     }
 
     // Implement these later
@@ -156,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     // Open tier item creation fragment
     private void setupAddItemButton() {
-        menuItems.get("plusIconItem").setOnClickListener(v -> {
+        addTierItemButton.setOnClickListener(v -> {
             TierItemCreationFragment fragment = TierItemCreationFragment.newInstance(tierlistID);
             fragment.setUpListener(this);
             showSingleDialog(fragment, FRAGMENT_TIER_ITEM_CREATION);
@@ -172,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     // Add new default tier
     private void setupAddTierButton() {
-        menuItems.get("plusIcon").setOnClickListener(v -> {
+        addTierButton.setOnClickListener(v -> {
             tierManager.createDefaultTier(tierlistID);
             refreshList();
         });
@@ -238,39 +235,28 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/dawnfm", 6, atierid, "", "Sample Item 6");
         placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/hut", 7, stierid, "", "Sample Item 7");
 
-        // Other placeholders to showcase the unranked items and lower tiers
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", "", ftierid, "Sample Item 8");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", "", unplacedItemsId, "Sample Item 9");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", "", unplacedItemsId, "Sample Item 10");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", "", unplacedItemsId, "Sample Item 11");
-        placementManager.createItem("android.resource://app.TierListMakerUltimate/drawable/placeholder", "", unplacedItemsId, "Sample Item 12");
+
     }
 
     // Refreshes the tierlist to reflect item movements.
     private void refreshList() {
-        // Get all tiers for this tier list
+
         List<Tier> tiers = tierManager.getTiersForList(tierlistID);
-        int unrankedID = -1;
-        int unrankedIndex = -1;
-        int i = -1;
-        // Get items for each tier
+
+        // Set items for unranked
+        int unrankedId = tierManager.getUnrankedTierForList(tierlistID).getId();
+        unrankedAdapter.setItems(placementManager.getItemsForTier(unrankedId));
+
+        // Set items for non-unranked
         Map<Integer, List<TierItem>> tierItemsMap = new HashMap<>();
         for (Tier tier : tiers) {
-            i += 1;
-            List<TierItem> items = placementManager.getItemsForTier(tier.getId());
-            if (tier.isUnranked()) {
-                unrankedAdapter.setItems(items);
-                unrankedID = tier.getId();
-                unrankedIndex = i;
-            } else
-                tierItemsMap.put(tier.getId(), items);
+            if (tier.getId() != unrankedId) {
+                tierItemsMap.put(tier.getId(), placementManager.getItemsForTier(tier.getId()));
+            }
         }
 
-        if (unrankedID != -1) {
-            tierItemsMap.remove(unrankedID);
-            tiers.remove(unrankedIndex);
-        }
-        // Update adapter
         tierAdapter.setTiers(tiers, tierItemsMap);
+
     }
+
 }
