@@ -2,7 +2,6 @@ package app.TierListMakerUltimate.persistence;
 
 import android.content.Context;
 
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,12 +12,10 @@ public class AndroidImageFilePersistence implements ImageFilePersistence {
     private Context context;
     private IUUIDGenerator uuidGenerator;
 
-
     public AndroidImageFilePersistence(Context context, IUUIDGenerator uuidGenerator) {
         this.context = context;
         this.uuidGenerator = uuidGenerator;
     }
-
 
     @Override
     public String saveImage(InputStream imageFile, String extension) throws IOException {
@@ -38,4 +35,3 @@ public class AndroidImageFilePersistence implements ImageFilePersistence {
         context.deleteFile(fileName);
     }
 }
-

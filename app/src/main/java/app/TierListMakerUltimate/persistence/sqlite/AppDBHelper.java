@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-final class AppDBHelper extends SQLiteOpenHelper {
+public class AppDBHelper extends SQLiteOpenHelper {
     static final String DB_NAME = "TierListMakerUltimate.db";
     static final int DB_VERSION = 1;
 

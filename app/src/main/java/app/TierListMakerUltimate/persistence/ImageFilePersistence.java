@@ -19,6 +19,3 @@ public interface ImageFilePersistence {
      */
     void deleteImage(String fileName);
 }
-
-
-
