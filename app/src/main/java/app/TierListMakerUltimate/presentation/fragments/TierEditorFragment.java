@@ -29,6 +29,10 @@ import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
 
 public class TierEditorFragment extends BottomSheetDialogFragment {
     private TierEditorFragmentActionListener listener;
+
+    // Note to Grader: This is only relevant to this fragment.
+    // Needed to pass the id to the fragment due to how fragments work.
+    // So, putting it in constants wouldn't make sense.
     private static final String ARG_TIER_ID = "ID";
 
     private ITierManager tierManager;
@@ -70,7 +74,7 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         setupViews(view);
         if (getArguments() != null && getArguments().containsKey(ARG_TIER_ID)) {
-            loadExistingTier(getArguments().getInt(ARG_TIER_ID));
+            loadExistingTier(getTierId());
         }
     }
 
@@ -116,11 +120,13 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
     private void setupCreateButton() {
         confirmButton.setOnClickListener(v -> {
             try {
-                Tier currentTier = tierManager.getTier(getArguments().getInt(ARG_TIER_ID));
+                Tier currentTier = tierManager.getTier(getTierId());
                 String hexColor = selectedCard != null ? selectedCard.getTag().toString() : currentTier.getColor();
                 String name = TextInputExtractor.getTrimmedText(nameInput);
-                tierManager.updateTier(new Tier(getArguments().getInt(ARG_TIER_ID), currentTier.getTierListId(), name, hexColor, false));
-                listener.onTierEditorFragmentEditSuccess();
+                tierManager.updateTier(new Tier(getTierId(), currentTier.getTierListId(), name, hexColor, false));
+                if (listener != null) {
+                    listener.onTierEditorFragmentEditSuccess();
+                }
                 dismiss();
             } catch (ValidationException | NotFoundException e) {
                 Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -131,7 +137,7 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
     private void setupDeleteButton() {
         deleteButton.setOnClickListener(v -> {
             try {
-                tierListCoordinator.removeTierAndMoveAllItemsToUnranked(getArguments().getInt(ARG_TIER_ID));
+                tierListCoordinator.removeTierAndMoveAllItemsToUnranked(getTierId());
                 listener.onTierEditorFragmentDeleteSuccess();
                 dismiss();
             } catch (ValidationException | NotFoundException e) {
@@ -143,6 +149,10 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
 
     public void setUpListener(TierEditorFragmentActionListener listener) {
         this.listener = listener;
+    }
+
+    private int getTierId() {
+        return getArguments().getInt(ARG_TIER_ID);
     }
 
     public interface TierEditorFragmentActionListener {

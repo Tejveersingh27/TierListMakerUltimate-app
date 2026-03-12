@@ -37,6 +37,7 @@ public class TierListCoordinator implements ITierListCoordinator {
         return tierList;
     }
 
+    @Override
     public TierList createTierListWithDefaults(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException, ImageException {
         TierList tierList = tierListManager.createTierList(name, isTemplate, inputStream, extension);
         createDefaultTiers(tierList.getId());
@@ -52,14 +53,13 @@ public class TierListCoordinator implements ITierListCoordinator {
 
     @Override
     public void removeTierList(int tierListId) throws ValidationException, NotFoundException {
-        tierListManager.removeTierList(tierListId);
         for (Tier tier : tierManager.getTiersForList(tierListId)) {
-            tierManager.removeTier(tier.getId());
-
             for (TierItem item : itemPlacementManager.getItemsForTier(tier.getId())) {
                 itemPlacementManager.removeItem(item.getId());
             }
+            tierManager.removeTier(tier.getId());
         }
+        tierListManager.removeTierList(tierListId);
     }
 
     @Override

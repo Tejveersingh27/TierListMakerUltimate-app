@@ -22,6 +22,7 @@ import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.presentation.fragments.TierEditorFragment;
 import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
+import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
 import java.util.List;
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     // Instance Variables
     private ITierManager tierManager;
     private TierAdapter tierAdapter;
-    private TierItemCreationFragment tierItemCreationFragment;
     private ImageHelper imageHelper = new ImageHelper(this);
 
     private TierItemAdapter unrankedAdapter;
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     private void openTierEditor(Tier tier) {
         TierEditorFragment fragment = TierEditorFragment.newInstance(tier.getId());
         fragment.setUpListener(this);
-        fragment.show(getSupportFragmentManager(), "");
+        showSingleDialog(fragment, FRAGMENT_TIER_EDITOR);
     }
 
     // Should delete tier and move all items in that tier to unranked
@@ -157,10 +157,17 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     // Open tier item creation fragment
     private void setupAddItemButton() {
         menuItems.get("plusIconItem").setOnClickListener(v -> {
-            tierItemCreationFragment = TierItemCreationFragment.newInstance(tierlistID);
-            tierItemCreationFragment.setUpListener(this);
-            tierItemCreationFragment.show(getSupportFragmentManager(), "");
+            TierItemCreationFragment fragment = TierItemCreationFragment.newInstance(tierlistID);
+            fragment.setUpListener(this);
+            showSingleDialog(fragment, FRAGMENT_TIER_ITEM_CREATION);
         });
+    }
+
+    private void showSingleDialog(androidx.fragment.app.DialogFragment fragment, String tag) {
+        if (getSupportFragmentManager().findFragmentByTag(tag) != null) {
+            return; // It's already on screen, do nothing!
+        }
+        fragment.show(getSupportFragmentManager(), tag);
     }
 
     // Add new default tier
