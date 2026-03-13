@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.business.validation.TierValidator;
@@ -30,21 +31,29 @@ class TierManagerTest {
     }
 
     @Test
-    void createTierSetsIsUnrankedToFalse() {
-        Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
+    void testConstructorNullDependenciesThrowsException() {
+        assertThrows(InitializationException.class, () ->
+            new TierManager(null, new TierValidator()));
 
+        assertThrows(InitializationException.class, () ->
+                    new TierManager(tierStorage, null));
+    }
+
+    @Test
+    void testCreateTierIsInitiallyRanked() {
+        Tier created = tierManager.createTier(1, "S Tier", "#FFD700");
         assertNotNull(created);
-        assertFalse(created.isUnranked(), "Normally created tiers should not be unranked");
+        assertFalse(created.isUnranked());
     }
 
 
     @Test
-    void createTierAssignsIdAndStoresCorrectly() {
-        Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
+    void testCreateTierStoresCorrectData() {
+        Tier created = tierManager.createTier(1, "God Tier", "#FFFFFF");
 
         assertTrue(created.getId() > 0);
         assertNotNull(created);
-        assertEquals("S Tier", created.getName());
+        assertEquals("God Tier", created.getName());
         assertEquals("#FFFFFF", created.getColor());
     }
 
@@ -67,7 +76,7 @@ class TierManagerTest {
     }
 
     @Test
-    void updateTierUpdatesColor() {
+    void testUpdateTierUpdatesColor() {
         Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
         Tier updated = new Tier(created.getId(), created.getTierListId(), created.getName(), "#000000", created.isUnranked());
 
@@ -77,33 +86,34 @@ class TierManagerTest {
     }
 
     @Test
-    void removeTierDeletesTier() {
+    void testRemoveTierDeletesTier() {
         int id = tierManager.createTier(1, "S Tier", "#FFFFFF").getId();
         tierManager.removeTier(id);
 
-        assertThrows(NotFoundException.class, () -> tierManager.getTier(id));
+        assertThrows(NotFoundException.class, () -> {tierManager.getTier(id);
+        });
     }
 
     @Test
-    void getTiersForListReturnsTiersForList() {
-        tierManager.createTier(1, "S Tier", "#FFFFFF");
-        tierManager.createTier(1, "A Tier", "#FFFFFF");
-        tierManager.createTier(2, "B Tier", "#FFFFFF");
+    void testGetTiersForListFiltersByListId() {
+        // Tiers for List 1
+        tierManager.createTier(1, "Tier 1A", "#FF0000");
+        tierManager.createTier(1, "Tier 1B", "#00FF00");
 
-        List<Tier> list = tierManager.getTiersForList(1);
-        assertEquals(2, list.size());
+        tierManager.createTier(2, "Tier 2A", "#0000FF");
+
+        List<Tier> list1Tiers = tierManager.getTiersForList(1);
+        assertEquals(2, list1Tiers.size());
     }
 
     @Test
-    void createTierRejectsEmptyLabel() {
-        assertThrows(ValidationException.class,
-                () -> tierManager.createTier(1, "", "#FFFFFF"));
-    }
-
-    @Test
-    void createTierRejectsInvalidColor() {
-        assertThrows(ValidationException.class,
-                () -> tierManager.createTier(1, "S Tier", "invalid"));
+    void testCreateTierRejectsInvalidInput() {
+        assertThrows(ValidationException.class, () -> {
+            tierManager.createTier(1, "", "#FFFFFF");
+        });
+        assertThrows(ValidationException.class, () -> {
+            tierManager.createTier(1, "S Tier", "not a color");
+        });
     }
 
     @Test
@@ -111,16 +121,36 @@ class TierManagerTest {
         Tier created = tierManager.createTier(1, "Original", "#FFFFFF");
         Tier invalid = new Tier(created.getId(), created.getTierListId(), "", created.getColor(), created.isUnranked());
 
-        assertThrows(ValidationException.class,
-                () -> tierManager.updateTier(invalid));
+        assertThrows(ValidationException.class, () -> {
+            tierManager.updateTier(invalid);
+        });
 
         assertEquals("Original", tierManager.getTier(created.getId()).getName());
     }
 
     @Test
-    void updateTierThrowsExceptionIfNotFound() {
-        Tier nonExistent = new Tier(999, 1, "Ghost", "#000000", false);
+    void updateTierNotFoundThrowsException() {
+        Tier tier = new Tier(888, 1, "Ehhhh", "#000000", false);
 
-        assertThrows(NotFoundException.class, () -> tierManager.updateTier(nonExistent));
+        assertThrows(NotFoundException.class, () -> {
+            tierManager.updateTier(tier);
+        });
+    }
+
+    @Test
+    void testGetTierIfNotFoundThrowsException() {
+        assertThrows(NotFoundException.class, () -> {
+            tierManager.getTier(1234);
+        });
+    }
+
+    @Test
+    void getTiersForListInvalidIdThrowsException() {
+        assertThrows(ValidationException.class, () -> tierManager.getTiersForList(-1));
+    }
+
+    @Test
+    void removeTierNotFoundThrowsException() {
+        assertThrows(NotFoundException.class, () -> tierManager.removeTier(6666));
     }
 }
