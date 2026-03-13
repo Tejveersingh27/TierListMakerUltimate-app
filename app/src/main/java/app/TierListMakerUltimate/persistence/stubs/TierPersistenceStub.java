@@ -37,9 +37,11 @@ public class TierPersistenceStub implements TierPersistence {
                 currentTier.getTierListId(),
                 currentTier.getName(),
                 currentTier.getColor(),
-                currentTier.isUnranked()
+                currentTier.isUnranked(),
+                currentTier.getPosition()
         );
         tiers.put(id, copy);
+
         return copy;
     }
 
@@ -51,11 +53,14 @@ public class TierPersistenceStub implements TierPersistence {
                     currentTier.getTierListId(),
                     currentTier.getName(),
                     currentTier.getColor(),
-                    currentTier.isUnranked()
+                    currentTier.isUnranked(),
+                    currentTier.getPosition()
             );
             tiers.put(currentTier.getId(), copy);
+
             return copy;
         }
+
         return null;
     }
 

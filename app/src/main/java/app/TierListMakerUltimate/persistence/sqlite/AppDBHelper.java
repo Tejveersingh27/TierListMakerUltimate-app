@@ -62,6 +62,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         static final String COL_NAME = "name";
         static final String COL_COLOR_HEX = "color_hex";
         static final String COL_IS_UNRANKED = "is_unranked";
+        static final String COL_TIER_POSITION = "tier_position";
 
         static final String CREATE_TABLE =
                 "CREATE TABLE IF NOT EXISTS " + TABLE + " ("
@@ -70,6 +71,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 + COL_NAME + " TEXT NOT NULL, "
                 + COL_COLOR_HEX + " TEXT, "
                 + COL_IS_UNRANKED + " INTEGER NOT NULL DEFAULT 0, "
+                + COL_TIER_POSITION + " INTEGER NOT NULL DEFAULT 0, "
                 + "FOREIGN KEY(" + COL_TIER_LIST_ID + ") REFERENCES "
                 + TierLists.TABLE + "(" + TierLists.COL_ID + ") "
                 + "ON DELETE CASCADE ON UPDATE CASCADE"

@@ -9,8 +9,10 @@ public class Tier {
     private String colorHex;
     private boolean isUnranked;
 
+    private int tierPosition;  // Position (index) relative to the associated tierList (for ordering)
+
     // For new tiers
-    public Tier(int tierListId, String name, String colorHex, boolean isUnranked) {
+    public Tier(int tierListId, String name, String colorHex, boolean isUnranked, int tierPosition) {
         this.tierListId = tierListId;
         this.name = name;
         this.colorHex = colorHex;
@@ -18,7 +20,7 @@ public class Tier {
     }
 
     // For DB load
-    public Tier(int id, int tierListId, String name, String colorHex, boolean isUnranked) {
+    public Tier(int id, int tierListId, String name, String colorHex, boolean isUnranked, int tierPosition) {
         this.id = id;
         this.tierListId = tierListId;
         this.name = name;
@@ -44,6 +46,10 @@ public class Tier {
 
     public boolean isUnranked() {
         return isUnranked;
+    }
+
+    public int getPosition() {
+        return tierPosition;
     }
 
 }

@@ -19,6 +19,7 @@ public class TierPersistenceSQLite implements TierPersistence {
     final static String NAME = AppDBHelper.Tiers.COL_NAME;
     final static String COLOR_HEX = AppDBHelper.Tiers.COL_COLOR_HEX;
     final static String IS_UNRANKED = AppDBHelper.Tiers.COL_IS_UNRANKED;
+    final static String TIER_POSITION = AppDBHelper.Tiers.COL_TIER_POSITION;
 
     public TierPersistenceSQLite(AppDBHelper helper) {
         this.dbHelper = helper;
@@ -33,7 +34,7 @@ public class TierPersistenceSQLite implements TierPersistence {
 
         Cursor c = db.query(
                 TABLE,
-                new String[]{ID, TIER_LIST_ID, NAME, COLOR_HEX, IS_UNRANKED},
+                new String[]{ID, TIER_LIST_ID, NAME, COLOR_HEX, IS_UNRANKED, TIER_POSITION},
                 sel, args, null, null,
                 ID + " ASC");
 
@@ -57,7 +58,7 @@ public class TierPersistenceSQLite implements TierPersistence {
         String[] args = new String[]{String.valueOf(tierId)};
         Cursor c = db.query(
                 TABLE,
-                new String[]{ID, TIER_LIST_ID, NAME, COLOR_HEX, IS_UNRANKED},
+                new String[]{ID, TIER_LIST_ID, NAME, COLOR_HEX, IS_UNRANKED, TIER_POSITION},
                 sel, args, null, null, null
         );
 
@@ -82,6 +83,7 @@ public class TierPersistenceSQLite implements TierPersistence {
         cv.put(NAME, currentTier.getName());
         cv.put(COLOR_HEX, currentTier.getColor());
         cv.put(IS_UNRANKED, currentTier.isUnranked() ? 1 : 0);
+        cv.put(TIER_POSITION, currentTier.getPosition());
         long id = db.insertOrThrow(TABLE, null, cv);
 
         return new Tier(
@@ -89,7 +91,8 @@ public class TierPersistenceSQLite implements TierPersistence {
                 tierListId,
                 currentTier.getName(),
                 currentTier.getColor(),
-                currentTier.isUnranked()
+                currentTier.isUnranked(),
+                currentTier.getPosition()
         );
     }
 
@@ -102,6 +105,7 @@ public class TierPersistenceSQLite implements TierPersistence {
         cv.put(NAME, currentTier.getName());
         cv.put(COLOR_HEX, currentTier.getColor());
         cv.put(IS_UNRANKED, currentTier.isUnranked() ? 1 : 0);
+        cv.put(TIER_POSITION, currentTier.getPosition());
 
         String where = ID + "=?";
         String[] args = new String[]{String.valueOf(currentTier.getId())};
@@ -125,7 +129,8 @@ public class TierPersistenceSQLite implements TierPersistence {
         String name = c.getString(c.getColumnIndexOrThrow(NAME));
         String color = c.getString(c.getColumnIndexOrThrow(COLOR_HEX));
         boolean unranked = c.getInt(c.getColumnIndexOrThrow(IS_UNRANKED)) == 1;
+        int position = c.getInt(c.getColumnIndexOrThrow(TIER_POSITION));
 
-        return new Tier(id, listId, name, color, unranked);
+        return new Tier(id, listId, name, color, unranked, position);
     }
 }
