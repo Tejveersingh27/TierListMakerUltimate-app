@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import app.TierListMakerUltimate.business.constants.DefaultTiers;
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
@@ -163,5 +164,96 @@ class TierManagerTest {
     @Test
     void removeTierNotFoundThrowsException() {
         assertThrows(NotFoundException.class, () -> tierManager.removeTier(6666));
+    }
+
+
+    @Test
+    void testCopyTier() {
+        Tier original = tierManager.createTier(1, "S Tier", "#FFD700", false, 0);
+        Tier copy = tierManager.copyTier(original.getId(), 2);
+
+        assertEquals(2, copy.getTierListId());
+        assertEquals(original.getName(), copy.getName());
+        assertEquals(original.getColor(), copy.getColor());
+        assertEquals(original.isUnranked(), copy.isUnranked());
+        assertEquals(original.getOrdinalPosition(), copy.getOrdinalPosition());
+    }
+
+    @Test
+    void testMoveRankedTierDown() {
+        Tier tier1 = tierManager.createTier(1, "Tier 1", "#FFFFFF", false, 0);
+        Tier tier2 = tierManager.createTier(1, "Tier 2", "#FFFFFF", false, 1);
+
+        tierManager.moveRankedTier(tier1.getId(), 1);
+
+        assertEquals(1, tierManager.getTier(tier1.getId()).getOrdinalPosition());
+        assertEquals(0, tierManager.getTier(tier2.getId()).getOrdinalPosition());
+    }
+
+    @Test
+    void testMoveRankedTierUp() {
+        Tier tier1 = tierManager.createTier(1, "Tier 1", "#FFFFFF", false, 0);
+        Tier tier2 = tierManager.createTier(1, "Tier 2", "#FFFFFF", false, 1);
+
+        tierManager.moveRankedTier(tier2.getId(), -1);
+
+        assertEquals(1, tierManager.getTier(tier1.getId()).getOrdinalPosition());
+        assertEquals(0, tierManager.getTier(tier2.getId()).getOrdinalPosition());
+    }
+
+    @Test
+    void testMoveRankedTierOutOfBounds() {
+        Tier tier1 = tierManager.createTier(1, "Tier 1", "#FFFFFF", false, 0);
+
+        // Move up when already at top
+        tierManager.moveRankedTier(tier1.getId(), -1);
+        assertEquals(0, tierManager.getTier(tier1.getId()).getOrdinalPosition());
+
+        // Move down when already at bottom
+        tierManager.moveRankedTier(tier1.getId(), 1);
+        assertEquals(0, tierManager.getTier(tier1.getId()).getOrdinalPosition());
+    }
+
+    @Test
+    void testGetUnrankedTierForList() {
+        tierManager.createTier(1, "Ranked", "#FFFFFF", false, 0);
+        Tier unranked = tierManager.createTier(1, "Unranked", "#FFFFFF", true, 1);
+
+        Tier found = tierManager.getUnrankedTierForList(1);
+        assertEquals(unranked.getId(), found.getId());
+        assertTrue(found.isUnranked());
+    }
+
+    @Test
+    void testGetUnrankedTierForListNotFound() {
+        tierManager.createTier(1, "Ranked", "#FFFFFF", false, 0);
+
+        assertThrows(NotFoundException.class, () -> tierManager.getUnrankedTierForList(1));
+    }
+
+    @Test
+    void testGetRankedTiersForList() {
+        tierManager.createTier(1, "Ranked 1", "#FFFFFF", false, 0);
+        tierManager.createTier(1, "Unranked", "#FFFFFF", true, 1);
+        tierManager.createTier(1, "Ranked 2", "#FFFFFF", false, 2);
+
+        List<Tier> rankedTiers = tierManager.getRankedTiersForList(1);
+        assertEquals(2, rankedTiers.size());
+        for (Tier tier : rankedTiers) {
+            assertFalse(tier.isUnranked());
+        }
+    }
+
+    @Test
+    void testGetTiersForListIsSorted() {
+        tierManager.createTier(1, "Last", "#FFFFFF", false, 2);
+        tierManager.createTier(1, "First", "#FFFFFF", false, 0);
+        tierManager.createTier(1, "Middle", "#FFFFFF", false, 1);
+
+        List<Tier> tiers = tierManager.getTiersForList(1);
+        assertEquals(3, tiers.size());
+        assertEquals(0, tiers.get(0).getOrdinalPosition());
+        assertEquals(1, tiers.get(1).getOrdinalPosition());
+        assertEquals(2, tiers.get(2).getOrdinalPosition());
     }
 }

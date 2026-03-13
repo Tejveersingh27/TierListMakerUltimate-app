@@ -18,6 +18,7 @@ import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.models.Tier;
+import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
@@ -88,6 +89,44 @@ class TierListCoordinatorTest {
 
         tierListCoordinator.removeTierList(listId);
         assertEquals(0, tierListManager.getAllTierLists().size());
+    }
+
+    @Test
+    void testDeepCopyAsTemplate() {
+        TierList original = tierListCoordinator.createTierListWithDefaults("Original", "thumb", false);
+        Tier unranked = tierManager.getUnrankedTierForList(original.getId());
+        itemPlacementManager.createItem("path", "Item", unranked.getId(), "Desc");
+
+        TierList copy = tierListCoordinator.deepCopyAsTemplate(original.getId(), true);
+        assertNotNull(copy);
+        assertTrue(copy.isTemplate());
+        assertEquals(original.getName(), copy.getName());
+
+        List<Tier> copyTiers = tierManager.getTiersForList(copy.getId());
+        assertEquals(8, copyTiers.size());
+
+        Tier copyUnranked = tierManager.getUnrankedTierForList(copy.getId());
+        List<TierItem> items = itemPlacementManager.getItemsForTier(copyUnranked.getId());
+        assertEquals(1, items.size());
+        assertEquals("Item", items.get(0).getName());
+    }
+
+    @Test
+    void testRemoveTierAndMoveAllItemsToUnranked() {
+        TierList list = tierListCoordinator.createTierListWithDefaults("List", "thumb", false);
+        List<Tier> rankedTiers = tierManager.getRankedTiersForList(list.getId());
+        Tier tierToRemove = rankedTiers.get(0);
+        Tier unrankedTier = tierManager.getUnrankedTierForList(list.getId());
+
+        itemPlacementManager.createItem("path", "Item", tierToRemove.getId(), "Desc");
+        assertEquals(1, itemPlacementManager.getItemsForTier(tierToRemove.getId()).size());
+
+        tierListCoordinator.removeTierAndMoveAllItemsToUnranked(tierToRemove.getId());
+
+        assertThrows(NotFoundException.class, () -> tierManager.getTier(tierToRemove.getId()));
+        List<TierItem> unrankedItems = itemPlacementManager.getItemsForTier(unrankedTier.getId());
+        assertEquals(1, unrankedItems.size());
+        assertEquals("Item", unrankedItems.get(0).getName());
     }
 
     @Test
