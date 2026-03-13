@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     RecyclerView unrankedItemsRecycler;
     ImageButton addTierButton;
 
+    ImageButton shareTemplateButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         tierConfigButton = findViewById(R.id.tierSettings);
         tierRecycler = findViewById(R.id.tierContainer);
         unrankedItemsRecycler = findViewById(R.id.itemHolderUnranked);
+        shareTemplateButton = findViewById(R.id.shareTemplate);
     }
 
     private void setupTiersRecycler() {
@@ -109,12 +112,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         fragment.setUpListener(this);
         showSingleDialog(fragment, FRAGMENT_TIER_EDITOR);
     }
-
-    // Should delete tier and move all items in that tier to unranked
-    private void confirmDeleteTier(Tier tier) {
-        return;
-    }
-
+    
 
     // Open tier item creation fragment
     private void setupAddItemButton() {
@@ -166,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         // Set items for unranked
         int unrankedId = tierManager.getUnrankedTierForList(tierlistID).getId();
         unrankedAdapter.setItems(placementManager.getItemsForTier(unrankedId));
+        tiers.removeIf(tier -> tier.getId() == unrankedId);
 
         // Set items for non-unranked
         Map<Integer, List<TierItem>> tierItemsMap = new HashMap<>();
@@ -186,10 +185,6 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         openTierEditor(tier);
     }
 
-    @Override
-    public void onDeleteTier(Tier tier) {
-        confirmDeleteTier(tier);
-    }
 
     @Override
     public void onItemDroppedTierOnTier(int itemId, int targetTierId) {

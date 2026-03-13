@@ -9,56 +9,61 @@
     android:layout_marginTop="0dp"
     android:layout_marginRight="8dp"
     android:layout_marginBottom="4dp"
+    android:padding="7dp"
     android:background="#EF4343"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tierTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_weight="1"
-            android:minHeight="50dp"
-            android:padding="4dp"
-            android:text="Very super ultra long tier name to test how it looks when the tier name is super duper mega ex levels of long"
-            android:textAlignment="viewStart"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="28sp"
+            android:text="@string/test_text"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/upButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="5dp"
-            android:background="@null"
-            app:tint="#191919"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:padding="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/black"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/uparrow"/>
+            android:contentDescription="@string/move_tier_up"
+            app:srcCompat="@drawable/uparrow" />
+
         <ImageButton
             android:id="@+id/downButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="5dp"
-            android:background="@null"
-            app:tint="#191919"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:padding="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/black"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/downarrow"/>
+            android:contentDescription="@string/move_tier_down"
+            app:srcCompat="@drawable/downarrow" />
+
         <ImageButton
             android:id="@+id/tierSettings"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="5dp"
-            android:background="@null"
-            app:tint="#191919"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:padding="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/black"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/tiersettings"/>
+            android:contentDescription="@string/configure_tier"
+            app:srcCompat="@drawable/tiersettings" />
 
     </LinearLayout>
 
