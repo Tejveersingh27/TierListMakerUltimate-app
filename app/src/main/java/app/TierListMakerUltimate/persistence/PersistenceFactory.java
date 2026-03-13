@@ -34,7 +34,7 @@ public final class PersistenceFactory {
     }
 
     public static Set SQLite(Context context) {
-        AppDBHelper dbHelper = new AppDBHelper(context, DB_NAME);
+        AppDBHelper dbHelper = new AppDBHelper(context, DB_NAME, true);
 
         return new Set(
                 new TierListPersistenceSQLite(dbHelper),

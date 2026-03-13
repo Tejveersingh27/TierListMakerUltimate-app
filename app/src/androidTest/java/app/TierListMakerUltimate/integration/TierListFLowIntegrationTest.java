@@ -48,7 +48,7 @@ public class TierListFLowIntegrationTest {
         Context context = ApplicationProvider.getApplicationContext();
         context.deleteDatabase("TierListMakerUltimate.db");
 
-        appDBHelper = new AppDBHelper(context, null);
+        appDBHelper = new AppDBHelper(context, null, false);
 
         listStorage = new TierListPersistenceSQLite(appDBHelper);
         tierStorage = new TierPersistenceSQLite(appDBHelper);
