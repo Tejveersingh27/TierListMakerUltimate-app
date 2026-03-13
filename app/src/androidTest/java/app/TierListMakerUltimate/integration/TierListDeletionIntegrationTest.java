@@ -58,7 +58,7 @@ public class TierListDeletionIntegrationTest {
         Context context = ApplicationProvider.getApplicationContext();
         context.deleteDatabase("TierListMakerUltimate.db");
 
-        appDBHelper = new AppDBHelper(context);
+        appDBHelper = new AppDBHelper(context, null);
 
         listStorage = new TierListPersistenceSQLite(appDBHelper);
         tierStorage = new TierPersistenceSQLite(appDBHelper);
