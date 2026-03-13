@@ -7,7 +7,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import app.TierListMakerUltimate.business.constants.DefaultTiers;
+import java.util.List;
+
 import app.TierListMakerUltimate.persistence.system_data.SeedTemplates;
 
 
@@ -124,35 +125,46 @@ public class AppDBHelper extends SQLiteOpenHelper {
     // Load seed data for grader
     private void seedData(SQLiteDatabase db) {
         for (SeedTemplates.SystemTemplate template : SeedTemplates.SYSTEM_TEMPLATES) {
-            // insert tier list
-            ContentValues cv = new ContentValues();
-            cv.put(TierLists.COL_NAME, template.name());
-            cv.put(TierLists.COL_THUMBNAIL, template.thumbnailPath());
-            cv.put(TierLists.COL_IS_TEMPLATE, 1);
-            long tierListId = db.insertOrThrow(TierLists.TABLE, null, cv);
+            insertTemplate(db, template);
+        }
+    }
 
-            // insert default tiers
-            for (DefaultTiers tier : DefaultTiers.values()) {
-                ContentValues tierCv = new ContentValues();
-                tierCv.put(Tiers.COL_TIER_LIST_ID, tierListId);
-                tierCv.put(Tiers.COL_NAME, tier.label);
-                tierCv.put(Tiers.COL_COLOR_HEX, tier.color);
-                tierCv.put(Tiers.COL_IS_UNRANKED, tier.isUnranked ? 1 : 0);
-                tierCv.put(Tiers.COL_TIER_POSITION, tier.position);
-                long tierId = db.insertOrThrow(Tiers.TABLE, null, tierCv);
+    private void insertTemplate(SQLiteDatabase db, SeedTemplates.SystemTemplate template) {
+        ContentValues cv = new ContentValues();
+        cv.put(TierLists.COL_NAME, template.name());
+        cv.put(TierLists.COL_THUMBNAIL, template.thumbnailPath());
+        cv.put(TierLists.COL_IS_TEMPLATE, 1);
+        long tierListId = db.insertOrThrow(TierLists.TABLE, null, cv);
 
-                // insert items into unranked tier
-                if (tier.isUnranked) {
-                    for (SeedTemplates.SystemTemplateItem item : template.items()) {
-                        ContentValues itemCv = new ContentValues();
-                        itemCv.put(TierItems.COL_TIER_ID, tierId);
-                        itemCv.put(TierItems.COL_NAME, item.name());
-                        itemCv.put(TierItems.COL_IMAGE_PATH, item.imagePath());
-                        itemCv.put(TierItems.COL_DESCRIPTION, item.description());
-                        db.insertOrThrow(TierItems.TABLE, null, itemCv);
-                    }
-                }
+        for (SeedTemplates.SystemTemplateTier tier : template.tiers()) {
+            long tierId = insertTier(db, tierListId, tier);
+
+            if (tier.isUnranked()) {
+                insertItems(db, tierId, template.items());
             }
+        }
+    }
+
+    private long insertTier(SQLiteDatabase db, long tierListId, SeedTemplates.SystemTemplateTier tier) {
+        ContentValues cv = new ContentValues();
+        cv.put(Tiers.COL_TIER_LIST_ID, tierListId);
+        cv.put(Tiers.COL_NAME, tier.label());
+        cv.put(Tiers.COL_COLOR_HEX, tier.color());
+        cv.put(Tiers.COL_IS_UNRANKED, tier.isUnranked() ? 1 : 0);
+        cv.put(Tiers.COL_TIER_POSITION, tier.position());
+
+        return db.insertOrThrow(Tiers.TABLE, null, cv);
+    }
+
+    private void insertItems(SQLiteDatabase db, long tierId, List<SeedTemplates.SystemTemplateItem> items) {
+        for (SeedTemplates.SystemTemplateItem item : items) {
+            ContentValues cv = new ContentValues();
+            cv.put(TierItems.COL_TIER_ID, tierId);
+            cv.put(TierItems.COL_NAME, item.name());
+            cv.put(TierItems.COL_IMAGE_PATH, item.imagePath());
+            cv.put(TierItems.COL_DESCRIPTION, item.description());
+
+            db.insertOrThrow(TierItems.TABLE, null, cv);
         }
     }
 }

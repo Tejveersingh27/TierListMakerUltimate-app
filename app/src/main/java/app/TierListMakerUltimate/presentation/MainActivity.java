@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     ImageButton shareTemplateButton;
 
     ImageButton backToMyTierListsButton;
+
+    ImageButton helpButton;
+
     View tierListEditButton;
 
 
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         shareTemplateButton = findViewById(R.id.shareTemplate);
         backToMyTierListsButton = findViewById(R.id.backButton);
         tierListEditButton = findViewById(R.id.titleEditArea);
+        helpButton = findViewById(R.id.helpButton);
     }
 
     private void setupAllButtons() {
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         setupEditTierListNameButton();
         setupBackToMyTierListsButton();
         setupShareTemplateButton();
+        setupHelpButton();
     }
 
     private void setupTiersRecycler() {
@@ -177,19 +182,26 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     private void setupShareTemplateButton() {
         shareTemplateButton.setOnClickListener(v -> {
-            showAlert(R.string.share_tier_list_as_template_title, R.string.share_tier_list_as_template_message, R.string.publish, R.string.cancel);
+            showAlert(R.string.share_tier_list_as_template_title, R.string.share_tier_list_as_template_message, R.string.publish, R.string.cancel,
+                    () -> {
+                        tierListCoordinator.deepCopyAsTemplate(tierlistID, true);
+                        Toast.makeText(this, R.string.template_created, Toast.LENGTH_LONG).show();
+                    });
         });
     }
 
-    private void showAlert(int title, int message, int positiveButton, int negativeButton) {
+    private void setupHelpButton() {
+        helpButton.setOnClickListener(v -> {
+            Toast.makeText(this, R.string.dragging_instructions, Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void showAlert(int title, int message, int positiveButton, int negativeButton, Runnable onPositive) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
         builder.setMessage(message);
 
-        builder.setPositiveButton(positiveButton, (dialog, which) -> {
-            tierListCoordinator.deepCopyAsTemplate(tierlistID, true);
-            Toast.makeText(this, R.string.template_created, Toast.LENGTH_SHORT).show();
-        });
+        builder.setPositiveButton(positiveButton, (dialog, which) -> onPositive.run());
 
         builder.setNegativeButton(negativeButton, null);
 
@@ -254,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     @Override
     public void moveTier(int tierId, int delta) {
-
         try {
             tierManager.moveRankedTier(tierId, delta);
             refreshList();

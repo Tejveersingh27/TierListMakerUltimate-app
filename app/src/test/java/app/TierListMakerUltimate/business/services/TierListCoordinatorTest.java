@@ -67,17 +67,17 @@ class TierListCoordinatorTest {
 
         assertNotNull(list);
         List<Tier> tiers = tierManager.getTiersForList(list.getId());
-        assertEquals(7, tiers.size());
+        assertEquals(8, tiers.size());
     }
 
     @Test
     void testAddTierListStreamCreatesListAndTiers() {
         TierList list = tierListCoordinator.createTierListWithDefaults("Stream List", false, null, "png");
-        
+
         assertNotNull(list);
         assertEquals("test", list.getThumbnailPath());
         List<Tier> tiers = tierManager.getTiersForList(list.getId());
-        assertEquals(7, tiers.size());
+        assertEquals(8, tiers.size());
     }
 
     @Test
