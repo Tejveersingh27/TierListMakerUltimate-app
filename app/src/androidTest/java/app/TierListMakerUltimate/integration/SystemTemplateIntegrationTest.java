@@ -36,11 +36,13 @@ import app.TierListMakerUltimate.persistence.system_data.ITierListSeedProvider;
 
 public class SystemTemplateIntegrationTest {
     private SystemTemplateCoordinator templateCoordinator;
-    private TierListCoordinator listCoordinator;
-    private TierManager tierManager;
-    private TierListManager listManager;
-    private ItemPlacementManager itemManager;
-    
+    private ITierListCoordinator listCoordinator;
+    private ITierManager tierManager;
+    private ITierListManager listManager;
+    private IItemPlacementManager itemManager;
+
+
+    private h
     private TierListPersistence listStorage;
     private TierPersistence tierStorage;
     private TierItemPersistence itemStorage;
