@@ -4,6 +4,7 @@ import static app.TierListMakerUltimate.presentation.constants.PresentationConst
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,16 +20,18 @@ import app.TierListMakerUltimate.business.services.IItemPlacementManager;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
+import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.presentation.controllers.TierItemDragController;
 import app.TierListMakerUltimate.presentation.fragments.TierEditorFragment;
 import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
+import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener, TierItemDragController.DragDropListener, TierAdapter.TierActions {
+public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener, TierItemDragController.DragDropListener, TierAdapter.TierActions, TierListCreationFragment.TierListCreationFragmentActionListener {
     private int tierlistID;
     private String tierlistName;
 
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     ImageButton addTierButton;
 
     ImageButton shareTemplateButton;
+    View tierListEditButton;
 
 
     @Override
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         setupUnrankedRecycler();
         setupAddItemButton();
         setupAddTierButton();
+        setupEditTierListNameButton();
         refreshList();
     }
 
@@ -85,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         tierRecycler = findViewById(R.id.tierContainer);
         unrankedItemsRecycler = findViewById(R.id.itemHolderUnranked);
         shareTemplateButton = findViewById(R.id.shareTemplate);
+        tierListEditButton = findViewById(R.id.titleEditArea);
     }
 
     private void setupTiersRecycler() {
@@ -110,7 +116,13 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     private void openTierEditor(Tier tier) {
         TierEditorFragment fragment = TierEditorFragment.newInstance(tier.getId());
         fragment.setUpListener(this);
-        showSingleDialog(fragment, FRAGMENT_TIER_EDITOR);
+        showFragment(fragment, FRAGMENT_TIER_EDITOR);
+    }
+
+    private void openTierCreator() {
+        TierListCreationFragment fragment = TierListCreationFragment.newInstance(tierlistID);
+        fragment.setUpListener(this);
+        showFragment(fragment, FRAGMENT_TIER_LIST_CREATION);
     }
 
 
@@ -119,11 +131,11 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         addTierItemButton.setOnClickListener(v -> {
             TierItemCreationFragment fragment = TierItemCreationFragment.newInstance(tierlistID);
             fragment.setUpListener(this);
-            showSingleDialog(fragment, FRAGMENT_TIER_ITEM_CREATION);
+            showFragment(fragment, FRAGMENT_TIER_ITEM_CREATION);
         });
     }
 
-    private void showSingleDialog(androidx.fragment.app.DialogFragment fragment, String tag) {
+    private void showFragment(androidx.fragment.app.DialogFragment fragment, String tag) {
         if (getSupportFragmentManager().findFragmentByTag(tag) != null) {
             return;
         }
@@ -135,6 +147,12 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         addTierButton.setOnClickListener(v -> {
             tierManager.createDefaultTier(tierlistID);
             refreshList();
+        });
+    }
+
+    private void setupEditTierListNameButton() {
+        tierListEditButton.setOnClickListener(v -> {
+            openTierCreator();
         });
     }
 
@@ -175,6 +193,14 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         }
 
         tierAdapter.setTiers(tiers, tierItemsMap);
+
+    }
+
+
+    // Tier List Creation Fragment Overrides
+    @Override
+    public void onTierListCreatedSuccessfully(TierList newTierList) {
+        tierListTitle.setText(newTierList.getName());
 
     }
 
