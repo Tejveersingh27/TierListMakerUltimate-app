@@ -72,6 +72,7 @@ public class TierManager implements ITierManager {
 
     @Override
     public void moveRankedTier(int tierId, int delta) throws ValidationException, NotFoundException {
+        System.out.println("AAAAAAAAAAAAAHHHHHHHHHHHH");
         Tier targetTier = getVerifiedTier(tierId);
         List<Tier> tiers = getRankedTiersForList(targetTier.getTierListId());
 

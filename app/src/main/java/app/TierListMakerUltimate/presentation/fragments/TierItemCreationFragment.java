@@ -90,7 +90,7 @@ public class TierItemCreationFragment extends BaseImageCreationFragment {
 
             try (InputStream inputStream = requireContext().getContentResolver().openInputStream(selectImageUri)) {
                 String extension = imageHelper.getFileExtension(selectImageUri.toString());
-                placementManager.createItem(tierManager.getUnrankedTierForList(getTierlistId()).getId(), name, description, inputStream, extension);
+                placementManager.createItem(tierManager.getUnrankedTierForList(getTierlistId()).getId(), name, description, "", inputStream, extension);
 
                 listener.onTierItemCreatedSuccessfully();
 
