@@ -6,7 +6,7 @@ This document provides an overview of the project's architecture
 
 ## 1. Diagram
 
-!(images/architecture.png)
+![Architecture Diagram](images/architecture.png)
 
 ---
 
