@@ -87,4 +87,16 @@
     <string name="choose_a_color">Choose a Color</string>
     <string name="edit_tier">Edit Tier</string>
     <string name="tier_label">Tier Label</string>
+    <string name="test_text">test text test text test text test text</string>
+    <string name="unranked">Unranked</string>
+    <string name="edit_tier_list">Edit tier list</string>
+    <string name="go_to_my_tier_lists">Go To My Tier Lists</string>
+    <string name="add_a_new_tier">Add a new Tier</string>
+    <string name="share_tier_list_as_template">Share Tier List as Template</string>
+    <string name="add_tier_item">Add Tier Item</string>
+    <string name="delete">Delete</string>
+    <string name="tier_item">Tier Item</string>
+    <string name="configure_tier">Configure Tier</string>
+    <string name="move_tier_up">Move Tier up</string>
+    <string name="move_tier_down">Move Tier down</string>
 </resources>
