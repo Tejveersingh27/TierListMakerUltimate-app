@@ -18,7 +18,7 @@ import app.TierListMakerUltimate.business.services.implementations.TierManager;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.persistence.interfaces.TierPersistence;
-import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
+import app.TierListMakerUltimate.persistence.fake.TierPersistenceFake;
 
 class TierManagerTest {
 
@@ -27,7 +27,7 @@ class TierManagerTest {
 
     @BeforeEach
     void setup() {
-        tierStorage = new TierPersistenceStub();
+        tierStorage = new TierPersistenceFake();
         tierManager = new TierManager(tierStorage, new TierValidator());
     }
 

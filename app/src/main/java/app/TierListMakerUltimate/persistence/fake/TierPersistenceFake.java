@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.persistence.stubs;
+package app.TierListMakerUltimate.persistence.fake;
 
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.persistence.interfaces.TierPersistence;
@@ -8,9 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class
-
-TierPersistenceStub implements TierPersistence {
+public class TierPersistenceFake implements TierPersistence {
 
     private final Map<Integer, Tier> tiers = new HashMap<>();
     private int nextId = 1;

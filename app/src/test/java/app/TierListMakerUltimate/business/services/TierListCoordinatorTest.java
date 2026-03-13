@@ -25,9 +25,9 @@ import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.persistence.interfaces.ImageFilePersistence;
-import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
-import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
-import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
+import app.TierListMakerUltimate.persistence.fake.TierItemPersistenceFake;
+import app.TierListMakerUltimate.persistence.fake.TierListPersistenceFake;
+import app.TierListMakerUltimate.persistence.fake.TierPersistenceFake;
 
 class TierListCoordinatorTest {
 
@@ -38,8 +38,8 @@ class TierListCoordinatorTest {
 
     @BeforeEach
     void setup() {
-        TierPersistenceStub tierStorage = new TierPersistenceStub();
-        TierListPersistenceStub tierListStorage = new TierListPersistenceStub();
+        TierPersistenceFake tierStorage = new TierPersistenceFake();
+        TierListPersistenceFake tierListStorage = new TierListPersistenceFake();
         ImageFilePersistence imagePersistence = new ImageFilePersistence() {
             @Override
             public String saveImage(InputStream inputStream, String fileName) throws IOException {
@@ -54,7 +54,7 @@ class TierListCoordinatorTest {
 
         tierManager = new TierManager(tierStorage, new TierValidator());
         tierListManager = new TierListManager(tierListStorage, imagePersistence, new TierListValidator());
-        itemPlacementManager = new ItemPlacementManager(new TierItemPersistenceStub(), imagePersistence, new ItemValidator());
+        itemPlacementManager = new ItemPlacementManager(new TierItemPersistenceFake(), imagePersistence, new ItemValidator());
 
         tierListCoordinator = new TierListCoordinator(tierManager, tierListManager, itemPlacementManager);
     }

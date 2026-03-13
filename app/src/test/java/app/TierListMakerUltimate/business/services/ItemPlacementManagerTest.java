@@ -21,7 +21,7 @@ import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.interfaces.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.interfaces.TierItemPersistence;
-import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
+import app.TierListMakerUltimate.persistence.fake.TierItemPersistenceFake;
 
 public class ItemPlacementManagerTest {
     private TierItemPersistence persistence;
@@ -45,7 +45,7 @@ public class ItemPlacementManagerTest {
             }
         };
 
-        persistence = new TierItemPersistenceStub();
+        persistence = new TierItemPersistenceFake();
         validator = new ItemValidator();
         manager = new ItemPlacementManager(persistence, imagePersistence, validator);
     }

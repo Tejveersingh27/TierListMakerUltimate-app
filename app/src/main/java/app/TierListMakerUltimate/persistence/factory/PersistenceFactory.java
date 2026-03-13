@@ -15,9 +15,9 @@ import app.TierListMakerUltimate.persistence.sqlite.TierListPersistenceSQLite;
 import app.TierListMakerUltimate.persistence.sqlite.TierPersistenceSQLite;
 import app.TierListMakerUltimate.persistence.sqlite.TierItemPersistenceSQLite;
 
-import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
-import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
-import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
+import app.TierListMakerUltimate.persistence.fake.TierListPersistenceFake;
+import app.TierListMakerUltimate.persistence.fake.TierPersistenceFake;
+import app.TierListMakerUltimate.persistence.fake.TierItemPersistenceFake;
 
 public final class PersistenceFactory {
     public enum Implementations {
@@ -49,9 +49,9 @@ public final class PersistenceFactory {
 
     public static Set Stubs() {
         return new Set(
-                new TierListPersistenceStub(),
-                new TierPersistenceStub(),
-                new TierItemPersistenceStub()
+                new TierListPersistenceFake(),
+                new TierPersistenceFake(),
+                new TierItemPersistenceFake()
         );
     }
 }

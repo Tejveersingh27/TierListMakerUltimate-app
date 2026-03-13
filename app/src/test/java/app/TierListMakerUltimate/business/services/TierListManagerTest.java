@@ -22,7 +22,7 @@ import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.persistence.interfaces.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.interfaces.TierListPersistence;
-import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
+import app.TierListMakerUltimate.persistence.fake.TierListPersistenceFake;
 
 public class TierListManagerTest {
     private TierListPersistence persistence;
@@ -31,7 +31,7 @@ public class TierListManagerTest {
 
     @BeforeEach
     void setup() {
-        persistence = new TierListPersistenceStub();
+        persistence = new TierListPersistenceFake();
 
         // Mock the ImageFilePersistence
         imagePersistence = new ImageFilePersistence() {
