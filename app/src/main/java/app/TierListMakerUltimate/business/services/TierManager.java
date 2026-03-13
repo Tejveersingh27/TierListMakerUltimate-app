@@ -10,6 +10,7 @@ import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.persistence.TierPersistence;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class TierManager implements ITierManager {
@@ -92,5 +93,13 @@ public class TierManager implements ITierManager {
             }
         }
         throw new NotFoundException(ERROR_TIER_NOT_FOUND);
+    }
+
+    @Override
+    public List<Tier> getRankedTiersForList(int tierListId) throws ValidationException {
+        validator.validateTierListId(tierListId);
+        List<Tier> tiers = getTiersForList(tierListId);
+        tiers.removeIf(Tier::isUnranked);
+        return tiers;
     }
 }

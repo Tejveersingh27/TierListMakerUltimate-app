@@ -5,12 +5,10 @@ package app.TierListMakerUltimate.application;
 import android.app.Application;
 
 import app.TierListMakerUltimate.business.services.IItemPlacementManager;
-import app.TierListMakerUltimate.business.services.ISystemTemplateCoordinator;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierListManager;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.business.services.ItemPlacementManager;
-import app.TierListMakerUltimate.business.services.SystemTemplateCoordinator;
 import app.TierListMakerUltimate.business.services.TierListCoordinator;
 import app.TierListMakerUltimate.business.services.TierListManager;
 import app.TierListMakerUltimate.business.services.TierManager;
@@ -18,14 +16,12 @@ import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 
-import app.TierListMakerUltimate.persistence.system_data.ITierListSeedProvider;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.AndroidImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.persistence.TierPersistence;
 import app.TierListMakerUltimate.persistence.PersistenceFactory;
-import app.TierListMakerUltimate.persistence.system_data.SystemTemplateProvider;
 import app.TierListMakerUltimate.persistence.utils.IUUIDGenerator;
 import app.TierListMakerUltimate.persistence.utils.UUIDGenerator;
 
@@ -44,16 +40,15 @@ public class TierListMakerUltimate extends Application {
         // Change SQLITE to STUB here to change the persistence implementation
         PersistenceFactory.Implementations implementation = PersistenceFactory.Implementations.SQLITE;
 
-        PersistenceFactory.Set persistence = 
-            (implementation == PersistenceFactory.Implementations.SQLITE)
-                ? PersistenceFactory.SQLite(this)
-                : PersistenceFactory.Stubs();
+        PersistenceFactory.Set persistence =
+                (implementation == PersistenceFactory.Implementations.SQLITE)
+                        ? PersistenceFactory.SQLite(this)
+                        : PersistenceFactory.Stubs();
 
         // Storage instances
         TierListPersistence tierListStorage = persistence.tierLists;
         TierPersistence tierStorage = persistence.tiers;
         TierItemPersistence itemStorage = persistence.items;
-        ITierListSeedProvider seedProvider = new SystemTemplateProvider();
 
         IUUIDGenerator uuidGenerator = new UUIDGenerator();
         ImageFilePersistence imageStorage = new AndroidImageFilePersistence(this, uuidGenerator);
@@ -62,9 +57,6 @@ public class TierListMakerUltimate extends Application {
         tierManager = new TierManager(tierStorage, new TierValidator());
         itemPlacementManager = new ItemPlacementManager(itemStorage, imageStorage, new ItemValidator());
         tierListCoordinator = new TierListCoordinator(tierManager, tierListManager, itemPlacementManager);
-        ISystemTemplateCoordinator systemTemplateCoordinator = new SystemTemplateCoordinator(tierListCoordinator, tierManager, itemPlacementManager, seedProvider);
-
-        systemTemplateCoordinator.loadSystemTemplates();
     }
 
     public ITierListManager getTierListManager() {
@@ -82,8 +74,5 @@ public class TierListMakerUltimate extends Application {
     public ITierListCoordinator getTierListCoordinator() {
         return tierListCoordinator;
     }
-
-    private boolean isTestEnvironment() {
-        return true; // TODO: Need to add an environment variable for this
-    }
+    
 }

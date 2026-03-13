@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         fragment.setUpListener(this);
         showSingleDialog(fragment, FRAGMENT_TIER_EDITOR);
     }
-    
+
 
     // Open tier item creation fragment
     private void setupAddItemButton() {
@@ -158,23 +158,18 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     // Refreshes the tierlist to reflect item movements.
     private void refreshList() {
-
-        List<Tier> tiers = tierManager.getTiersForList(tierlistID);
-
         // Set items for unranked
         int unrankedId = tierManager.getUnrankedTierForList(tierlistID).getId();
         unrankedAdapter.setItems(placementManager.getItemsForTier(unrankedId));
-        tiers.removeIf(tier -> tier.getId() == unrankedId);
 
         // Set items for non-unranked
+        List<Tier> rankedTiers = tierManager.getRankedTiersForList(tierlistID);
         Map<Integer, List<TierItem>> tierItemsMap = new HashMap<>();
-        for (Tier tier : tiers) {
-            if (tier.getId() != unrankedId) {
-                tierItemsMap.put(tier.getId(), placementManager.getItemsForTier(tier.getId()));
-            }
+        for (Tier tier : rankedTiers) {
+            tierItemsMap.put(tier.getId(), placementManager.getItemsForTier(tier.getId()));
         }
 
-        tierAdapter.setTiers(tiers, tierItemsMap);
+        tierAdapter.setTiers(rankedTiers, tierItemsMap);
 
     }
 
