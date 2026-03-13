@@ -10,6 +10,7 @@ public class PresentationConstants {
     public static final String FRAGMENT_TIER_LIST_CREATION = "tierListCreation";
     public static final String FRAGMENT_TIER_EDITOR = "tierEditor";
     public static final String FRAGMENT_TIER_ITEM_CREATION = "tierItemCreation";
+    public static final String FRAGMENT_TIER_ITEM_EDITOR = "tierItemEdit";
 
 
     // Paths and Prefixes

@@ -75,8 +75,8 @@ public class TierListDeletionIntegrationTest {
         Tier sTier = tierManager.createTier(listId, "s-Tier", "#FF0000");
         int sTierId = sTier.getId();
 
-        itemManager.createItem("item1.png", "Item 1", sTierId, "description 1");
-        itemManager.createItem("item2.png", "Item 2", sTierId, "description 2");
+        itemManager.createItem("item1.png", "Item 1", sTierId, "description 1", "");
+        itemManager.createItem("item2.png", "Item 2", sTierId, "description 2", "");
 
         assertEquals(1, listManager.getAllTierLists().size());
         assertEquals(1, tierManager.getTiersForList(listId).size());

@@ -33,7 +33,7 @@ public class TierItemPersistenceStub implements TierItemPersistence {
     public TierItem insertItem(int tierId, TierItem currentItem) {
         int id = nextId++;
         TierItem copy = new TierItem(id, currentItem.getImagePath(), currentItem.getName(),
-                currentItem.getDescription(), tierId);
+                currentItem.getDescription(), currentItem.getExplanation(), tierId);
         items.put(id, copy);
         return copy;
     }

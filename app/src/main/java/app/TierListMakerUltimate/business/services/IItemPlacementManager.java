@@ -15,15 +15,15 @@ public interface IItemPlacementManager {
     /**
      * Creates and returns a new TierItem without creating a new image.
      */
-    TierItem createItem(String imagePath, String name, int tierId, String description) throws ValidationException;
+    TierItem createItem(String imagePath, String name, int tierId, String description, String explanation) throws ValidationException;
 
     // TODO: REMOVE THIS
-    TierItem createItem(String imagePath, int id, int tierId, String name, String description) throws ValidationException;
+    TierItem createItem(String imagePath, int id, int tierId, String name, String description, String explanation) throws ValidationException;
 
     /**
      * Creates and returns a new TierItem with a new image.
      */
-    TierItem createItem(int tierId, String name, String description, InputStream inputStream, String extension) throws ValidationException, ImageException;
+    TierItem createItem(int tierId, String name, String description, String explanation, InputStream inputStream, String extension) throws ValidationException, ImageException;
 
     /**
      * Moves an item to a new tier and returns the updated TierItem.

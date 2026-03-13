@@ -44,7 +44,7 @@ public class SeedTemplates {
                     POKEMON_STARTERS_ITEMS
             ),
             new SystemTemplate(
-                    "Weeeknd Songs",
+                    "Weeknd Albums",
                     "android.resource://app.TierListMakerUltimate/drawable/starboy",
                     WEEKND_SONG_ITEMS
             )
