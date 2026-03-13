@@ -22,11 +22,31 @@ public class SeedTemplates {
             new SystemTemplateItem("Piplup", "", "android.resource://app.TierListMakerUltimate/drawable/pokemon_piplup")
     );
 
+
+    private static final List<SystemTemplateItem> WEEKND_SONG_ITEMS = List.of(
+            new SystemTemplateItem("hob", "", "android.resource://app.TierListMakerUltimate/drawable/hob"),
+            new SystemTemplateItem("thursday", "", "android.resource://app.TierListMakerUltimate/drawable/thursday"),
+            new SystemTemplateItem("echoes", "", "android.resource://app.TierListMakerUltimate/drawable/echoes"),
+            new SystemTemplateItem("kissland", "", "android.resource://app.TierListMakerUltimate/drawable/kissland"),
+            new SystemTemplateItem("bbtm", "", "android.resource://app.TierListMakerUltimate/drawable/bbtm"),
+            new SystemTemplateItem("starboy", "", "android.resource://app.TierListMakerUltimate/drawable/starboy"),
+            new SystemTemplateItem("mdm", "", "android.resource://app.TierListMakerUltimate/drawable/mdm"),
+            new SystemTemplateItem("afterhours", "", "android.resource://app.TierListMakerUltimate/drawable/afterhours"),
+            new SystemTemplateItem("dawnfm", "", "android.resource://app.TierListMakerUltimate/drawable/dawnfm"),
+            new SystemTemplateItem("hut", "", "android.resource://app.TierListMakerUltimate/drawable/hut")
+    );
+
+
     public static final List<SystemTemplate> SYSTEM_TEMPLATES = List.of(
             new SystemTemplate(
                     "Pokemon Starters",
-                    "android.resource://app.TierListMakerUltimate/drawable/pokemon_bulbasaur",
+                    "android.resource://app.TierListMakerUltimate/drawable/pokemon_mudkip",
                     POKEMON_STARTERS_ITEMS
+            ),
+            new SystemTemplate(
+                    "Weeeknd Songs",
+                    "android.resource://app.TierListMakerUltimate/drawable/starboy",
+                    WEEKND_SONG_ITEMS
             )
     );
 }

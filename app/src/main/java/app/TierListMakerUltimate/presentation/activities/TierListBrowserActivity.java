@@ -1,22 +1,21 @@
 package app.TierListMakerUltimate.presentation.activities;
 
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.INTENT_TIER_LIST_ID;
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.widget.Toolbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.business.services.ITierListManager;
-
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.presentation.MainActivity;
@@ -24,11 +23,10 @@ import app.TierListMakerUltimate.presentation.adapters.TierListBrowserAdapter;
 import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
 
 public class TierListBrowserActivity extends AppCompatActivity implements TierListBrowserAdapter.TierListBrowserItemActionListener, TierListCreationFragment.TierListCreationFragmentActionListener {
+
     private RecyclerView recyclerView;
     private TierListBrowserAdapter adapter;
-
     private ITierListManager tierListManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +61,13 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new TierListBrowserAdapter(tierListManager.getAllTierLists(), this);
+        adapter = new TierListBrowserAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
     }
 
     private void refreshList() {
         if (adapter != null) {
-            List<TierList> updatedList = tierListManager.getAllTierLists();
+            List<TierList> updatedList = tierListManager.getAllNonTemplateTierLists();
             adapter.updateData(updatedList);
         }
     }
@@ -82,24 +80,32 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
         });
     }
 
-
     @Override
     public void onEditButtonClick(TierList tierList) {
         Intent intent = new Intent(TierListBrowserActivity.this, MainActivity.class);
         intent.putExtra(INTENT_TIER_LIST_ID, tierList.getId());
+        intent.putExtra(INTENT_TIER_LIST_NAME, tierList.getName());
         startActivity(intent);
     }
 
     @Override
     public void onConfigButtonClick(TierList tierList) {
+
+        if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TIER_LIST_CREATION) != null) {
+            return;
+        }
+
+
         TierListCreationFragment fragment = TierListCreationFragment.newInstance(tierList.getId());
-        fragment.show(getSupportFragmentManager(), "");
+        fragment.setUpListener(this);
+        fragment.show(getSupportFragmentManager(), FRAGMENT_TIER_LIST_CREATION);
     }
+
 
     @Override
     public void onDeleteButtonClick(TierList tierList) {
         tierListManager.removeTierList(tierList.getId());
-        adapter.updateData(tierListManager.getAllTierLists());
+        refreshList();
     }
 
     @Override

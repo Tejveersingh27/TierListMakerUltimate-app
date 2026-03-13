@@ -1,7 +1,7 @@
 package app.TierListMakerUltimate.business.services;
 
 import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.PersistenceException;
+import app.TierListMakerUltimate.business.exception.ImageException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.TierItem;
 
@@ -23,7 +23,7 @@ public interface IItemPlacementManager {
     /**
      * Creates and returns a new TierItem with a new image.
      */
-    TierItem createItem(int tierId, String name, String description, InputStream inputStream, String extension) throws ValidationException, PersistenceException;
+    TierItem createItem(int tierId, String name, String description, InputStream inputStream, String extension) throws ValidationException, ImageException;
 
     /**
      * Moves an item to a new tier and returns the updated TierItem.
@@ -33,7 +33,7 @@ public interface IItemPlacementManager {
     /**
      * Updates an existing TierItem and creates a new image for it.
      */
-    void updateItem(TierItem updatedItem, InputStream inputStream, String extension) throws ValidationException, NotFoundException, PersistenceException;
+    void updateItem(TierItem updatedItem, InputStream inputStream, String extension) throws ValidationException, NotFoundException, ImageException;
 
     /**
      * Updates an existing TierItem without creating a new image.

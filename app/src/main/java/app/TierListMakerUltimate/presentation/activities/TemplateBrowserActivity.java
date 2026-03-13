@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.TierListMakerUltimate.R;
@@ -23,15 +24,14 @@ import app.TierListMakerUltimate.presentation.adapters.TemplateBrowserAdapter;
 import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
-public class TemplateBrowserActivity extends AppCompatActivity implements TemplateBrowserAdapter.TemplateBrowserActionListener, TierListCreationFragment.TierListCreationFragmentActionListener {
+public class TemplateBrowserActivity extends AppCompatActivity implements TierListCreationFragment.TierListCreationFragmentActionListener {
+
     private RecyclerView recyclerView;
     private TemplateBrowserAdapter adapter;
-    private TierListCreationFragment fragment;
     private ImageHelper imageHelper;
 
     private ITierListManager tierListManager;
     private ITierListCoordinator tierListCoordinator;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
         tierListManager = app.getTierListManager();
         tierListCoordinator = app.getTierListCoordinator();
         imageHelper = new ImageHelper(this);
+
         setupToolbar();
         setupViews();
     }
@@ -51,7 +52,6 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
         super.onResume();
         refreshList();
     }
-
 
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbarMaterial);
@@ -68,7 +68,10 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new TemplateBrowserAdapter(tierListManager.getAllTemplates(), imageHelper, this);
+        adapter = new TemplateBrowserAdapter(new ArrayList<>(), imageHelper, tierList -> {
+            switchToTierListEditor(tierListCoordinator.deepCopyAsTemplate(tierList.getId(), false));
+        });
+
         recyclerView.setAdapter(adapter);
     }
 
@@ -79,24 +82,20 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
         }
     }
 
-    private void showFragment() {
-        fragment = new TierListCreationFragment();
-        fragment.setUpListener(this);
-        fragment.show(getSupportFragmentManager(), "");
-    }
-
     private void setupAddButton() {
         Button createButton = findViewById(R.id.createTierListButton);
-        createButton.setOnClickListener(v -> {
-            showFragment();
-        });
+        createButton.setOnClickListener(v -> showFragment());
     }
 
-    @Override
-    public void onCardClick(TierList tierList) {
-        switchToTierListEditor(tierListCoordinator.deepCopyAsTemplate(tierList.getId(), false));
-    }
+    private void showFragment() {
+        if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TIER_LIST_CREATION) != null) {
+            return;
+        }
 
+        TierListCreationFragment fragment = new TierListCreationFragment();
+        fragment.setUpListener(this);
+        fragment.show(getSupportFragmentManager(), FRAGMENT_TIER_LIST_CREATION);
+    }
 
     @Override
     public void onTierListCreatedSuccessfully(TierList newTierList) {
@@ -107,6 +106,7 @@ public class TemplateBrowserActivity extends AppCompatActivity implements Templa
     private void switchToTierListEditor(TierList tierList) {
         Intent intent = new Intent(TemplateBrowserActivity.this, MainActivity.class);
         intent.putExtra(INTENT_TIER_LIST_ID, tierList.getId());
+        intent.putExtra(INTENT_TIER_LIST_NAME, tierList.getName());
         startActivity(intent);
     }
 }

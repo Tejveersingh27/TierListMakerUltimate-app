@@ -3,9 +3,8 @@ package app.TierListMakerUltimate.business.services;
 import java.io.InputStream;
 
 import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.PersistenceException;
+import app.TierListMakerUltimate.business.exception.ImageException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
-import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
 
 
@@ -18,7 +17,7 @@ public interface ITierListCoordinator {
     /**
      * Creates and returns a new TierList with default tiers and creates a thumbnail.
      */
-    TierList createTierListWithDefaults(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException, PersistenceException;
+    TierList createTierListWithDefaults(String name, boolean isTemplate, InputStream inputStream, String extension) throws ValidationException, ImageException;
 
 
     /**
@@ -36,4 +35,9 @@ public interface ITierListCoordinator {
      * Items copied to unranked tier.
      */
     TierList deepCopyAsTemplate(int tierListId, boolean resultIsTemplate) throws ValidationException, NotFoundException;
+
+    /**
+     * Removes a Tier and moves all items to the unranked tier for the same tier list.
+     */
+    void removeTierAndMoveAllItemsToUnranked(int tierId) throws ValidationException, NotFoundException;
 }

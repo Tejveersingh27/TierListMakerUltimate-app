@@ -8,7 +8,7 @@ import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.PersistenceException;
+import app.TierListMakerUltimate.business.exception.ImageException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
@@ -64,7 +64,7 @@ public class TierListManager implements ITierListManager {
     }
 
     @Override
-    public void updateTierList(TierList updatedTierList, InputStream inputStream, String extension) throws ValidationException, NotFoundException, PersistenceException {
+    public void updateTierList(TierList updatedTierList, InputStream inputStream, String extension) throws ValidationException, NotFoundException, ImageException {
         validator.validateUpdateTierList(updatedTierList);
         getVerifiedTierList(updatedTierList.getId());
         String thumbnailPath = storeImage(inputStream, extension);
@@ -81,7 +81,7 @@ public class TierListManager implements ITierListManager {
         try {
             return imageFilePersistence.saveImage(inputStream, extension);
         } catch (IOException ioe) {
-            throw new PersistenceException(ERROR_STORING_IMAGE);
+            throw new ImageException(ERROR_STORING_IMAGE);
         }
     }
 

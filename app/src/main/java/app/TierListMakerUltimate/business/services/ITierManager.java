@@ -22,6 +22,11 @@ public interface ITierManager {
     Tier createTier(int tierListId, String label, String color, boolean isUnranked) throws ValidationException;
 
     /**
+     * Creates and returns a new default Tier.
+     */
+    Tier createDefaultTier(int tierListId);
+
+    /**
      * Removes an existing Tier.
      */
     void removeTier(int tierId) throws ValidationException, NotFoundException;

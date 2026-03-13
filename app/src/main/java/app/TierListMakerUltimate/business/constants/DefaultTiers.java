@@ -1,13 +1,16 @@
 package app.TierListMakerUltimate.business.constants;
 
 public enum DefaultTiers {
-    S("S", "#FF7F7F", false),
-    A("A", "#FFBF7F", false),
-    B("B", "#FFFF7F", false),
-    C("C", "#7FFF7F", false),
-    D("D", "#7FBFFF", false),
-    F("F", "#7A0000", false),
+    S("S", "#E91E63", false),
+    A("A", "#FF7322", false),
+    B("B", "#FFEB3B", false),
+    C("C", "#8BC34A", false),
+    D("D", "#03A9F4", false),
+    F("F", "#ED0925", false),
     UNRANKED("Unranked", "#808080", true);
+
+    public static final String DEFAULT_NAME = "New Tier";
+    public static final String DEFAULT_COLOR = "#808080";
 
     public final String label;
     public final String color;

@@ -1,7 +1,6 @@
 package app.TierListMakerUltimate.presentation.fragments;
 
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.ERROR_LOADING_IMAGE;
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.NO_IMAGE_SELECTED;
+import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,7 +24,11 @@ import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
 
-public class TierItemCreationFragment extends BaseCreationFragment {
+public class TierItemCreationFragment extends BaseImageCreationFragment {
+
+    // Note to Grader: This is only relevant to this fragment.
+    // Needed to pass the id to the fragment due to how fragments work.
+    // So, putting it in constants wouldn't make sense.
     private static final String ARG_TIERLIST_ID = "ID";
 
     private TextInputLayout descriptionInput;
@@ -34,7 +37,6 @@ public class TierItemCreationFragment extends BaseCreationFragment {
     private IItemPlacementManager placementManager;
     private ITierManager tierManager;
     private ImageHelper imageHelper;
-    private int tierlistID;
 
     public TierItemCreationFragment() {
 
@@ -52,10 +54,6 @@ public class TierItemCreationFragment extends BaseCreationFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            tierlistID = getArguments().getInt(ARG_TIERLIST_ID);
-        }
-
         TierListMakerUltimate app = (TierListMakerUltimate) requireActivity().getApplication();
         placementManager = app.getItemPlacementManager();
         tierManager = app.getTierManager();
@@ -72,7 +70,7 @@ public class TierItemCreationFragment extends BaseCreationFragment {
         super.onViewCreated(view, savedInstanceState);
         setupViews(view);
     }
-    
+
 
     private void setupViews(View view) {
         descriptionInput = view.findViewById(R.id.descriptionInputLayout);
@@ -86,20 +84,20 @@ public class TierItemCreationFragment extends BaseCreationFragment {
             String name = TextInputExtractor.getTrimmedText(nameInput);
 
             if (selectImageUri == null) {
-                Toast.makeText(requireContext(), NO_IMAGE_SELECTED, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.no_image_selected, Toast.LENGTH_SHORT).show();
                 return;
             }
 
             try (InputStream inputStream = requireContext().getContentResolver().openInputStream(selectImageUri)) {
                 String extension = imageHelper.getFileExtension(selectImageUri.toString());
-                placementManager.createItem(tierManager.getUnrankedTierForList(tierlistID).getId(), name, description, inputStream, extension);
+                placementManager.createItem(tierManager.getUnrankedTierForList(getTierlistId()).getId(), name, description, inputStream, extension);
 
                 listener.onTierItemCreatedSuccessfully();
 
                 dismiss();
 
             } catch (IOException ioe) {
-                Toast.makeText(requireContext(), ERROR_LOADING_IMAGE, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.error_loading_image, Toast.LENGTH_SHORT).show();
             } catch (ValidationException ve) {
                 Toast.makeText(requireContext(), ve.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -109,6 +107,11 @@ public class TierItemCreationFragment extends BaseCreationFragment {
     public void setUpListener(TierItemCreationFragmentActionListener listener) {
         this.listener = listener;
     }
+
+    private int getTierlistId() {
+        return getArguments().getInt(ARG_TIERLIST_ID);
+    }
+
 
     public interface TierItemCreationFragmentActionListener {
         void onTierItemCreatedSuccessfully();

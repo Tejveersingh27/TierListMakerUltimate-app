@@ -1,7 +1,7 @@
 package app.TierListMakerUltimate.business.services;
 
 import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.PersistenceException;
+import app.TierListMakerUltimate.business.exception.ImageException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.models.TierList;
 
@@ -41,7 +41,7 @@ public interface ITierListManager {
     /**
      * Updates an existing TierList with a new thumbnail.
      */
-    void updateTierList(TierList updatedTierList, InputStream inputStream, String extension) throws ValidationException, NotFoundException, PersistenceException;
+    void updateTierList(TierList updatedTierList, InputStream inputStream, String extension) throws ValidationException, NotFoundException, ImageException;
 
     /**
      * Copies an existing TierList to a new tier list and returns the new TierList.
