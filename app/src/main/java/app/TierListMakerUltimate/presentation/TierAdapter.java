@@ -120,14 +120,14 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
             // Up button
             upBtn.setOnClickListener(v -> {
                 if (actions != null) {
-                    actions.moveTier(1);
+                    actions.moveTier(tier.getId(), -1);
                 }
             });
 
             // Down button
             downBtn.setOnClickListener(v -> {
                 if (actions != null) {
-                    actions.moveTier(-1);
+                    actions.moveTier(tier.getId(), 1);
                 }
             });
         }
@@ -143,7 +143,7 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
 
         void openTierSettings(Tier tier);
 
-        void moveTier(int direction);   // 1 for up, -1 for down
+        void moveTier(int tierId, int delta);   // -1 for up, 1 for down
     }
 
     public interface TierItemActions {

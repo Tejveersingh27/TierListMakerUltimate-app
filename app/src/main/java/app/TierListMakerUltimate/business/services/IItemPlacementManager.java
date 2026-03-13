@@ -17,9 +17,6 @@ public interface IItemPlacementManager {
      */
     TierItem createItem(String imagePath, String name, int tierId, String description, String explanation) throws ValidationException;
 
-    // TODO: REMOVE THIS
-    TierItem createItem(String imagePath, int id, int tierId, String name, String description, String explanation) throws ValidationException;
-
     /**
      * Creates and returns a new TierItem with a new image.
      */

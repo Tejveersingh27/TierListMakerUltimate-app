@@ -1,7 +1,5 @@
 package app.TierListMakerUltimate.models;
 
-import java.util.Objects;
-
 public class Tier {
     private int id;
     private int tierListId;
@@ -9,25 +7,25 @@ public class Tier {
     private String colorHex;
     private boolean isUnranked;
 
-    private int tierPosition;  // Position (index) relative to the associated tierList (for ordering)
+    private int ordinalPosition;  // Ordinal, not relative.
 
     // For new tiers
-    public Tier(int tierListId, String name, String colorHex, boolean isUnranked, int tierPosition) {
+    public Tier(int tierListId, String name, String colorHex, boolean isUnranked, int ordinalPosition) {
         this.tierListId = tierListId;
         this.name = name;
         this.colorHex = colorHex;
         this.isUnranked = isUnranked;
-        this.tierPosition = tierPosition;
+        this.ordinalPosition = ordinalPosition;
     }
 
     // For DB load
-    public Tier(int id, int tierListId, String name, String colorHex, boolean isUnranked, int tierPosition) {
+    public Tier(int id, int tierListId, String name, String colorHex, boolean isUnranked, int ordinalPosition) {
         this.id = id;
         this.tierListId = tierListId;
         this.name = name;
         this.colorHex = colorHex;
         this.isUnranked = isUnranked;
-        this.tierPosition = tierPosition;
+        this.ordinalPosition = ordinalPosition;
 
     }
 
@@ -51,7 +49,7 @@ public class Tier {
         return isUnranked;
     }
 
-    public int getPosition() {
-        return tierPosition;
+    public int getOrdinalPosition() {
+        return ordinalPosition;
     }
 }

@@ -128,7 +128,7 @@ public class TierListCreationFragment extends BaseImageCreationFragment {
             String ext = imageHelper.getFileExtension(selectImageUri.toString());
             TierList newList = tierListCoordinator.createTierListWithDefaults(name, false, is, ext);
 
-            listener.onTierListCreatedSuccessfully(newList);
+            listener.onTierListCreatedSuccessfully(newList, this.getTag());
         }
     }
 
@@ -149,7 +149,7 @@ public class TierListCreationFragment extends BaseImageCreationFragment {
             tierListManager.updateTierList(updatedList);
         }
 
-        listener.onTierListCreatedSuccessfully(updatedList);
+        listener.onTierListCreatedSuccessfully(updatedList, this.getTag());
     }
 
     public void setUpListener(TierListCreationFragmentActionListener listener) {
@@ -161,6 +161,6 @@ public class TierListCreationFragment extends BaseImageCreationFragment {
     }
 
     public interface TierListCreationFragmentActionListener {
-        void onTierListCreatedSuccessfully(TierList newTierList);
+        void onTierListCreatedSuccessfully(TierList newTierList, String tag);
     }
 }

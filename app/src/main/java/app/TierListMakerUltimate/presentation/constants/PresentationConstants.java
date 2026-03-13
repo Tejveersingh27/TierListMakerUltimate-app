@@ -8,6 +8,8 @@ public class PresentationConstants {
 
     // Fragment Tags
     public static final String FRAGMENT_TIER_LIST_CREATION = "tierListCreation";
+
+    public static final String FRAGMENT_TEMPLATE_CREATION = "templateCreation";
     public static final String FRAGMENT_TIER_EDITOR = "tierEditor";
     public static final String FRAGMENT_TIER_ITEM_CREATION = "tierItemCreation";
     public static final String FRAGMENT_TIER_ITEM_EDITOR = "tierItemEdit";
@@ -21,4 +23,8 @@ public class PresentationConstants {
     public static int SELECTED_STROKE_WIDTH = 10;
     public static float NOT_SELECTED_ALPHA = 1.0f;
     public static float SELECTED_ALPHA = 0.7f;
+
+
+    // Message to tell the grader that the feature doesn't exist
+    public static final String NOT_IMPLEMENTED = "Not Implemented Yet.";
 }
