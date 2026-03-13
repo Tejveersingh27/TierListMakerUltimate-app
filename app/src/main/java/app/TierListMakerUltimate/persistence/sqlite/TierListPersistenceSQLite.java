@@ -30,7 +30,7 @@ public class TierListPersistenceSQLite implements TierListPersistence {
         Cursor c = db.query(
                 TABLE,
                 new String[]{ID, NAME, THUMBNAIL, IS_TEMPLATE},
-                null, null, null, null, null,
+                null, null, null, null,
                 ID + " ASC"
         );
 
@@ -151,8 +151,12 @@ public class TierListPersistenceSQLite implements TierListPersistence {
         );
 
         List<TierList> result = new ArrayList<>();
-        while (c.moveToNext()){
-            result.add(dataFromCursor(c));
+        try {
+            while (c.moveToNext()) {
+                result.add(dataFromCursor(c));
+            }
+        } finally {
+            c.close();
         }
 
         return result;

@@ -1,17 +1,25 @@
-package app.TierListMakerUltimate.business.integration;
+package app.TierListMakerUltimate.integration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import android.content.Context;
+
+import androidx.test.core.app.ApplicationProvider;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.TierListMakerUltimate.business.services.IItemPlacementManager;
+import app.TierListMakerUltimate.business.services.ITierListCoordinator;
+import app.TierListMakerUltimate.business.services.ITierListManager;
+import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.business.services.ItemPlacementManager;
 import app.TierListMakerUltimate.business.services.SystemTemplateCoordinator;
 import app.TierListMakerUltimate.business.services.TierListCoordinator;
@@ -29,9 +37,10 @@ import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.persistence.TierPersistence;
-import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
-import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
-import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
+import app.TierListMakerUltimate.persistence.sqlite.AppDBHelper;
+import app.TierListMakerUltimate.persistence.sqlite.TierItemPersistenceSQLite;
+import app.TierListMakerUltimate.persistence.sqlite.TierListPersistenceSQLite;
+import app.TierListMakerUltimate.persistence.sqlite.TierPersistenceSQLite;
 import app.TierListMakerUltimate.persistence.system_data.ITierListSeedProvider;
 
 public class SystemTemplateIntegrationTest {
@@ -42,7 +51,7 @@ public class SystemTemplateIntegrationTest {
     private IItemPlacementManager itemManager;
 
 
-    private h
+    private AppDBHelper appDBHelper;
     private TierListPersistence listStorage;
     private TierPersistence tierStorage;
     private TierItemPersistence itemStorage;
@@ -51,23 +60,32 @@ public class SystemTemplateIntegrationTest {
     // Simple stub provider to give the coordinator fake data to process
     private static class StubSeedProvider implements ITierListSeedProvider {
         List<SystemTemplate> templates = new ArrayList<>();
-        @Override public List<SystemTemplate> getTemplates() {
+
+        @Override
+        public List<SystemTemplate> getTemplates() {
             return templates;
         }
     }
 
-    @BeforeEach
-    void setup() {
-        // Use interfaces for storage to keep it clean for future SQLite swap
-        listStorage = new TierListPersistenceStub();
-        tierStorage = new TierPersistenceStub();
-        itemStorage = new TierItemPersistenceStub();
+    @Before
+    public void setup() {
+        Context context = ApplicationProvider.getApplicationContext();
+        context.deleteDatabase("TierListMakerUltimate.db");
+        
+        appDBHelper = new AppDBHelper(context);
+        listStorage = new TierListPersistenceSQLite(appDBHelper);
+        tierStorage = new TierPersistenceSQLite(appDBHelper);
+        itemStorage = new TierItemPersistenceSQLite(appDBHelper);
+
 
         ImageFilePersistence imagePersistence = new ImageFilePersistence() {
-            @Override public String saveImage(InputStream inputStream, String fileName) throws IOException {
+            @Override
+            public String saveImage(InputStream inputStream, String fileName) throws IOException {
                 return "test";
             }
-            @Override public void deleteImage(String fileName) {
+
+            @Override
+            public void deleteImage(String fileName) {
             }
         };
 
@@ -77,13 +95,13 @@ public class SystemTemplateIntegrationTest {
         itemManager = new ItemPlacementManager(itemStorage, imagePersistence, new ItemValidator());
 
         listCoordinator = new TierListCoordinator(tierManager, listManager, itemManager);
-        
+
         seedProvider = new StubSeedProvider();
         templateCoordinator = new SystemTemplateCoordinator(listCoordinator, tierManager, itemManager, seedProvider);
     }
 
     @Test
-    void testLoadSystemTemplatesIntegrationFlow() {
+    public void testLoadSystemTemplatesIntegrationFlow() {
         List<SystemTemplateItem> movieItems = new ArrayList<>();
 
         movieItems.add(new SystemTemplateItem("Star Wars", "Classic Space Opera", "sw.png"));
@@ -105,10 +123,10 @@ public class SystemTemplateIntegrationTest {
 
         Tier unranked = tierManager.getUnrankedTierForList(createdList.getId());
         List<TierItem> itemsInUnranked = itemManager.getItemsForTier(unranked.getId());
-        
+
         assertEquals(2, itemsInUnranked.size());
         // Verify items were placed correctly
-        assertTrue(itemsInUnranked.get(0).getName().equals("Star Wars") || 
-                   itemsInUnranked.get(1).getName().equals("Star Wars"));
+        assertTrue(itemsInUnranked.get(0).getName().equals("Star Wars") ||
+                itemsInUnranked.get(1).getName().equals("Star Wars"));
     }
 }
