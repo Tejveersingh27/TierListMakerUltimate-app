@@ -20,6 +20,7 @@ public class TierItemPersistenceSQLite implements TierItemPersistence {
     final static String IMAGE_PATH = AppDBHelper.TierItems.COL_IMAGE_PATH;
     final static String NAME = AppDBHelper.TierItems.COL_NAME;
     final static String DESCRIPTION = AppDBHelper.TierItems.COL_DESCRIPTION;
+    final static String EXPLANATION = AppDBHelper.TierItems.COL_EXPLANATION;
 
     public TierItemPersistenceSQLite(AppDBHelper helper) {
         this.dbHelper = helper;
@@ -33,7 +34,7 @@ public class TierItemPersistenceSQLite implements TierItemPersistence {
         String[] args = new String[]{String.valueOf(tierId)};
         Cursor c = db.query(
                 TABLE,
-                new String[]{ID, TIER_ID, IMAGE_PATH, NAME, DESCRIPTION},
+                new String[]{ID, TIER_ID, IMAGE_PATH, NAME, DESCRIPTION, EXPLANATION},
                 sel, args, null, null,
                 ID + " ASC");
 
@@ -58,7 +59,7 @@ public class TierItemPersistenceSQLite implements TierItemPersistence {
 
         Cursor c = db.query(
                 TABLE,
-                new String[]{ID, TIER_ID, IMAGE_PATH, NAME, DESCRIPTION},
+                new String[]{ID, TIER_ID, IMAGE_PATH, NAME, DESCRIPTION, EXPLANATION},
                 sel, args, null, null, null
         );
 
@@ -83,6 +84,7 @@ public class TierItemPersistenceSQLite implements TierItemPersistence {
         cv.put(IMAGE_PATH, currentItem.getImagePath());
         cv.put(NAME, currentItem.getName());
         cv.put(DESCRIPTION, currentItem.getDescription());
+        cv.put(EXPLANATION, currentItem.getExplanation());
         long id = db.insertOrThrow(TABLE, null, cv);
 
         return new TierItem(
@@ -90,6 +92,7 @@ public class TierItemPersistenceSQLite implements TierItemPersistence {
                 currentItem.getImagePath(),
                 currentItem.getName(),
                 currentItem.getDescription(),
+                currentItem.getExplanation(),
                 tierId
         );
     }
@@ -103,6 +106,7 @@ public class TierItemPersistenceSQLite implements TierItemPersistence {
         cv.put(IMAGE_PATH, currentItem.getImagePath());
         cv.put(NAME, currentItem.getName());
         cv.put(DESCRIPTION, currentItem.getDescription());
+        cv.put(EXPLANATION, currentItem.getExplanation());
 
         String where = ID + "=?";
         String[] args = new String[]{String.valueOf(currentItem.getId())};
@@ -126,6 +130,7 @@ public class TierItemPersistenceSQLite implements TierItemPersistence {
         String image = c.getString(c.getColumnIndexOrThrow(IMAGE_PATH));
         String name = c.getString(c.getColumnIndexOrThrow(NAME));
         String desc = c.getString(c.getColumnIndexOrThrow(DESCRIPTION));
-        return new TierItem(id, image, name, desc, tierId);
+        String expl = c.getString(c.getColumnIndexOrThrow(EXPLANATION));
+        return new TierItem(id, image, name, desc, expl, tierId);
     }
 }

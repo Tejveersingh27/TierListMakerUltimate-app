@@ -74,17 +74,18 @@ public class ItemPlacementManagerTest {
     @Test
     void testCreateItemSuccess() {
 
-        TierItem item = manager.createItem("path", "Item Name", 1, "This is a test item");
+        TierItem item = manager.createItem("path", "Item Name", 1, "This is a test item","reasons");
         assertNotNull(item);
         assertEquals("Item Name", item.getName());
         assertEquals("This is a test item", item.getDescription());
+        assertEquals("reasons", item.getExplanation());
         assertTrue(item.getId() > 0);
         assertEquals(1, item.getTierId());
     }
 
     @Test
     void testCreateItemWithStreamSuccess() {
-        TierItem item = manager.createItem(1, "Item Name", "Stream Item", null, "png");
+        TierItem item = manager.createItem(1, "Item Name", "Stream Item", "",null, "png");
         assertNotNull(item);
         assertEquals("Item Name", item.getName());
         assertEquals("test", item.getImagePath());
@@ -93,20 +94,20 @@ public class ItemPlacementManagerTest {
     @Test
     void testCreateItemNullDescriptionThrowsException() {
         assertThrows(ValidationException.class, () -> {
-            manager.createItem("imagePath", "Name", 1, null);
+            manager.createItem("imagePath", "Name", 1, null, "");
         });
     }
 
     @Test
     void testCreateItemInvalidTierIdThrowsException() {
         assertThrows(ValidationException.class, () -> {
-            manager.createItem("imagePath", "Name", 0, "item with invalid tier id");
+            manager.createItem("imagePath", "Name", -1, "item with invalid tier id", "");
         });
     }
 
     @Test
     void testMoveItemToTierSuccess() {
-        TierItem item = manager.createItem("path", "Name", 1, "This is a test item");
+        TierItem item = manager.createItem("path", "Name", 1, "This is a test item", "");
         assertEquals(1, item.getTierId());
         manager.moveItemToTier(item.getId(), 2);
         item = manager.getItem(item.getId());
@@ -129,16 +130,17 @@ public class ItemPlacementManagerTest {
 
     @Test
     void testUpdateItemSuccess() {
-        TierItem item = manager.createItem("path", "Old Name", 1, "Old item");
-        TierItem updated = new TierItem(item.getId(), "path", "New Name", "New item", 1);
+        TierItem item = manager.createItem("path", "Old Name", 1, "Old item", "Old reason");
+        TierItem updated = new TierItem(item.getId(), "path", "New Name", "New item", "New reason", 1);
         manager.updateItem(updated);
         assertEquals("New Name", manager.getItem(item.getId()).getName());
         assertEquals("New item", manager.getItem(item.getId()).getDescription());
+        assertEquals("New reason", manager.getItem(item.getId()).getExplanation());
     }
 
     @Test
     void testUpdateItemNotFoundThrowsException() {
-        TierItem item = new TierItem(999, "path", "Name", "description", 1);
+        TierItem item = new TierItem(999, "path", "Name", "description", "explanation",1);
         assertThrows(NotFoundException.class, () -> {
             manager.updateItem(item);
         });
@@ -146,8 +148,8 @@ public class ItemPlacementManagerTest {
 
     @Test
     void testUpdateItemWithStreamSuccess() {
-        TierItem item = manager.createItem("path", "Old Name", 1, "Old Desc");
-        TierItem updated = new TierItem(item.getId(), null, "New Name", "New Desc", 1);
+        TierItem item = manager.createItem("path", "Old Name", 1, "Old Desc", "Old Expl");
+        TierItem updated = new TierItem(item.getId(), null, "New Name", "New Desc", "New Expl", 1);
         manager.updateItem(updated, null, "jpg");
         TierItem result = manager.getItem(item.getId());
         assertEquals("test", result.getImagePath());
@@ -156,7 +158,7 @@ public class ItemPlacementManagerTest {
 
     @Test
     void testRemoveItemSuccess() {
-        TierItem item = manager.createItem("path", "Name", 1, "Another test item");
+        TierItem item = manager.createItem("path", "Name", 1, "Another test item", "Some reason");
         int id = item.getId();
         assertNotNull(persistence.getItem(id));
         manager.removeItem(id);
@@ -188,7 +190,7 @@ public class ItemPlacementManagerTest {
 
     @Test
     void testGetItemsForTierSuccess() {
-        manager.createItem("p1", "N1", 5, "D1");
+        manager.createItem("p1", "N1", 5, "D1", "E1");
         assertEquals(1, manager.getItemsForTier(5).size());
     }
 
@@ -201,9 +203,9 @@ public class ItemPlacementManagerTest {
 
     @Test
     void testCopyItemSuccess() {
-        TierItem item = manager.createItem("path", "Original", 1, "Desc");
+        TierItem item = manager.createItem("path", "Original", 1, "Desc", "Expl");
         TierItem copied = manager.copyItem(item.getId(), 2);
-        
+
         assertNotNull(copied);
         assertEquals(2, copied.getTierId());
         assertEquals("Original", copied.getName());
@@ -218,6 +220,6 @@ public class ItemPlacementManagerTest {
             @Override public void deleteImage(String name) {}
         };
         ItemPlacementManager failingManager = new ItemPlacementManager(persistence, failing, validator);
-        assertThrows(ImageException.class, () -> failingManager.createItem(1, "N", "D", null, "png"));
+        assertThrows(ImageException.class, () -> failingManager.createItem(1, "N", "D", "E",null, "png"));
     }
 }

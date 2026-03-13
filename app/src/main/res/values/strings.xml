@@ -98,6 +98,10 @@
     <string name="configure_tier">Configure Tier</string>
     <string name="move_tier_up">Move Tier up</string>
     <string name="move_tier_down">Move Tier down</string>
+    <string name="edit_an_item">Edit an Item</string>
+    <string name="explanation_hint">Placement Explanation</string>
+    <string name="save_button">Save</string>
+    <string name="change_image">Change Image</string>
     <string name="share_tier_list_as_template_title">Publish Tier List as a Template?</string>
     <string name="share_tier_list_as_template_message">This creates a blank template for others to use. Your personal rankings will stay unchanged.</string>
     <string name="publish">Publish\n</string>

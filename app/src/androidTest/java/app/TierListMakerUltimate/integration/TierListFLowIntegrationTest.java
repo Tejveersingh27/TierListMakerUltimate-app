@@ -89,7 +89,7 @@ public class TierListFLowIntegrationTest {
         assertEquals(2, tiers.size());
 
 
-        TierItem item = itemManager.createItem("japan.png", "Japan Trip", sTier.getId(), "Tokyo and Kyoto");
+        TierItem item = itemManager.createItem("japan.png", "Japan Trip", sTier.getId(), "Tokyo and Kyoto", "");
         assertNotNull(item);
         assertEquals(sTier.getId(), item.getTierId());
         assertEquals("Japan Trip", item.getName());
@@ -117,10 +117,10 @@ public class TierListFLowIntegrationTest {
         Tier tier2 = tierManager.createTier(list.getId(), "Later", "#00FF00");
 
         // Create Item
-        TierItem item = itemManager.createItem("milk.png", "Milk", tier1.getId(), "2 Liters");
-
+        TierItem item = itemManager.createItem("milk.png", "Milk", tier1.getId(), "2 Liters", "");
+        
         // Update Description
-        TierItem updatedInfo = new TierItem(item.getId(), item.getImagePath(), "Organic Milk", "1 Liter", tier1.getId());
+        TierItem updatedInfo = new TierItem(item.getId(), item.getImagePath(), "Organic Milk", "1 Liter", "", tier1.getId());
         itemManager.updateItem(updatedInfo);
 
         // Move to Tier 2

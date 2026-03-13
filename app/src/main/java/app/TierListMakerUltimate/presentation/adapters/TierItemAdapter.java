@@ -2,6 +2,7 @@ package app.TierListMakerUltimate.presentation.adapters;
 
 import android.content.ClipData;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,13 +16,16 @@ import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class TierItemAdapter extends RecyclerView.Adapter<TierItemAdapter.TierItemViewHolder> {
     private List<TierItem> items;
     private ImageHelper imageHelper;
+    private TierAdapter.TierItemActions actions;
 
-    public TierItemAdapter(ImageHelper imageHelper) {
+    public TierItemAdapter(ImageHelper imageHelper, TierAdapter.TierItemActions actions) {
         items = new ArrayList<>();
+        this.actions = actions;
         this.imageHelper = imageHelper;
     }
 
@@ -41,7 +45,7 @@ public class TierItemAdapter extends RecyclerView.Adapter<TierItemAdapter.TierIt
     @Override
     public void onBindViewHolder(@NonNull TierItemViewHolder holder, int position) {
         TierItem item = items.get(position);
-        holder.bind(item);
+        holder.bind(item, actions);
     }
 
     @Override
@@ -60,7 +64,7 @@ public class TierItemAdapter extends RecyclerView.Adapter<TierItemAdapter.TierIt
             this.imageHelper = imageHelper;
         }
 
-        public void bind(TierItem item) {
+        public void bind(TierItem item, TierAdapter.TierItemActions actions) {
             String image = item.getImagePath();
 
             imageHelper.loadImage(image, imageView);
@@ -71,6 +75,11 @@ public class TierItemAdapter extends RecyclerView.Adapter<TierItemAdapter.TierIt
                 View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
                 v.startDragAndDrop(data, shadowBuilder, v, 0);
                 return true;
+            });
+
+            itemView.setOnTouchListener((v, event) -> {
+                actions.onItemDblClick(item.getId(), event);
+                return false; // Indicate you are handling the touch events
             });
         }
     }

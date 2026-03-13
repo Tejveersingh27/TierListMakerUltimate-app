@@ -104,6 +104,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         static final String COL_IMAGE_PATH = "image_path";
         static final String COL_NAME = "name";
         static final String COL_DESCRIPTION = "description";
+        static final String COL_EXPLANATION = "explanation";
 
         static final String CREATE_TABLE =
                 "CREATE TABLE IF NOT EXISTS " + TABLE + " ("
@@ -112,6 +113,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                         + COL_IMAGE_PATH + " TEXT, "
                         + COL_NAME + " TEXT NOT NULL, "
                         + COL_DESCRIPTION + " TEXT, "
+                        + COL_EXPLANATION + " TEXT, "
                         + "FOREIGN KEY(" + COL_TIER_ID + ") REFERENCES "
                         + Tiers.TABLE + "(" + Tiers.COL_ID + ") "
                         + "ON DELETE CASCADE ON UPDATE CASCADE"

@@ -4,6 +4,8 @@ import static app.TierListMakerUltimate.presentation.constants.PresentationConst
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import app.TierListMakerUltimate.presentation.adapters.TierItemAdapter;
 import app.TierListMakerUltimate.presentation.controllers.TierItemDragController;
 import app.TierListMakerUltimate.presentation.fragments.TierEditorFragment;
 import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
+import app.TierListMakerUltimate.presentation.fragments.TierItemEditFragment;
 import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 
@@ -35,9 +38,10 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener, TierItemDragController.DragDropListener, TierAdapter.TierActions, TierListCreationFragment.TierListCreationFragmentActionListener {
+public class MainActivity extends AppCompatActivity implements TierItemCreationFragment.TierItemCreationFragmentActionListener, TierItemEditFragment.TierItemEditFragmentActionListener, TierEditorFragment.TierEditorFragmentActionListener, TierItemDragController.DragDropListener, TierAdapter.TierActions, TierAdapter.TierItemActions, TierListCreationFragment.TierListCreationFragmentActionListener {
     private int tierlistID;
     private String tierlistName;
+    private int itemToEdit = -1;
 
     // Instance Variables
     private ITierManager tierManager;
@@ -58,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     ImageButton shareTemplateButton;
 
+    // Gesture Detector to handle double tapping items
+    GestureDetector gestureDetector;
     ImageButton backToMyTierListsButton;
 
     ImageButton helpButton;
@@ -84,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         bindViews();
         tierListTitle.setText(tierlistName);
 
+        setupGestureDetector();
         setupTiersRecycler();
         setupUnrankedRecycler();
         setupAllButtons();
@@ -118,15 +125,30 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         setupHelpButton();
     }
 
+    private void setupGestureDetector() {
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                openItemEdit(itemToEdit);
+                return true;
+            }
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+        });
+    }
+
     private void setupTiersRecycler() {
-        tierAdapter = new TierAdapter(this, imageHelper);
+        tierAdapter = new TierAdapter(this, this, imageHelper);
         tierRecycler.setLayoutManager(new LinearLayoutManager(this));
         tierRecycler.setAdapter(tierAdapter);
 
     }
 
     private void setupUnrankedRecycler() {
-        unrankedAdapter = new TierItemAdapter(imageHelper);
+        unrankedAdapter = new TierItemAdapter(imageHelper, this);
 
         TierItemDragController unrankedDragController = new TierItemDragController(this, tierManager.getUnrankedTierForList(tierlistID).getId());
 
@@ -134,8 +156,6 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         unrankedItemsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         unrankedItemsRecycler.setAdapter(unrankedAdapter);
     }
-
-    // Implement these later
 
     // Opens the tier settings menu
     private void openTierEditor(Tier tier) {
@@ -150,6 +170,12 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         showFragment(fragment, tag);
     }
 
+    // Opens the tier item edit fragment
+    private void openItemEdit(int itemId) {
+        TierItemEditFragment fragment = TierItemEditFragment.newInstance(itemId);
+        fragment.setUpListener(this);
+        showFragment(fragment, FRAGMENT_TIER_ITEM_EDITOR);
+    }
 
     // Open tier item creation fragment
     private void setupAddItemButton() {
@@ -259,7 +285,6 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         openTierEditor(tier);
     }
 
-
     @Override
     public void onItemDroppedTierOnTier(int itemId, int targetTierId) {
         moveItem(itemId, targetTierId);
@@ -275,12 +300,28 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         }
     }
 
+    // TierItem Adapter Overrides
+    @Override
+    public void onItemDblClick(int itemId, MotionEvent event) {
+        itemToEdit = itemId;
+        gestureDetector.onTouchEvent(event);
+    }
+
     // Tier Item Creation Fragment Overrides
     @Override
     public void onTierItemCreatedSuccessfully() {
         refreshList();
     }
 
+    // Tier Item Editor Fragment Overrides
+    @Override
+    public void onTierItemEditedSuccessfully() {
+        refreshList();
+    }
+    @Override
+    public void onTierItemDeletedSuccessfully() {
+        refreshList();
+    }
 
     // Tier Editor Fragment Overrides
     @Override
