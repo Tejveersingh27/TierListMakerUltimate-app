@@ -19,7 +19,7 @@ public interface ITierManager {
      * Creates and returns a new Tier.
      * Mostly for internal (business layer) use.
      */
-    Tier createTier(int tierListId, String label, String color, boolean isUnranked) throws ValidationException;
+    Tier createTier(int tierListId, String label, String color, boolean isUnranked, int position) throws ValidationException;
 
     /**
      * Creates and returns a new default Tier.
@@ -55,4 +55,9 @@ public interface ITierManager {
      * Returns the unranked tier for a given tier list.
      */
     Tier getUnrankedTierForList(int tierListId) throws ValidationException, NotFoundException;
+
+    /**
+     * Returns all tiers for a given tier list, excluding the unranked tier.
+     */
+    List<Tier> getRankedTiersForList(int tierListId) throws ValidationException;
 }

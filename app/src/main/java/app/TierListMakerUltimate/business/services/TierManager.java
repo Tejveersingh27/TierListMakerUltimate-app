@@ -10,6 +10,7 @@ import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.persistence.TierPersistence;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class TierManager implements ITierManager {
@@ -26,13 +27,13 @@ public class TierManager implements ITierManager {
 
     @Override
     public Tier createTier(int tierListId, String label, String color) throws ValidationException {
-        return createTier(tierListId, label, color, false);
+        return createTier(tierListId, label, color, false, 0);
     }
 
     @Override
-    public Tier createTier(int tierListId, String label, String color, boolean isUnranked) throws ValidationException {
+    public Tier createTier(int tierListId, String label, String color, boolean isUnranked, int position) throws ValidationException {
         validator.validateCreateTier(label, color);
-        Tier newTier = new Tier(tierListId, label, color, isUnranked);
+        Tier newTier = new Tier(tierListId, label, color, isUnranked, position);
         return tierStorage.insertTier(tierListId, newTier);
     }
 
@@ -65,7 +66,7 @@ public class TierManager implements ITierManager {
     @Override
     public Tier copyTier(int tierId, int targetTierListId) throws ValidationException, NotFoundException {
         Tier verifiedTier = getVerifiedTier(tierId);
-        return createTier(targetTierListId, verifiedTier.getName(), verifiedTier.getColor(), verifiedTier.isUnranked());
+        return createTier(targetTierListId, verifiedTier.getName(), verifiedTier.getColor(), verifiedTier.isUnranked(), verifiedTier.getPosition());
     }
 
     private Tier getVerifiedTier(int tierId) throws NotFoundException {
@@ -92,5 +93,13 @@ public class TierManager implements ITierManager {
             }
         }
         throw new NotFoundException(ERROR_TIER_NOT_FOUND);
+    }
+
+    @Override
+    public List<Tier> getRankedTiersForList(int tierListId) throws ValidationException {
+        validator.validateTierListId(tierListId);
+        List<Tier> tiers = getTiersForList(tierListId);
+        tiers.removeIf(Tier::isUnranked);
+        return tiers;
     }
 }

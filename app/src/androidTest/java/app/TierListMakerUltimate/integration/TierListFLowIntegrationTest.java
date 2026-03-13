@@ -1,11 +1,15 @@
-package app.TierListMakerUltimate.business.integration;
+package app.TierListMakerUltimate.integration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import android.content.Context;
+
+import androidx.test.core.app.ApplicationProvider;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,32 +28,38 @@ import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.persistence.TierPersistence;
-import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
-import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
-import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
+import app.TierListMakerUltimate.persistence.sqlite.AppDBHelper;
+import app.TierListMakerUltimate.persistence.sqlite.TierItemPersistenceSQLite;
+import app.TierListMakerUltimate.persistence.sqlite.TierListPersistenceSQLite;
+import app.TierListMakerUltimate.persistence.sqlite.TierPersistenceSQLite;
 
 public class TierListFLowIntegrationTest {
     private TierListManager listManager;
     private TierManager tierManager;
     private ItemPlacementManager itemManager;
-    
-    // Using interfaces to allow swapping implementations later
+
+    private AppDBHelper appDBHelper;
     private TierListPersistence listStorage;
     private TierPersistence tierStorage;
     private TierItemPersistence itemStorage;
 
-    @BeforeEach
-    void setup() {
-        listStorage = new TierListPersistenceStub();
-        tierStorage = new TierPersistenceStub();
-        itemStorage = new TierItemPersistenceStub();
+    @Before
+    public void setup() {
+        Context context = ApplicationProvider.getApplicationContext();
+        context.deleteDatabase("TierListMakerUltimate.db");
 
+        appDBHelper = new AppDBHelper(context, null, false);
+
+        listStorage = new TierListPersistenceSQLite(appDBHelper);
+        tierStorage = new TierPersistenceSQLite(appDBHelper);
+        itemStorage = new TierItemPersistenceSQLite(appDBHelper);
         //Initialize a Real Image Saver
         ImageFilePersistence imagePersistence = new ImageFilePersistence() {
             @Override
             public String saveImage(InputStream inputStream, String fileName) throws IOException {
                 return "test";
             }
+
             @Override
             public void deleteImage(String fileName) {
             }
@@ -61,7 +71,7 @@ public class TierListFLowIntegrationTest {
     }
 
     @Test
-    void testFullTierListCreationAndManipulationFlow() {
+    public void testFullTierListCreationAndManipulationFlow() {
         // Create List
         TierList list = listManager.createTierList("Vacation Plans!", "thumbnailPath", false);
         assertNotNull(list);
@@ -71,10 +81,10 @@ public class TierListFLowIntegrationTest {
 
         Tier sTier = tierManager.createTier(listId, "Must Visit", "#FF0000");
         Tier aTier = tierManager.createTier(listId, "Maybe Visit", "#FF7700");
-        
+
         assertNotNull(sTier);
         assertEquals(listId, sTier.getTierListId());
-        
+
         List<Tier> tiers = tierManager.getTiersForList(listId);
         assertEquals(2, tiers.size());
 
@@ -89,7 +99,7 @@ public class TierListFLowIntegrationTest {
         assertEquals("Tokyo and Kyoto", mustVisitItems.get(0).getDescription());
 
         itemManager.moveItemToTier(item.getId(), aTier.getId());
-        
+
 
         assertTrue(itemManager.getItemsForTier(sTier.getId()).isEmpty());
         assertEquals(1, itemManager.getItemsForTier(aTier.getId()).size());
@@ -101,14 +111,14 @@ public class TierListFLowIntegrationTest {
     }
 
     @Test
-    void testUpdateAndMoveIntegrationFlow() {
+    public void testUpdateAndMoveIntegrationFlow() {
         TierList list = listManager.createTierList("Shopping List", "t", false);
         Tier tier1 = tierManager.createTier(list.getId(), "Urgent", "#FF0000");
         Tier tier2 = tierManager.createTier(list.getId(), "Later", "#00FF00");
 
         // Create Item
         TierItem item = itemManager.createItem("milk.png", "Milk", tier1.getId(), "2 Liters");
-        
+
         // Update Description
         TierItem updatedInfo = new TierItem(item.getId(), item.getImagePath(), "Organic Milk", "1 Liter", tier1.getId());
         itemManager.updateItem(updatedInfo);
