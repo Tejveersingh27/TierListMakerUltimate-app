@@ -96,5 +96,15 @@ app.TierListMakerUltimate
 - Runs against `persistence/stubs` to avoid external dependencies.
 - **Run with:** `./gradlew testDebugUnitTest`
 
----
+### 2. Integration Tests
 
+**Location:** `app/src/androidTest/java`
+
+- Focuses on the interaction between `business` logic and the real `sqlite` db.
+- Uses **JUnit 4**
+- Runs against actual database instances
+- **Run with:** `./gradlew connectedDebugAndroidTest`
+
+---
+### 3. To Run all Tests
+`./gradlew testDebugUnitTest connectedDebugAndroidTest`

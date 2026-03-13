@@ -6,7 +6,7 @@ This document provides an overview of the project's architecture
 
 ## 1. Diagram
 
-!(images/architecture.png)
+![Architecture Diagram](images/architecture.png)
 
 ---
 
@@ -53,6 +53,10 @@ This document provides an overview of the project's architecture
 
 - A Fragment for configuring tier items.
 
+**TierItemEditFragment**
+
+- A Fragment for editing tier items.
+
 **BaseImageCreationFragment**
 
 - An Abstract Fragment for shared image picking logic for creation fragments.
@@ -76,6 +80,14 @@ This document provides an overview of the project's architecture
 **TierListBrowserAdapter**
 
 - Connects TierList objects to a RecyclerView in the tier list browser (non-template).
+
+**ImageHelper**
+
+- Utility class to load and display images in the app.
+
+**TextInputExtractor**
+
+- Utility class to extract text from android TextInput boxes.
 
 --- 
 
