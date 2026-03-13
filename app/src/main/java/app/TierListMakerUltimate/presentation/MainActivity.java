@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         fragment.setUpListener(this);
         showSingleDialog(fragment, FRAGMENT_TIER_EDITOR);
     }
-    
+
 
     // Open tier item creation fragment
     private void setupAddItemButton() {
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
             placementManager.moveItemToTier(itemId, targetTierId);
             refreshList();
         } catch (BusinessException e) {
-            Toast.makeText(this, "Error moving item: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     // This function should make the tier physically move up or down on the list
     // based on the direction parameter
     private void shiftTier(int direction) {
-        return;
+        Toast.makeText(this, NOT_IMPLEMENTED, Toast.LENGTH_LONG).show();
     }
 
     // Refreshes the tierlist to reflect item movements.
