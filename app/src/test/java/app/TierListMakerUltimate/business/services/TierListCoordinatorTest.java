@@ -14,6 +14,10 @@ import java.util.List;
 
 import app.TierListMakerUltimate.business.exceptions.InitializationException;
 import app.TierListMakerUltimate.business.exceptions.NotFoundException;
+import app.TierListMakerUltimate.business.services.implementations.ItemPlacementManager;
+import app.TierListMakerUltimate.business.services.implementations.TierListCoordinator;
+import app.TierListMakerUltimate.business.services.implementations.TierListManager;
+import app.TierListMakerUltimate.business.services.implementations.TierManager;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
@@ -95,7 +99,7 @@ class TierListCoordinatorTest {
     void testDeepCopyAsTemplate() {
         TierList original = tierListCoordinator.createTierListWithDefaults("Original", "thumb", false);
         Tier unranked = tierManager.getUnrankedTierForList(original.getId());
-        itemPlacementManager.createItem("path", "Item", unranked.getId(), "Desc");
+        itemPlacementManager.createItem("path", "Item", unranked.getId(), "Desc", "");
 
         TierList copy = tierListCoordinator.deepCopyAsTemplate(original.getId(), true);
         assertNotNull(copy);
@@ -118,7 +122,7 @@ class TierListCoordinatorTest {
         Tier tierToRemove = rankedTiers.get(0);
         Tier unrankedTier = tierManager.getUnrankedTierForList(list.getId());
 
-        itemPlacementManager.createItem("path", "Item", tierToRemove.getId(), "Desc");
+        itemPlacementManager.createItem("path", "Item", tierToRemove.getId(), "Desc", "");
         assertEquals(1, itemPlacementManager.getItemsForTier(tierToRemove.getId()).size());
 
         tierListCoordinator.removeTierAndMoveAllItemsToUnranked(tierToRemove.getId());

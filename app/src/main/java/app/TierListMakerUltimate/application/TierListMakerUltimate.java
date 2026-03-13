@@ -4,14 +4,14 @@ package app.TierListMakerUltimate.application;
 
 import android.app.Application;
 
-import app.TierListMakerUltimate.business.services.IItemPlacementManager;
-import app.TierListMakerUltimate.business.services.ITierListCoordinator;
-import app.TierListMakerUltimate.business.services.ITierListManager;
-import app.TierListMakerUltimate.business.services.ITierManager;
-import app.TierListMakerUltimate.business.services.ItemPlacementManager;
-import app.TierListMakerUltimate.business.services.TierListCoordinator;
-import app.TierListMakerUltimate.business.services.TierListManager;
-import app.TierListMakerUltimate.business.services.TierManager;
+import app.TierListMakerUltimate.business.services.interfaces.IItemPlacementManager;
+import app.TierListMakerUltimate.business.services.interfaces.ITierListCoordinator;
+import app.TierListMakerUltimate.business.services.interfaces.ITierListManager;
+import app.TierListMakerUltimate.business.services.interfaces.ITierManager;
+import app.TierListMakerUltimate.business.services.implementations.ItemPlacementManager;
+import app.TierListMakerUltimate.business.services.implementations.TierListCoordinator;
+import app.TierListMakerUltimate.business.services.implementations.TierListManager;
+import app.TierListMakerUltimate.business.services.implementations.TierManager;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;

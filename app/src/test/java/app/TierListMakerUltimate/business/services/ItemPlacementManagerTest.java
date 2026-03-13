@@ -16,6 +16,7 @@ import app.TierListMakerUltimate.business.exceptions.InitializationException;
 import app.TierListMakerUltimate.business.exceptions.NotFoundException;
 import app.TierListMakerUltimate.business.exceptions.ImageException;
 import app.TierListMakerUltimate.business.exceptions.ValidationException;
+import app.TierListMakerUltimate.business.services.implementations.ItemPlacementManager;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.interfaces.ImageFilePersistence;

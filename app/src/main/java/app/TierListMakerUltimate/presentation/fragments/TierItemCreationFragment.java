@@ -17,8 +17,8 @@ import java.io.InputStream;
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.business.exceptions.ValidationException;
-import app.TierListMakerUltimate.business.services.IItemPlacementManager;
-import app.TierListMakerUltimate.business.services.ITierManager;
+import app.TierListMakerUltimate.business.services.interfaces.IItemPlacementManager;
+import app.TierListMakerUltimate.business.services.interfaces.ITierManager;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;
 import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
 

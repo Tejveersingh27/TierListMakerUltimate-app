@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.business.services;
+package app.TierListMakerUltimate.business.services.implementations;
 
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
@@ -9,6 +9,10 @@ import app.TierListMakerUltimate.business.exceptions.InitializationException;
 import app.TierListMakerUltimate.business.exceptions.NotFoundException;
 import app.TierListMakerUltimate.business.exceptions.ImageException;
 import app.TierListMakerUltimate.business.exceptions.ValidationException;
+import app.TierListMakerUltimate.business.services.interfaces.IItemPlacementManager;
+import app.TierListMakerUltimate.business.services.interfaces.ITierListCoordinator;
+import app.TierListMakerUltimate.business.services.interfaces.ITierListManager;
+import app.TierListMakerUltimate.business.services.interfaces.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
 import app.TierListMakerUltimate.models.TierItem;

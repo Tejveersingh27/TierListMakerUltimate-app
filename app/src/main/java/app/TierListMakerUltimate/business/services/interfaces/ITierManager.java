@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.business.services;
+package app.TierListMakerUltimate.business.services.interfaces;
 
 import app.TierListMakerUltimate.business.exceptions.NotFoundException;
 import app.TierListMakerUltimate.business.exceptions.ValidationException;

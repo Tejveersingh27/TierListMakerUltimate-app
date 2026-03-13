@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.business.services;
+package app.TierListMakerUltimate.business.services.interfaces;
 
 import java.io.InputStream;
 

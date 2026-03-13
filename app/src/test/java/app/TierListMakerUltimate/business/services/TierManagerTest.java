@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import app.TierListMakerUltimate.business.constants.DefaultTiers;
 import app.TierListMakerUltimate.business.exceptions.InitializationException;
 import app.TierListMakerUltimate.business.exceptions.NotFoundException;
 import app.TierListMakerUltimate.business.exceptions.ValidationException;
+import app.TierListMakerUltimate.business.services.implementations.TierManager;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.persistence.interfaces.TierPersistence;

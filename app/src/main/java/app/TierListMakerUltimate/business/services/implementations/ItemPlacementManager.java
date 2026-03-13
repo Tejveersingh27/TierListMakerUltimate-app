@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.business.services;
+package app.TierListMakerUltimate.business.services.implementations;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +8,7 @@ import app.TierListMakerUltimate.business.exceptions.InitializationException;
 import app.TierListMakerUltimate.business.exceptions.NotFoundException;
 import app.TierListMakerUltimate.business.exceptions.ImageException;
 import app.TierListMakerUltimate.business.exceptions.ValidationException;
+import app.TierListMakerUltimate.business.services.interfaces.IItemPlacementManager;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.persistence.interfaces.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.interfaces.TierItemPersistence;

@@ -19,14 +19,14 @@ import java.util.List;
 
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
 import app.TierListMakerUltimate.business.exceptions.NotFoundException;
-import app.TierListMakerUltimate.business.services.IItemPlacementManager;
-import app.TierListMakerUltimate.business.services.ITierListCoordinator;
-import app.TierListMakerUltimate.business.services.ITierListManager;
-import app.TierListMakerUltimate.business.services.ITierManager;
-import app.TierListMakerUltimate.business.services.ItemPlacementManager;
-import app.TierListMakerUltimate.business.services.TierListCoordinator;
-import app.TierListMakerUltimate.business.services.TierListManager;
-import app.TierListMakerUltimate.business.services.TierManager;
+import app.TierListMakerUltimate.business.services.interfaces.IItemPlacementManager;
+import app.TierListMakerUltimate.business.services.interfaces.ITierListCoordinator;
+import app.TierListMakerUltimate.business.services.interfaces.ITierListManager;
+import app.TierListMakerUltimate.business.services.interfaces.ITierManager;
+import app.TierListMakerUltimate.business.services.implementations.ItemPlacementManager;
+import app.TierListMakerUltimate.business.services.implementations.TierListCoordinator;
+import app.TierListMakerUltimate.business.services.implementations.TierListManager;
+import app.TierListMakerUltimate.business.services.implementations.TierManager;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
@@ -92,8 +92,8 @@ public class TierListCoordinatorIntegrationTest {
         Tier sTier = tierManager.createTier(listId, "S-Tier", "#FF0000");
 
         // Add items to the new tier
-        TierItem item1 = itemManager.createItem("img1.png", "Item 1", sTier.getId(), "desc 1");
-        TierItem item2 = itemManager.createItem("img2.png", "Item 2", sTier.getId(), "desc 2");
+        TierItem item1 = itemManager.createItem("img1.png", "Item 1", sTier.getId(), "desc 1", "");
+        TierItem item2 = itemManager.createItem("img2.png", "Item 2", sTier.getId(), "desc 2", "");
 
         // Verify initial state
         assertEquals(2, itemManager.getItemsForTier(sTier.getId()).size());
@@ -154,7 +154,7 @@ public class TierListCoordinatorIntegrationTest {
         }
         assertNotNull(sTier);
 
-        TierItem item = itemManager.createItem("src.png", "Original Item", sTier.getId(), "desc");
+        TierItem item = itemManager.createItem("src.png", "Original Item", sTier.getId(), "desc", "");
 
         // Deep copy list as template
         TierList copiedList = listCoordinator.deepCopyAsTemplate(sourceList.getId(), true);
@@ -192,7 +192,7 @@ public class TierListCoordinatorIntegrationTest {
         }
         assertNotNull(sTier);
 
-        TierItem item = itemManager.createItem("item.png", "To Be Deleted", sTier.getId(), "desc");
+        TierItem item = itemManager.createItem("item.png", "To Be Deleted", sTier.getId(), "desc", "");
         int itemId = item.getId();
 
         // Delete entire list

@@ -22,8 +22,8 @@ import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.business.exceptions.NotFoundException;
 import app.TierListMakerUltimate.business.exceptions.ValidationException;
-import app.TierListMakerUltimate.business.services.ITierListCoordinator;
-import app.TierListMakerUltimate.business.services.ITierManager;
+import app.TierListMakerUltimate.business.services.interfaces.ITierListCoordinator;
+import app.TierListMakerUltimate.business.services.interfaces.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.presentation.utils.TextInputExtractor;
 

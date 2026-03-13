@@ -16,8 +16,8 @@ import java.util.List;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
-import app.TierListMakerUltimate.business.services.ITierListCoordinator;
-import app.TierListMakerUltimate.business.services.ITierListManager;
+import app.TierListMakerUltimate.business.services.interfaces.ITierListCoordinator;
+import app.TierListMakerUltimate.business.services.interfaces.ITierListManager;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.presentation.adapters.TemplateBrowserAdapter;
 import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
