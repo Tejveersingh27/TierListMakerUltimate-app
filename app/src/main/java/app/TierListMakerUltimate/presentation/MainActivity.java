@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.business.exception.BusinessException;
 import app.TierListMakerUltimate.business.services.IItemPlacementManager;
+import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
@@ -38,11 +40,12 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     // Instance Variables
     private ITierManager tierManager;
+    private IItemPlacementManager placementManager;
+    private ITierListCoordinator tierListCoordinator;
     private TierAdapter tierAdapter;
     private ImageHelper imageHelper;
 
     private TierItemAdapter unrankedAdapter;
-    private IItemPlacementManager placementManager;
 
     // Views
     TextView tierListTitle;
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
         tierManager = app.getTierManager();
         placementManager = app.getItemPlacementManager();
+        tierListCoordinator = app.getTierListCoordinator();
 
 
         Intent intent = getIntent();
@@ -78,10 +82,12 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
         setupTiersRecycler();
         setupUnrankedRecycler();
-        setupAddItemButton();
-        setupAddTierButton();
-        setupEditTierListNameButton();
-        setupBackToMyTierListsButton();
+        setupAllButtons();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         refreshList();
     }
 
@@ -96,6 +102,14 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         shareTemplateButton = findViewById(R.id.shareTemplate);
         backToMyTierListsButton = findViewById(R.id.backButton);
         tierListEditButton = findViewById(R.id.titleEditArea);
+    }
+
+    private void setupAllButtons() {
+        setupAddItemButton();
+        setupAddTierButton();
+        setupEditTierListNameButton();
+        setupBackToMyTierListsButton();
+        setupShareTemplateButton();
     }
 
     private void setupTiersRecycler() {
@@ -124,10 +138,10 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         showFragment(fragment, FRAGMENT_TIER_EDITOR);
     }
 
-    private void openTierCreator() {
+    private void openTierCreator(String tag) {
         TierListCreationFragment fragment = TierListCreationFragment.newInstance(tierlistID);
         fragment.setUpListener(this);
-        showFragment(fragment, FRAGMENT_TIER_LIST_CREATION);
+        showFragment(fragment, tag);
     }
 
 
@@ -157,8 +171,29 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     private void setupEditTierListNameButton() {
         tierListEditButton.setOnClickListener(v -> {
-            openTierCreator();
+            openTierCreator(FRAGMENT_TIER_LIST_CREATION);
         });
+    }
+
+    private void setupShareTemplateButton() {
+        shareTemplateButton.setOnClickListener(v -> {
+            showAlert(R.string.share_tier_list_as_template_title, R.string.share_tier_list_as_template_message, R.string.publish, R.string.cancel);
+        });
+    }
+
+    private void showAlert(int title, int message, int positiveButton, int negativeButton) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setPositiveButton(positiveButton, (dialog, which) -> {
+            openTierCreator(FRAGMENT_TEMPLATE_CREATION);
+        });
+
+        builder.setNegativeButton(negativeButton, null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void setupBackToMyTierListsButton() {
@@ -210,9 +245,13 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
 
     // Tier List Creation Fragment Overrides
     @Override
-    public void onTierListCreatedSuccessfully(TierList newTierList) {
-        tierListTitle.setText(newTierList.getName());
-
+    public void onTierListCreatedSuccessfully(TierList newTierList, String tag) {
+        if (tag.equals(FRAGMENT_TIER_LIST_CREATION)) {
+            tierListTitle.setText(newTierList.getName());
+        } else {
+            tierListCoordinator.deepCopyAsTemplate(newTierList.getId(), true);
+            Toast.makeText(this, R.string.template_created, Toast.LENGTH_SHORT).show();
+        }
     }
 
 

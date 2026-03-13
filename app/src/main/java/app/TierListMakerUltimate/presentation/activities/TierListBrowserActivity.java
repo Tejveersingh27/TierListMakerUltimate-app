@@ -109,7 +109,7 @@ public class TierListBrowserActivity extends AppCompatActivity implements TierLi
     }
 
     @Override
-    public void onTierListCreatedSuccessfully(TierList newTierList) {
+    public void onTierListCreatedSuccessfully(TierList newTierList, String tag) {
         refreshList();
     }
 }

@@ -72,9 +72,8 @@
     <string name="item_title">Title</string>
     <string name="item_hint_tags_comma_separated">Tags (comma separated)</string>
     <string name="button_add_to_do">Add To-Do</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="create_template">Create Template</string>
+    <string name="create_template">Configuration</string>
     <string name="tier_list_name_hint">Tier List Name</string>
     <string name="select_image">Select Image</string>
     <string name="select_thumbnail_image">Thumbnail</string>
@@ -99,4 +98,9 @@
     <string name="configure_tier">Configure Tier</string>
     <string name="move_tier_up">Move Tier up</string>
     <string name="move_tier_down">Move Tier down</string>
+    <string name="share_tier_list_as_template_title">Publish Tier List as a Template?</string>
+    <string name="share_tier_list_as_template_message">This creates a blank template for others to use. Your personal rankings will stay unchanged.</string>
+    <string name="publish">Publish\n</string>
+    <string name="cancel">Cancel\n</string>
+    <string name="template_created">Template Published</string>
 </resources>
