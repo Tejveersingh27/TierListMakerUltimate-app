@@ -14,11 +14,13 @@ import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
+import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierList;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
+import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
 import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
 import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
 
@@ -27,6 +29,7 @@ class TierListCoordinatorTest {
     private TierListCoordinator tierListCoordinator;
     private TierManager tierManager;
     private TierListManager tierListManager;
+    private ItemPlacementManager itemPlacementManager;
 
     @BeforeEach
     void setup() {
@@ -39,28 +42,29 @@ class TierListCoordinatorTest {
             }
 
             @Override
-            public void deleteImage(String fileName) throws IOException {
+            public void deleteImage(String fileName) {
+                // Do nothing
             }
         };
 
         tierManager = new TierManager(tierStorage, new TierValidator());
-
         tierListManager = new TierListManager(tierListStorage, imagePersistence, new TierListValidator());
+        itemPlacementManager = new ItemPlacementManager(new TierItemPersistenceStub(), imagePersistence, new ItemValidator());
 
-        tierListCoordinator = new TierListCoordinator(tierManager, tierListManager);
+        tierListCoordinator = new TierListCoordinator(tierManager, tierListManager, itemPlacementManager);
     }
 
     @Test
     void testConstructorNullDependencies() {
-        assertThrows(InitializationException.class, () -> new TierListCoordinator(null, tierListManager));
-        assertThrows(InitializationException.class, () -> new TierListCoordinator(tierManager, null));
+        assertThrows(InitializationException.class, () -> new TierListCoordinator(null, tierListManager, itemPlacementManager));
+        assertThrows(InitializationException.class, () -> new TierListCoordinator(tierManager, null, itemPlacementManager));
+        assertThrows(InitializationException.class, () -> new TierListCoordinator(tierManager, tierListManager, null));
     }
 
     @Test
     void testAddTierListCreatesListAndDefaultTiers() {
         TierList list = tierListCoordinator.createTierListWithDefaults("My List", "Thumbnail", false);
 
-        // Verify list exists
         assertNotNull(list);
         List<Tier> tiers = tierManager.getTiersForList(list.getId());
         assertEquals(7, tiers.size());
@@ -74,24 +78,6 @@ class TierListCoordinatorTest {
         assertEquals("test", list.getThumbnailPath());
         List<Tier> tiers = tierManager.getTiersForList(list.getId());
         assertEquals(7, tiers.size());
-    }
-
-    @Test
-    void testGetUnrankedTierSuccess() {
-        TierList list = tierListCoordinator.createTierListWithDefaults("Unranked", "thumbnailPath", false);
-        
-        Tier unranked = tierListCoordinator.getUrankedTier(list.getId());
-        
-        assertNotNull(unranked);
-        assertTrue(unranked.isUnranked());
-        assertEquals("Unranked", unranked.getName());
-    }
-
-    @Test
-    void testGetUnrankedTierNotFoundThrowsException() {
-        assertThrows(NotFoundException.class, () ->  {
-            tierListCoordinator.getUrankedTier(9999);
-        });
     }
 
     @Test

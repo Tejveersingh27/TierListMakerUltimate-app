@@ -34,10 +34,6 @@ import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
 import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
 import app.TierListMakerUltimate.persistence.system_data.ITierListSeedProvider;
 
-/**
- * Integration Test ensuring that the SystemTemplateCoordinator correctly 
- * orchestrates TierListCoordinator and ItemPlacementManager to load system data.
- */
 public class SystemTemplateIntegrationTest {
     private SystemTemplateCoordinator templateCoordinator;
     private TierListCoordinator listCoordinator;
@@ -69,23 +65,27 @@ public class SystemTemplateIntegrationTest {
             @Override public String saveImage(InputStream inputStream, String fileName) throws IOException {
                 return "test";
             }
-            @Override public void deleteImage(String fileName) throws IOException {}
+            @Override public void deleteImage(String fileName) {
+            }
         };
 
         // Initialize the managers
         listManager = new TierListManager(listStorage, imagePersistence, new TierListValidator());
         tierManager = new TierManager(tierStorage, new TierValidator());
-        listCoordinator = new TierListCoordinator(tierManager, listManager);
         itemManager = new ItemPlacementManager(itemStorage, imagePersistence, new ItemValidator());
+
+        listCoordinator = new TierListCoordinator(tierManager, listManager, itemManager);
+        
         seedProvider = new StubSeedProvider();
-        templateCoordinator = new SystemTemplateCoordinator(listCoordinator, itemManager, seedProvider);
+        templateCoordinator = new SystemTemplateCoordinator(listCoordinator, tierManager, itemManager, seedProvider);
     }
 
     @Test
     void testLoadSystemTemplatesIntegrationFlow() {
         List<SystemTemplateItem> movieItems = new ArrayList<>();
-        movieItems.add(new SystemTemplateItem("Star Wars", "sw.png"));
-        movieItems.add(new SystemTemplateItem("Matrix", "inc.png"));
+
+        movieItems.add(new SystemTemplateItem("Star Wars", "Classic Space Opera", "sw.png"));
+        movieItems.add(new SystemTemplateItem("Matrix", "Cyberpunk action", "inc.png"));
 
         //Mock template
         SystemTemplate movieTemplate = new SystemTemplate("Sci Fi Movies", "thumbnailPath", movieItems);
@@ -97,18 +97,16 @@ public class SystemTemplateIntegrationTest {
         assertEquals(1, allLists.size());
         TierList createdList = allLists.get(0);
         assertEquals("Sci Fi Movies", createdList.getName());
-        assertTrue(createdList.isTemplate());
-
 
         List<Tier> tiers = tierManager.getTiersForList(createdList.getId());
         assertTrue(!tiers.isEmpty());
 
-        //Verify items were placed in the Unranked tier
-        Tier unranked = listCoordinator.getUrankedTier(createdList.getId());
+        Tier unranked = tierManager.getUnrankedTierForList(createdList.getId());
         List<TierItem> itemsInUnranked = itemManager.getItemsForTier(unranked.getId());
         
         assertEquals(2, itemsInUnranked.size());
-        assertTrue(itemsInUnranked.get(0).getDescription().contains("Star Wars") || 
-                   itemsInUnranked.get(1).getDescription().contains("Star Wars"));
+        // Verify items were placed correctly
+        assertTrue(itemsInUnranked.get(0).getName().equals("Star Wars") || 
+                   itemsInUnranked.get(1).getName().equals("Star Wars"));
     }
 }

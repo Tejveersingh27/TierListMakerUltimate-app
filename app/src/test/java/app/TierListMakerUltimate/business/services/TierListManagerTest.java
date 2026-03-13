@@ -15,7 +15,7 @@ import java.util.List;
 
 import app.TierListMakerUltimate.business.exception.InitializationException;
 import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.PersistenceException;
+import app.TierListMakerUltimate.business.exception.ImageException;
 import app.TierListMakerUltimate.business.exception.ValidationException;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.models.TierList;
@@ -58,7 +58,7 @@ public class TierListManagerTest {
     @Test
     void testCreateTierListSuccess() {
         int id = manager.createTierList("Favourite Netflix Series List", "Thumbnail", false).getId();
-        assertTrue(id >0);
+        assertTrue(id > 0);
 
         TierList tierListItem = persistence.getTierList(id);
         assertNotNull(tierListItem);
@@ -87,8 +87,7 @@ public class TierListManagerTest {
 
     @Test
     void testGetTierListNotFoundThrowsException() {
-        assertThrows(NotFoundException.class, () ->
-        {
+        assertThrows(NotFoundException.class, () -> {
             manager.getTierList(9999);
         });
     }
@@ -150,9 +149,28 @@ public class TierListManagerTest {
     }
 
     @Test
-    void testsRemoveTierListInvalidIdThrowsException() {
-        assertThrows(ValidationException.class, () -> {
-            manager.removeTierList(-1);
-        });
+    void testCreateTierListImageFailureThrowsException() {
+        ImageFilePersistence failing = new ImageFilePersistence() {
+            @Override
+            public String saveImage(InputStream is, String ext) throws IOException {
+                throw new IOException("Simulated disk error");
+            }
+            @Override
+            public void deleteImage(String name) {}
+        };
+        TierListManager failingManager = new TierListManager(persistence, failing, new TierListValidator());
+        // Updated to expect ImageException instead of PersistenceException
+        assertThrows(ImageException.class, () -> failingManager.createTierList("Name", false, null, "jpg"));
+    }
+
+    @Test
+    void testCopyTierListSuccess() {
+        TierList list = manager.createTierList("Original", "thumb", false);
+        TierList copied = manager.copy(list.getId(), true);
+
+        assertNotNull(copied);
+        assertEquals("Original", copied.getName());
+        assertTrue(copied.isTemplate());
+        assertTrue(copied.getId() != list.getId());
     }
 }

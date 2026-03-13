@@ -51,7 +51,8 @@ public class TierListFLowIntegrationTest {
                 return "test";
             }
             @Override
-            public void deleteImage(String fileName) throws IOException {}
+            public void deleteImage(String fileName) {
+            }
         };
 
         listManager = new TierListManager(listStorage, imagePersistence, new TierListValidator());
@@ -61,7 +62,7 @@ public class TierListFLowIntegrationTest {
 
     @Test
     void testFullTierListCreationAndManipulationFlow() {
-        // --- STEP 1: Create List ---
+        // Create List
         TierList list = listManager.createTierList("Vacation Plans!", "thumbnailPath", false);
         assertNotNull(list);
         int listId = list.getId();
@@ -77,23 +78,24 @@ public class TierListFLowIntegrationTest {
         List<Tier> tiers = tierManager.getTiersForList(listId);
         assertEquals(2, tiers.size());
 
-        TierItem item = itemManager.createItem("japan.png", sTier.getId(), "Japan Trip");
+
+        TierItem item = itemManager.createItem("japan.png", "Japan Trip", sTier.getId(), "Tokyo and Kyoto");
         assertNotNull(item);
         assertEquals(sTier.getId(), item.getTierId());
+        assertEquals("Japan Trip", item.getName());
 
         List<TierItem> mustVisitItems = itemManager.getItemsForTier(sTier.getId());
         assertEquals(1, mustVisitItems.size());
-        assertEquals("Japan Trip", mustVisitItems.get(0).getDescription());
-
+        assertEquals("Tokyo and Kyoto", mustVisitItems.get(0).getDescription());
 
         itemManager.moveItemToTier(item.getId(), aTier.getId());
         
 
         assertTrue(itemManager.getItemsForTier(sTier.getId()).isEmpty());
         assertEquals(1, itemManager.getItemsForTier(aTier.getId()).size());
-        assertEquals("Japan Trip", itemManager.getItemsForTier(aTier.getId()).get(0).getDescription());
+        assertEquals("Japan Trip", itemManager.getItemsForTier(aTier.getId()).get(0).getName());
 
-        // --- STEP 7: Removing the item ---
+        //  Removing the item
         itemManager.removeItem(item.getId());
         assertTrue(itemManager.getItemsForTier(aTier.getId()).isEmpty());
     }
@@ -104,11 +106,11 @@ public class TierListFLowIntegrationTest {
         Tier tier1 = tierManager.createTier(list.getId(), "Urgent", "#FF0000");
         Tier tier2 = tierManager.createTier(list.getId(), "Later", "#00FF00");
 
-        // Create Item (No name field)
-        TierItem item = itemManager.createItem("milk.png", tier1.getId(), "2 Liters");
+        // Create Item
+        TierItem item = itemManager.createItem("milk.png", "Milk", tier1.getId(), "2 Liters");
         
         // Update Description
-        TierItem updatedInfo = new TierItem(item.getId(), item.getImagePath(), "1 Liter", tier1.getId());
+        TierItem updatedInfo = new TierItem(item.getId(), item.getImagePath(), "Organic Milk", "1 Liter", tier1.getId());
         itemManager.updateItem(updatedInfo);
 
         // Move to Tier 2
@@ -116,6 +118,7 @@ public class TierListFLowIntegrationTest {
 
         // Verify state
         TierItem result = itemManager.getItem(item.getId());
+        assertEquals("Organic Milk", result.getName());
         assertEquals("1 Liter", result.getDescription());
         assertEquals(tier2.getId(), result.getTierId());
     }

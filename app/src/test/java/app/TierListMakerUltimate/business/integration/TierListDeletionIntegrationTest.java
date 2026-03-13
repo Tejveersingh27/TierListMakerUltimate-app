@@ -54,15 +54,17 @@ public class TierListDeletionIntegrationTest {
             @Override public String saveImage(InputStream is, String ext) throws IOException {
                 return "path";
             }
-            @Override public void deleteImage(String name) throws IOException {}
+            @Override public void deleteImage(String name) {
+
+            }
         };
 
         listManager = new TierListManager(listStorage, imagePersistence, new TierListValidator());
         tierManager = new TierManager(tierStorage, new TierValidator());
         itemManager = new ItemPlacementManager(itemStorage, imagePersistence, new ItemValidator());
         
-        // The Coordinator connects the managers
-        listCoordinator = new TierListCoordinator(tierManager, listManager);
+
+        listCoordinator = new TierListCoordinator(tierManager, listManager, itemManager);
     }
 
     @Test
@@ -73,8 +75,8 @@ public class TierListDeletionIntegrationTest {
         Tier sTier = tierManager.createTier(listId, "s-Tier", "#FF0000");
         int sTierId = sTier.getId();
 
-        itemManager.createItem("item1.png", sTierId, "item 1");
-        itemManager.createItem("item2.png", sTierId, "item 2");
+        itemManager.createItem("item1.png", "Item 1", sTierId, "description 1");
+        itemManager.createItem("item2.png", "Item 2", sTierId, "description 2");
 
         assertEquals(1, listManager.getAllTierLists().size());
         assertEquals(1, tierManager.getTiersForList(listId).size());
@@ -83,17 +85,17 @@ public class TierListDeletionIntegrationTest {
         // This call to the Coordinator should trigger deletions in List, Tier, and Item managers
         listCoordinator.removeTierList(listId);
 
-        //List should be gone
+        // List should be gone
         assertThrows(NotFoundException.class, () -> listManager.getTierList(listId));
         
         // Tiers shoulf be empty
         List<Tier> tiers = tierManager.getTiersForList(listId);
         assertTrue(tiers.isEmpty());
 
-        // Items should be gone
-        assertThrows(NotFoundException.class, () ->
-        {
-            itemManager.getItemsForTier(sTierId);
+
+        assertThrows(NotFoundException.class, () -> {
+            itemManager.getItem(1);
         });
+        
     }
 }
