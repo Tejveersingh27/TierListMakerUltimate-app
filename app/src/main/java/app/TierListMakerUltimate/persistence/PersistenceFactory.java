@@ -2,6 +2,8 @@
 
 package app.TierListMakerUltimate.persistence;
 
+import static app.TierListMakerUltimate.persistence.Constants.DB_NAME;
+
 import android.content.Context;
 
 import app.TierListMakerUltimate.persistence.sqlite.AppDBHelper;
@@ -23,27 +25,29 @@ public final class PersistenceFactory {
         public final TierListPersistence tierLists;
         public final TierPersistence tiers;
         public final TierItemPersistence items;
-    
+
         private Set(TierListPersistence tl, TierPersistence t, TierItemPersistence i) {
-            this.tierLists = tl; this.tiers = t; this.items = i;
+            this.tierLists = tl;
+            this.tiers = t;
+            this.items = i;
         }
     }
 
     public static Set SQLite(Context context) {
-        AppDBHelper dbHelper = new AppDBHelper(context);
+        AppDBHelper dbHelper = new AppDBHelper(context, DB_NAME, true);
 
         return new Set(
-            new TierListPersistenceSQLite(dbHelper),
-            new TierPersistenceSQLite(dbHelper),
-            new TierItemPersistenceSQLite(dbHelper)
+                new TierListPersistenceSQLite(dbHelper),
+                new TierPersistenceSQLite(dbHelper),
+                new TierItemPersistenceSQLite(dbHelper)
         );
     }
 
     public static Set Stubs() {
         return new Set(
-            new TierListPersistenceStub(),
-            new TierPersistenceStub(),
-            new TierItemPersistenceStub()
+                new TierListPersistenceStub(),
+                new TierPersistenceStub(),
+                new TierItemPersistenceStub()
         );
     }
 }
