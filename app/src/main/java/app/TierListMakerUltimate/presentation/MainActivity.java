@@ -21,6 +21,7 @@ import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.models.TierList;
+import app.TierListMakerUltimate.presentation.activities.TierListBrowserActivity;
 import app.TierListMakerUltimate.presentation.controllers.TierItemDragController;
 import app.TierListMakerUltimate.presentation.fragments.TierEditorFragment;
 import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     ImageButton addTierButton;
 
     ImageButton shareTemplateButton;
+
+    ImageButton backToMyTierListsButton;
     View tierListEditButton;
 
 
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         setupAddItemButton();
         setupAddTierButton();
         setupEditTierListNameButton();
+        setupBackToMyTierListsButton();
         refreshList();
     }
 
@@ -90,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         tierRecycler = findViewById(R.id.tierContainer);
         unrankedItemsRecycler = findViewById(R.id.itemHolderUnranked);
         shareTemplateButton = findViewById(R.id.shareTemplate);
+        backToMyTierListsButton = findViewById(R.id.backButton);
         tierListEditButton = findViewById(R.id.titleEditArea);
     }
 
@@ -156,6 +161,12 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         });
     }
 
+    private void setupBackToMyTierListsButton() {
+        backToMyTierListsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TierListBrowserActivity.class);
+            startActivity(intent);
+        });
+    }
 
     // Moves an item to a target tier
     private void moveItem(int itemId, int targetTierId) {
