@@ -47,7 +47,7 @@ public class TierListCoordinator implements ITierListCoordinator {
 
     private void createDefaultTiers(int tierListId) {
         for (DefaultTiers tier : DefaultTiers.values()) {
-            tierManager.createTier(tierListId, tier.label, tier.color, tier.isUnranked);
+            tierManager.createTier(tierListId, tier.label, tier.color, tier.isUnranked, tier.position);
         }
     }
 

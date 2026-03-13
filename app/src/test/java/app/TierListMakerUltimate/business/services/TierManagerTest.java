@@ -59,7 +59,7 @@ class TierManagerTest {
     @Test
     void updateTierUpdatesName() {
         Tier created = tierManager.createTier(1, "Old", "#FFFFFF");
-        Tier updated = new Tier(created.getId(), created.getTierListId(), "New", created.getColor(), created.isUnranked());
+        Tier updated = new Tier(created.getId(), created.getTierListId(), "New", created.getColor(), created.isUnranked(), created.getPosition());
 
         tierManager.updateTier(updated);
 
@@ -69,11 +69,21 @@ class TierManagerTest {
     @Test
     void updateTierUpdatesColor() {
         Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
-        Tier updated = new Tier(created.getId(), created.getTierListId(), created.getName(), "#000000", created.isUnranked());
+        Tier updated = new Tier(created.getId(), created.getTierListId(), created.getName(), "#000000", created.isUnranked(), created.getPosition());
 
         tierManager.updateTier(updated);
 
         assertEquals("#000000", tierManager.getTier(created.getId()).getColor());
+    }
+
+    @Test
+    void updateTierUpdatesPosition() {
+        Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
+        Tier updated = new Tier(created.getId(), created.getTierListId(), created.getName(), created.getColor(), created.isUnranked(), 1);
+
+        tierManager.updateTier(updated);
+
+        assertEquals(1, tierManager.getTier(created.getId()).getPosition());
     }
 
     @Test
@@ -109,7 +119,7 @@ class TierManagerTest {
     @Test
     void updateTierRejectsInvalidLabel() {
         Tier created = tierManager.createTier(1, "Original", "#FFFFFF");
-        Tier invalid = new Tier(created.getId(), created.getTierListId(), "", created.getColor(), created.isUnranked());
+        Tier invalid = new Tier(created.getId(), created.getTierListId(), "", created.getColor(), created.isUnranked(), created.getPosition());
 
         assertThrows(ValidationException.class,
                 () -> tierManager.updateTier(invalid));
@@ -119,7 +129,7 @@ class TierManagerTest {
 
     @Test
     void updateTierThrowsExceptionIfNotFound() {
-        Tier nonExistent = new Tier(999, 1, "Ghost", "#000000", false);
+        Tier nonExistent = new Tier(999, 1, "Ghost", "#000000", false, 0);
 
         assertThrows(NotFoundException.class, () -> tierManager.updateTier(nonExistent));
     }

@@ -26,13 +26,13 @@ public class TierManager implements ITierManager {
 
     @Override
     public Tier createTier(int tierListId, String label, String color) throws ValidationException {
-        return createTier(tierListId, label, color, false);
+        return createTier(tierListId, label, color, false, 0);
     }
 
     @Override
-    public Tier createTier(int tierListId, String label, String color, boolean isUnranked) throws ValidationException {
+    public Tier createTier(int tierListId, String label, String color, boolean isUnranked, int position) throws ValidationException {
         validator.validateCreateTier(label, color);
-        Tier newTier = new Tier(tierListId, label, color, isUnranked);
+        Tier newTier = new Tier(tierListId, label, color, isUnranked, position);
         return tierStorage.insertTier(tierListId, newTier);
     }
 
@@ -65,7 +65,7 @@ public class TierManager implements ITierManager {
     @Override
     public Tier copyTier(int tierId, int targetTierListId) throws ValidationException, NotFoundException {
         Tier verifiedTier = getVerifiedTier(tierId);
-        return createTier(targetTierListId, verifiedTier.getName(), verifiedTier.getColor(), verifiedTier.isUnranked());
+        return createTier(targetTierListId, verifiedTier.getName(), verifiedTier.getColor(), verifiedTier.isUnranked(), verifiedTier.getPosition());
     }
 
     private Tier getVerifiedTier(int tierId) throws NotFoundException {
