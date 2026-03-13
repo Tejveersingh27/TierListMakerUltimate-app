@@ -17,6 +17,7 @@ public class Tier {
         this.name = name;
         this.colorHex = colorHex;
         this.isUnranked = isUnranked;
+        this.tierPosition = tierPosition;
     }
 
     // For DB load
@@ -26,6 +27,8 @@ public class Tier {
         this.name = name;
         this.colorHex = colorHex;
         this.isUnranked = isUnranked;
+        this.tierPosition = tierPosition;
+
     }
 
     public int getId() {
@@ -51,5 +54,4 @@ public class Tier {
     public int getPosition() {
         return tierPosition;
     }
-
 }
