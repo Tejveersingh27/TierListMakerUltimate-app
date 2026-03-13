@@ -22,8 +22,8 @@ import app.TierListMakerUltimate.persistence.interfaces.TierItemPersistence;
 import app.TierListMakerUltimate.persistence.interfaces.TierListPersistence;
 import app.TierListMakerUltimate.persistence.interfaces.TierPersistence;
 import app.TierListMakerUltimate.persistence.factory.PersistenceFactory;
-import app.TierListMakerUltimate.business.utils.IUUIDGenerator;
-import app.TierListMakerUltimate.business.utils.UUIDGenerator;
+import app.TierListMakerUltimate.persistence.utils.IUUIDGenerator;
+import app.TierListMakerUltimate.persistence.utils.UUIDGenerator;
 
 public class TierListMakerUltimate extends Application {
 

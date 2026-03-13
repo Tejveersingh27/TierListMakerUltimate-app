@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.business.utils;
+package app.TierListMakerUltimate.persistence.utils;
 
 import java.util.UUID;
 
