@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TierPersistenceStub implements TierPersistence {
+public class
+
+TierPersistenceStub implements TierPersistence {
 
     private final Map<Integer, Tier> tiers = new HashMap<>();
     private int nextId = 1;

@@ -1,5 +1,7 @@
 package app.TierListMakerUltimate.application;
 
+// import java.beans.PersistenceDelegate;
+
 import android.app.Application;
 
 import app.TierListMakerUltimate.business.services.IItemPlacementManager;
@@ -15,32 +17,22 @@ import app.TierListMakerUltimate.business.services.TierManager;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
+
 import app.TierListMakerUltimate.persistence.system_data.ITierListSeedProvider;
 import app.TierListMakerUltimate.persistence.ImageFilePersistence;
 import app.TierListMakerUltimate.persistence.AndroidImageFilePersistence;
 import app.TierListMakerUltimate.persistence.TierItemPersistence;
 import app.TierListMakerUltimate.persistence.TierListPersistence;
 import app.TierListMakerUltimate.persistence.TierPersistence;
-import app.TierListMakerUltimate.persistence.stubs.TierItemPersistenceStub;
-import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
-import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
+import app.TierListMakerUltimate.persistence.PersistenceFactory;
 import app.TierListMakerUltimate.persistence.system_data.SystemTemplateProvider;
 import app.TierListMakerUltimate.persistence.utils.IUUIDGenerator;
 import app.TierListMakerUltimate.persistence.utils.UUIDGenerator;
 
-
 public class TierListMakerUltimate extends Application {
-
-    // Storage instances
-    private TierListPersistence tierListStorage;
-    private TierPersistence tierStorage;
-    private TierItemPersistence itemStorage;
-    private ImageFilePersistence imageStorage;
-    private ITierListSeedProvider seedProvider;
 
     // Business logic instances
     private ITierListCoordinator tierListCoordinator;
-    private ISystemTemplateCoordinator systemTemplateCoordinator;
     private ITierListManager tierListManager;
     private ITierManager tierManager;
     private IItemPlacementManager itemPlacementManager;
@@ -49,25 +41,28 @@ public class TierListMakerUltimate extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // Change SQLITE to STUB here to change the persistence implementation
+        PersistenceFactory.Implementations implementation = PersistenceFactory.Implementations.SQLITE;
+
+        PersistenceFactory.Set persistence = 
+            (implementation == PersistenceFactory.Implementations.SQLITE)
+                ? PersistenceFactory.SQLite(this)
+                : PersistenceFactory.Stubs();
+
+        // Storage instances
+        TierListPersistence tierListStorage = persistence.tierLists;
+        TierPersistence tierStorage = persistence.tiers;
+        TierItemPersistence itemStorage = persistence.items;
+        ITierListSeedProvider seedProvider = new SystemTemplateProvider();
+
         IUUIDGenerator uuidGenerator = new UUIDGenerator();
-
-        if (isTestEnvironment()) {
-            tierListStorage = new TierListPersistenceStub();
-            tierStorage = new TierPersistenceStub();
-            itemStorage = new TierItemPersistenceStub();
-            seedProvider = new SystemTemplateProvider();
-        } else {
-            // TODO: Connect to real database
-        }
-
-        imageStorage = new AndroidImageFilePersistence(this, uuidGenerator);
-
+        ImageFilePersistence imageStorage = new AndroidImageFilePersistence(this, uuidGenerator);
 
         tierListManager = new TierListManager(tierListStorage, imageStorage, new TierListValidator());
         tierManager = new TierManager(tierStorage, new TierValidator());
         itemPlacementManager = new ItemPlacementManager(itemStorage, imageStorage, new ItemValidator());
         tierListCoordinator = new TierListCoordinator(tierManager, tierListManager, itemPlacementManager);
-        systemTemplateCoordinator = new SystemTemplateCoordinator(tierListCoordinator, tierManager, itemPlacementManager, seedProvider);
+        ISystemTemplateCoordinator systemTemplateCoordinator = new SystemTemplateCoordinator(tierListCoordinator, tierManager, itemPlacementManager, seedProvider);
 
         systemTemplateCoordinator.loadSystemTemplates();
     }
@@ -88,9 +83,7 @@ public class TierListMakerUltimate extends Application {
         return tierListCoordinator;
     }
 
-
     private boolean isTestEnvironment() {
         return true; // TODO: Need to add an environment variable for this
     }
 }
-

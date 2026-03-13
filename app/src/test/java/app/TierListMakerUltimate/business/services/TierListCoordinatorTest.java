@@ -2,6 +2,8 @@ package app.TierListMakerUltimate.business.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import app.TierListMakerUltimate.business.exception.InitializationException;
+import app.TierListMakerUltimate.business.exception.NotFoundException;
 import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
@@ -25,6 +29,7 @@ class TierListCoordinatorTest {
     private TierListCoordinator tierListCoordinator;
     private TierManager tierManager;
     private TierListManager tierListManager;
+    private ItemPlacementManager itemPlacementManager;
 
     @BeforeEach
     void setup() {
@@ -43,34 +48,52 @@ class TierListCoordinatorTest {
         };
 
         tierManager = new TierManager(tierStorage, new TierValidator());
-
         tierListManager = new TierListManager(tierListStorage, imagePersistence, new TierListValidator());
-        ItemPlacementManager itemPlacementManager = new ItemPlacementManager(new TierItemPersistenceStub(), imagePersistence, new ItemValidator());
+        itemPlacementManager = new ItemPlacementManager(new TierItemPersistenceStub(), imagePersistence, new ItemValidator());
 
         tierListCoordinator = new TierListCoordinator(tierManager, tierListManager, itemPlacementManager);
     }
 
     @Test
-    void addTierListCreatesListAndDefaultTiers() {
-        TierList list = tierListCoordinator.createTierListWithDefaults("My List", "Thumbnail", false);
-
-        // Verify list exists
-        assertNotNull(list);
-
-        // Verify default tiers were added
-        List<Tier> tiers = tierManager.getTiersForList(list.getId());
-        assertEquals(7, tiers.size());
-
+    void testConstructorNullDependencies() {
+        assertThrows(InitializationException.class, () -> new TierListCoordinator(null, tierListManager, itemPlacementManager));
+        assertThrows(InitializationException.class, () -> new TierListCoordinator(tierManager, null, itemPlacementManager));
+        assertThrows(InitializationException.class, () -> new TierListCoordinator(tierManager, tierListManager, null));
     }
 
+    @Test
+    void testAddTierListCreatesListAndDefaultTiers() {
+        TierList list = tierListCoordinator.createTierListWithDefaults("My List", "Thumbnail", false);
+
+        assertNotNull(list);
+        List<Tier> tiers = tierManager.getTiersForList(list.getId());
+        assertEquals(7, tiers.size());
+    }
 
     @Test
-    void removeTierListDeletesTierList() { // TODO: Test for tier and item deletion
+    void testAddTierListStreamCreatesListAndTiers() {
+        TierList list = tierListCoordinator.createTierListWithDefaults("Stream List", false, null, "png");
+        
+        assertNotNull(list);
+        assertEquals("test", list.getThumbnailPath());
+        List<Tier> tiers = tierManager.getTiersForList(list.getId());
+        assertEquals(7, tiers.size());
+    }
+
+    @Test
+    void removeTierListDeletesTierList() {
         TierList tierList = tierListCoordinator.createTierListWithDefaults("To Delete", "Thumbnail", false);
         int listId = tierList.getId();
         assertEquals(1, tierListManager.getAllTierLists().size());
 
         tierListCoordinator.removeTierList(listId);
         assertEquals(0, tierListManager.getAllTierLists().size());
+    }
+
+    @Test
+    void removeTierListNotFoundThrowsException() {
+        assertThrows(NotFoundException.class, () -> {
+            tierListCoordinator.removeTierList(8888);
+        });
     }
 }
