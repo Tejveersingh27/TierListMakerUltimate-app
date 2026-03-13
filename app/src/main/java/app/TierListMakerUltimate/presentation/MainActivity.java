@@ -187,7 +187,8 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
         builder.setMessage(message);
 
         builder.setPositiveButton(positiveButton, (dialog, which) -> {
-            openTierCreator(FRAGMENT_TEMPLATE_CREATION);
+            tierListCoordinator.deepCopyAsTemplate(tierlistID, true);
+            Toast.makeText(this, R.string.template_created, Toast.LENGTH_SHORT).show();
         });
 
         builder.setNegativeButton(negativeButton, null);
@@ -241,12 +242,7 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     // Tier List Creation Fragment Overrides
     @Override
     public void onTierListCreatedSuccessfully(TierList newTierList, String tag) {
-        if (tag.equals(FRAGMENT_TIER_LIST_CREATION)) {
-            tierListTitle.setText(newTierList.getName());
-        } else {
-            tierListCoordinator.deepCopyAsTemplate(newTierList.getId(), true);
-            Toast.makeText(this, R.string.template_created, Toast.LENGTH_SHORT).show();
-        }
+        tierListTitle.setText(newTierList.getName());
     }
 
 
