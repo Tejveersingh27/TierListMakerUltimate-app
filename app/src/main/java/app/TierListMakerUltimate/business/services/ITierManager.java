@@ -47,6 +47,11 @@ public interface ITierManager {
     Tier copyTier(int tierId, int targetTierListId) throws ValidationException, NotFoundException;
 
     /**
+     * Moves an existing tier by a given delta. -1 moves up, 1 moves down.
+     */
+    void moveRankedTier(int tierId, int delta) throws ValidationException, NotFoundException;
+
+    /**
      * Returns all tiers for a given tier list.
      */
     List<Tier> getTiersForList(int tierListId) throws ValidationException;
