@@ -6,21 +6,76 @@ This document provides an overview of the project's architecture
 
 ## 1. Diagram
 
-![Image of Our Architecture Diagram](images/architecture.png)
-
+!(images/architecture.png)
 
 ---
 
 ## 2. Layers
 
+### Application Layer
+
+[application](app/src/main/java/app/TierListMakerUltimate/application)
+
+**TierListMakerUltimate**
+
+- The Application class that initializes all managers, persistence objects, and coordinators, making
+  them available to the rest of the app.
+
+---
+
 ### Presentation Layer
 
-[persistence](app/src/main/java/app/TierListMakerUltimate/persistence)
+[presentation](app/src/main/java/app/TierListMakerUltimate/presentation)
 
-**MainView**
+**MainActivity**
 
-- Class to let users interact with the tier list (starting screen of the app)
-- Used to translate user interactions with the tier list and send them to the business layer.
+- The main page where users rank items into tiers, reorder tiers, and manage items via drag and
+  drop.
+
+**TemplateBrowserActivity**
+
+- Displays seeded and user-created templates, allowing the user to start a new tier list from a
+  template or from scratch.
+
+**TierListBrowserActivity**
+
+- Displays the user's saved tier lists with options to edit, configure or delete them.
+
+**TierEditorFragment**
+
+- A Fragment for configuring tier lists.
+
+**TierListCreationFragment**
+
+- A Fragment for configuring tier lists.
+
+**TierItemCreationFragment**
+
+- A Fragment for configuring tier items.
+
+**BaseImageCreationFragment**
+
+- An Abstract Fragment for shared image picking logic for creation fragments.
+
+**TierAdapter**
+
+- Connects ranked Tier objects to a RecyclerView in the tier editor.
+
+**TierItemAdapter**
+
+- Connects TierItem objects to a RecyclerView within each tier.
+
+**TierItemDragController**
+
+- Handles drag-and-drop detection for tier items.
+
+**TemplateBrowserAdapter**
+
+- Connects TierList objects to a RecyclerView in the template browser (template).
+
+**TierListBrowserAdapter**
+
+- Connects TierList objects to a RecyclerView in the tier list browser (non-template).
 
 --- 
 
@@ -28,17 +83,22 @@ This document provides an overview of the project's architecture
 
 [business](app/src/main/java/app/TierListMakerUltimate/business)
 
+**TierListCoordinator**
+
+- Coordinates multi-step operations that require multiple managers, such as creating a tier list
+  with default tiers.
+
 **TierListManager**
 
-- Class to modify TierLists
+- Manages TierList object CRUD and related operations.
 
 **TierManager**
 
-- Class to modify tiers in TierLists (the structure of the TierList)
+- Manages Tier object CRUD and related operations.
 
 **ItemPlacementManager**
 
-- Class to modify the positions of items in TierLists
+- Manages TierItem object CRUD and related operations.
 
 ---
 
@@ -46,7 +106,25 @@ This document provides an overview of the project's architecture
 
 [exceptions](app/src/main/java/app/TierListMakerUltimate/business/exception)
 
-- Custom exceptions for DSO validation
+**BusinessException**
+
+- The base exception for all business layer errors.
+
+**ValidationException**
+
+- Thrown when input fails to meet validation rules.
+
+**NotFoundException**
+
+- Thrown when a requested object ID does not exist in storage.
+
+**ImageException**
+
+- Thrown when saving or reading an image file fails.
+
+**InitializationException**
+
+- Thrown when required dependencies are null during construction.
 
 ---
 
@@ -54,7 +132,9 @@ This document provides an overview of the project's architecture
 
 [validators](app/src/main/java/app/TierListMakerUltimate/business/validation)
 
-- For DSO validation when passing data to the business layer
+**TierListValidator, TierValidator, ItemValidator**
+
+- Guard classes that validate input before business operations run.
 
 ---
 
@@ -64,15 +144,15 @@ This document provides an overview of the project's architecture
 
 **TierList**
 
-- Class for TierLists
+- Represents a tier list or template.
 
 **Tier**
 
-- Class for Tiers
+- Represents a rankable tier or unranked tier that can be placed in a tier list.
 
 **TierItem**
 
-- Class for TierItems
+- Represents an item that can be placed in a tier.
 
 --- 
 
@@ -80,57 +160,35 @@ This document provides an overview of the project's architecture
 
 [persistence](app/src/main/java/app/TierListMakerUltimate/persistence)
 
-**TierListPersistence**
+**AppDBHelper**
 
-- Interface for TierLists in the database
+- Manages the SQLite database including table creation.
 
-**TierPersistence**
+**TierListPersistenceSQLite, TierPersistenceSQLite, TierItemPersistenceSQLite**
 
-- Interface for Tiers in the database
+- Execute queries for their respective DSOs.
 
-**TierItemPersistence**
+**AndroidImageFilePersistence**
 
-- Interface for TierItems in the database
+- Saves and manages image data to the app's internal storage for android.
 
----
+**PersistenceFactory**
 
+- Toggles between SQLite and stub persistence implementations.
 
-**TierListPersistenceStub**
+**UUIDGenerator**
 
-- Fake TierList database that uses map instead of actual relational database
+- Generates unique filename strings to prevent image file collisions in internal storage.
 
-**TierPersistenceStub**
+**TierListPersistenceFake, TierPersistenceFake, TierItemPersistenceFake**
 
-- Fake Tier database that uses map instead of actual relational database
-
-**TierItemPersistenceStub**
-
-- Fake TierItem database that uses map instead of actual relational database
+- In-memory HashMap implementations of the persistence interfaces used for testing without a real
+  database.
 
 ---
 
-## 3. Component Interactions
-
-### Dependency Flow Overview
+## 3. Dependency Flow Overview
 
 `Presentation   →   Logic   →   Persistence   →   Database`
 
-### Example: User Moves a TierItem
 
-1. **User** → Drags item from "Tier S" to "Tier A"
-
-2. **Presentation (TierListView)**
-    - Listener detects drop on Tier A
-    - Gets tier ID from item
-    - Calls: `itemPlacementManager.moveItemToTier(itemId, targetTierId)`
-
-4. **Logic (ItemPlacementManager)**
-    - Validates: Does item exist? Does target tier exist?
-    - Calls: `itemStorage.updateItem(updatedItem)`
-
-5. **Persistence (TierItemPersistence)**
-    - Queries: `UPDATE tier_items SET tier_id = ? WHERE id = ?`
-    - Returns: Updated TierItem object
-
-6. **Presentation (MainView)**
-    - Call refreshUI() to reload TierList 
