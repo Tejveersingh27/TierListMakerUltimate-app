@@ -138,6 +138,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 tierCv.put(Tiers.COL_NAME, tier.label);
                 tierCv.put(Tiers.COL_COLOR_HEX, tier.color);
                 tierCv.put(Tiers.COL_IS_UNRANKED, tier.isUnranked ? 1 : 0);
+                tierCv.put(Tiers.COL_TIER_POSITION, tier.position);
                 long tierId = db.insertOrThrow(Tiers.TABLE, null, tierCv);
 
                 // insert items into unranked tier

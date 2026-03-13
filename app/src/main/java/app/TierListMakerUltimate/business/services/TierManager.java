@@ -27,7 +27,7 @@ public class TierManager implements ITierManager {
 
     @Override
     public Tier createTier(int tierListId, String label, String color) throws ValidationException {
-        return createTier(tierListId, label, color, false, 0);
+        return createTier(tierListId, label, color, false, getRankedTiersForList(tierListId).size());
     }
 
     @Override
@@ -66,7 +66,35 @@ public class TierManager implements ITierManager {
     @Override
     public Tier copyTier(int tierId, int targetTierListId) throws ValidationException, NotFoundException {
         Tier verifiedTier = getVerifiedTier(tierId);
-        return createTier(targetTierListId, verifiedTier.getName(), verifiedTier.getColor(), verifiedTier.isUnranked(), verifiedTier.getPosition());
+        return createTier(targetTierListId, verifiedTier.getName(), verifiedTier.getColor(), verifiedTier.isUnranked(), verifiedTier.getOrdinalPosition());
+    }
+
+
+    @Override
+    public void moveRankedTier(int tierId, int delta) throws ValidationException, NotFoundException {
+        Tier targetTier = getVerifiedTier(tierId);
+        List<Tier> tiers = getRankedTiersForList(targetTier.getTierListId());
+
+        int currentIndex = calculateRankedTierIndex(tierId, tiers);
+        int newIndex = currentIndex + delta;
+        if (currentIndex >= 0 && newIndex >= 0 && newIndex < tiers.size()) {
+            swapTierPositions(targetTier, tiers.get(newIndex));
+        }
+    }
+
+
+    private int calculateRankedTierIndex(int tierId, List<Tier> tiers) {
+        for (int i = 0; i < tiers.size(); i++) {
+            if (tiers.get(i).getId() == tierId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void swapTierPositions(Tier tier1, Tier tier2) throws NotFoundException {
+        tierStorage.updateTier(new Tier(tier1.getId(), tier1.getTierListId(), tier1.getName(), tier1.getColor(), tier1.isUnranked(), tier2.getOrdinalPosition()));
+        tierStorage.updateTier(new Tier(tier2.getId(), tier2.getTierListId(), tier2.getName(), tier2.getColor(), tier2.isUnranked(), tier1.getOrdinalPosition()));
     }
 
     private Tier getVerifiedTier(int tierId) throws NotFoundException {
@@ -80,7 +108,9 @@ public class TierManager implements ITierManager {
     @Override
     public List<Tier> getTiersForList(int tierListId) throws ValidationException {
         validator.validateTierListId(tierListId);
-        return tierStorage.getTiersForList(tierListId);
+        List<Tier> tiers = tierStorage.getTiersForList(tierListId);
+        tiers.sort(Comparator.comparingInt(Tier::getOrdinalPosition));
+        return tiers;
     }
 
     @Override

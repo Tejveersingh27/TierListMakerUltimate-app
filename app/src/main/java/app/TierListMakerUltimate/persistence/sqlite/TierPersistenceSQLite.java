@@ -36,7 +36,7 @@ public class TierPersistenceSQLite implements TierPersistence {
                 TABLE,
                 new String[]{ID, TIER_LIST_ID, NAME, COLOR_HEX, IS_UNRANKED, TIER_POSITION},
                 sel, args, null, null,
-                ID + " ASC");
+                TIER_POSITION + " ASC");
 
         List<Tier> result = new ArrayList<>();
         try {
@@ -83,7 +83,7 @@ public class TierPersistenceSQLite implements TierPersistence {
         cv.put(NAME, currentTier.getName());
         cv.put(COLOR_HEX, currentTier.getColor());
         cv.put(IS_UNRANKED, currentTier.isUnranked() ? 1 : 0);
-        cv.put(TIER_POSITION, currentTier.getPosition());
+        cv.put(TIER_POSITION, currentTier.getOrdinalPosition());
         long id = db.insertOrThrow(TABLE, null, cv);
 
         return new Tier(
@@ -92,7 +92,7 @@ public class TierPersistenceSQLite implements TierPersistence {
                 currentTier.getName(),
                 currentTier.getColor(),
                 currentTier.isUnranked(),
-                currentTier.getPosition()
+                currentTier.getOrdinalPosition()
         );
     }
 
@@ -105,7 +105,7 @@ public class TierPersistenceSQLite implements TierPersistence {
         cv.put(NAME, currentTier.getName());
         cv.put(COLOR_HEX, currentTier.getColor());
         cv.put(IS_UNRANKED, currentTier.isUnranked() ? 1 : 0);
-        cv.put(TIER_POSITION, currentTier.getPosition());
+        cv.put(TIER_POSITION, currentTier.getOrdinalPosition());
 
         String where = ID + "=?";
         String[] args = new String[]{String.valueOf(currentTier.getId())};

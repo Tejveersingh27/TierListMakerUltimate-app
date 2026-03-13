@@ -215,12 +215,6 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     }
 
 
-    // This function should make the tier physically move up or down on the list
-    // based on the direction parameter
-    private void shiftTier(int direction) {
-        Toast.makeText(this, NOT_IMPLEMENTED, Toast.LENGTH_LONG).show();
-    }
-
     // Refreshes the tierlist to reflect item movements.
     private void refreshList() {
         // Set items for unranked
@@ -259,8 +253,14 @@ public class MainActivity extends AppCompatActivity implements TierItemCreationF
     }
 
     @Override
-    public void moveTier(int direction) {
-        shiftTier(direction);
+    public void moveTier(int tierId, int delta) {
+
+        try {
+            tierManager.moveRankedTier(tierId, delta);
+            refreshList();
+        } catch (BusinessException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Tier Item Creation Fragment Overrides

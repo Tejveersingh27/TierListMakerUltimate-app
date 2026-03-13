@@ -33,10 +33,10 @@ class TierManagerTest {
     @Test
     void testConstructorNullDependenciesThrowsException() {
         assertThrows(InitializationException.class, () ->
-            new TierManager(null, new TierValidator()));
+                new TierManager(null, new TierValidator()));
 
         assertThrows(InitializationException.class, () ->
-                    new TierManager(tierStorage, null));
+                new TierManager(tierStorage, null));
     }
 
     @Test
@@ -68,7 +68,7 @@ class TierManagerTest {
     @Test
     void updateTierUpdatesName() {
         Tier created = tierManager.createTier(1, "Old", "#FFFFFF");
-        Tier updated = new Tier(created.getId(), created.getTierListId(), "New", created.getColor(), created.isUnranked(), created.getPosition());
+        Tier updated = new Tier(created.getId(), created.getTierListId(), "New", created.getColor(), created.isUnranked(), created.getOrdinalPosition());
 
         tierManager.updateTier(updated);
 
@@ -78,7 +78,7 @@ class TierManagerTest {
     @Test
     void testUpdateTierUpdatesColor() {
         Tier created = tierManager.createTier(1, "S Tier", "#FFFFFF");
-        Tier updated = new Tier(created.getId(), created.getTierListId(), created.getName(), "#000000", created.isUnranked(), created.getPosition());
+        Tier updated = new Tier(created.getId(), created.getTierListId(), created.getName(), "#000000", created.isUnranked(), created.getOrdinalPosition());
 
         tierManager.updateTier(updated);
 
@@ -92,7 +92,7 @@ class TierManagerTest {
 
         tierManager.updateTier(updated);
 
-        assertEquals(1, tierManager.getTier(created.getId()).getPosition());
+        assertEquals(1, tierManager.getTier(created.getId()).getOrdinalPosition());
     }
 
     @Test
@@ -100,7 +100,8 @@ class TierManagerTest {
         int id = tierManager.createTier(1, "S Tier", "#FFFFFF").getId();
         tierManager.removeTier(id);
 
-        assertThrows(NotFoundException.class, () -> {tierManager.getTier(id);
+        assertThrows(NotFoundException.class, () -> {
+            tierManager.getTier(id);
         });
     }
 
@@ -129,7 +130,7 @@ class TierManagerTest {
     @Test
     void updateTierRejectsInvalidLabel() {
         Tier created = tierManager.createTier(1, "Original", "#FFFFFF");
-        Tier invalid = new Tier(created.getId(), created.getTierListId(), "", created.getColor(), created.isUnranked(), created.getPosition());
+        Tier invalid = new Tier(created.getId(), created.getTierListId(), "", created.getColor(), created.isUnranked(), created.getOrdinalPosition());
 
         assertThrows(ValidationException.class, () -> {
             tierManager.updateTier(invalid);

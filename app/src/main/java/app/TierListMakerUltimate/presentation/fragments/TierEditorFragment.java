@@ -123,7 +123,7 @@ public class TierEditorFragment extends BottomSheetDialogFragment {
                 Tier currentTier = tierManager.getTier(getTierId());
                 String hexColor = selectedCard != null ? selectedCard.getTag().toString() : currentTier.getColor();
                 String name = TextInputExtractor.getTrimmedText(nameInput);
-                tierManager.updateTier(new Tier(getTierId(), currentTier.getTierListId(), name, hexColor, false, currentTier.getPosition()));
+                tierManager.updateTier(new Tier(getTierId(), currentTier.getTierListId(), name, hexColor, false, currentTier.getOrdinalPosition()));
                 if (listener != null) {
                     listener.onTierEditorFragmentEditSuccess();
                 }
