@@ -2,7 +2,7 @@ package app.TierListMakerUltimate.business.validation;
 
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
-import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.exceptions.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 
 public class TierValidator {

@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.persistence;
+package app.TierListMakerUltimate.persistence.files;
 
 import android.content.Context;
 
@@ -6,7 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import app.TierListMakerUltimate.persistence.utils.IUUIDGenerator;
+import app.TierListMakerUltimate.persistence.interfaces.ImageFilePersistence;
+
+import app.TierListMakerUltimate.business.utils.IUUIDGenerator;
 
 public class AndroidImageFilePersistence implements ImageFilePersistence {
     private Context context;

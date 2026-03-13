@@ -27,7 +27,7 @@
         </activity>
 
         <activity
-            android:name="app.TierListMakerUltimate.presentation.MainActivity"
+            android:name="app.TierListMakerUltimate.presentation.activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="app.TierListMakerUltimate.presentation.activities.TemplateBrowserActivity"

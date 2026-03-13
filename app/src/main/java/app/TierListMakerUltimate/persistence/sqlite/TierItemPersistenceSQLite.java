@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.TierListMakerUltimate.models.TierItem;
-import app.TierListMakerUltimate.persistence.TierItemPersistence;
+import app.TierListMakerUltimate.persistence.interfaces.TierItemPersistence;;
 
 public class TierItemPersistenceSQLite implements TierItemPersistence {
 

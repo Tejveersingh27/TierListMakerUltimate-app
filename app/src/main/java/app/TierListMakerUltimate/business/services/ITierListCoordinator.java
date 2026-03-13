@@ -2,9 +2,9 @@ package app.TierListMakerUltimate.business.services;
 
 import java.io.InputStream;
 
-import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.ImageException;
-import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.exceptions.NotFoundException;
+import app.TierListMakerUltimate.business.exceptions.ImageException;
+import app.TierListMakerUltimate.business.exceptions.ValidationException;
 import app.TierListMakerUltimate.models.TierList;
 
 

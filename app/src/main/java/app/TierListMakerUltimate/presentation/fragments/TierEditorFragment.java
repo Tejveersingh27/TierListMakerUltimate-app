@@ -20,8 +20,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
-import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.exceptions.NotFoundException;
+import app.TierListMakerUltimate.business.exceptions.ValidationException;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;

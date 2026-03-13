@@ -13,14 +13,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import app.TierListMakerUltimate.business.exception.InitializationException;
-import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.ImageException;
-import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.exceptions.InitializationException;
+import app.TierListMakerUltimate.business.exceptions.NotFoundException;
+import app.TierListMakerUltimate.business.exceptions.ImageException;
+import app.TierListMakerUltimate.business.exceptions.ValidationException;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.models.TierList;
-import app.TierListMakerUltimate.persistence.ImageFilePersistence;
-import app.TierListMakerUltimate.persistence.TierListPersistence;
+import app.TierListMakerUltimate.persistence.interfaces.ImageFilePersistence;
+import app.TierListMakerUltimate.persistence.interfaces.TierListPersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierListPersistenceStub;
 
 public class TierListManagerTest {

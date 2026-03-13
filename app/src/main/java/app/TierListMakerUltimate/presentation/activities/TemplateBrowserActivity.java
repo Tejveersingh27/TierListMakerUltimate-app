@@ -19,7 +19,6 @@ import app.TierListMakerUltimate.application.TierListMakerUltimate;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierListManager;
 import app.TierListMakerUltimate.models.TierList;
-import app.TierListMakerUltimate.presentation.MainActivity;
 import app.TierListMakerUltimate.presentation.adapters.TemplateBrowserAdapter;
 import app.TierListMakerUltimate.presentation.fragments.TierListCreationFragment;
 import app.TierListMakerUltimate.presentation.utils.ImageHelper;

@@ -1,7 +1,7 @@
 package app.TierListMakerUltimate.persistence.stubs;
 
 import app.TierListMakerUltimate.models.TierList;
-import app.TierListMakerUltimate.persistence.TierListPersistence;
+import app.TierListMakerUltimate.persistence.interfaces.TierListPersistence;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.business.exception;
+package app.TierListMakerUltimate.business.exceptions;
 
 public class NotFoundException extends BusinessException {
     public NotFoundException(String message) {

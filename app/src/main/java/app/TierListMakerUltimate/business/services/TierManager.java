@@ -3,11 +3,11 @@ package app.TierListMakerUltimate.business.services;
 import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
-import app.TierListMakerUltimate.business.exception.InitializationException;
-import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.exceptions.InitializationException;
+import app.TierListMakerUltimate.business.exceptions.NotFoundException;
+import app.TierListMakerUltimate.business.exceptions.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
-import app.TierListMakerUltimate.persistence.TierPersistence;
+import app.TierListMakerUltimate.persistence.interfaces.TierPersistence;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 
 import java.util.Comparator;

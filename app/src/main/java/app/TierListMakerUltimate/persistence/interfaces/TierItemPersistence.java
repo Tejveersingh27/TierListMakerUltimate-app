@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.persistence;
+package app.TierListMakerUltimate.persistence.interfaces;
 
 import app.TierListMakerUltimate.models.TierItem;
 

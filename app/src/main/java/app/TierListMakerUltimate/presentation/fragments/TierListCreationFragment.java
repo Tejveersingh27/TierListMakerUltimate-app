@@ -1,7 +1,5 @@
 package app.TierListMakerUltimate.presentation.fragments;
 
-import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,8 +15,8 @@ import java.io.InputStream;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
-import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.exceptions.NotFoundException;
+import app.TierListMakerUltimate.business.exceptions.ValidationException;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierListManager;
 import app.TierListMakerUltimate.models.TierList;

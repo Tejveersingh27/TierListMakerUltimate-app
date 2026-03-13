@@ -1,10 +1,14 @@
 // Factory class for switching persistence implementations
 
-package app.TierListMakerUltimate.persistence;
+package app.TierListMakerUltimate.persistence.factory;
 
-import static app.TierListMakerUltimate.persistence.Constants.DB_NAME;
+import static app.TierListMakerUltimate.persistence.constants.Constants.DB_NAME;
 
 import android.content.Context;
+
+import app.TierListMakerUltimate.persistence.interfaces.TierListPersistence;
+import app.TierListMakerUltimate.persistence.interfaces.TierPersistence;
+import app.TierListMakerUltimate.persistence.interfaces.TierItemPersistence;
 
 import app.TierListMakerUltimate.persistence.sqlite.AppDBHelper;
 import app.TierListMakerUltimate.persistence.sqlite.TierListPersistenceSQLite;

@@ -16,14 +16,14 @@ import app.TierListMakerUltimate.business.validation.ItemValidator;
 import app.TierListMakerUltimate.business.validation.TierListValidator;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 
-import app.TierListMakerUltimate.persistence.ImageFilePersistence;
-import app.TierListMakerUltimate.persistence.AndroidImageFilePersistence;
-import app.TierListMakerUltimate.persistence.TierItemPersistence;
-import app.TierListMakerUltimate.persistence.TierListPersistence;
-import app.TierListMakerUltimate.persistence.TierPersistence;
-import app.TierListMakerUltimate.persistence.PersistenceFactory;
-import app.TierListMakerUltimate.persistence.utils.IUUIDGenerator;
-import app.TierListMakerUltimate.persistence.utils.UUIDGenerator;
+import app.TierListMakerUltimate.persistence.interfaces.ImageFilePersistence;
+import app.TierListMakerUltimate.persistence.files.AndroidImageFilePersistence;
+import app.TierListMakerUltimate.persistence.interfaces.TierItemPersistence;
+import app.TierListMakerUltimate.persistence.interfaces.TierListPersistence;
+import app.TierListMakerUltimate.persistence.interfaces.TierPersistence;
+import app.TierListMakerUltimate.persistence.factory.PersistenceFactory;
+import app.TierListMakerUltimate.business.utils.IUUIDGenerator;
+import app.TierListMakerUltimate.business.utils.UUIDGenerator;
 
 public class TierListMakerUltimate extends Application {
 

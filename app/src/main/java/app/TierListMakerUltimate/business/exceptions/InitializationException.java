@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.business.exception;
+package app.TierListMakerUltimate.business.exceptions;
 
 public class InitializationException extends BusinessException {
     public InitializationException(String message) {

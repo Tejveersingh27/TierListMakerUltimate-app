@@ -1,7 +1,7 @@
 package app.TierListMakerUltimate.business.services;
 
-import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.exceptions.NotFoundException;
+import app.TierListMakerUltimate.business.exceptions.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 
 import java.util.List;

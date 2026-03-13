@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.presentation;
+package app.TierListMakerUltimate.presentation.adapters;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;

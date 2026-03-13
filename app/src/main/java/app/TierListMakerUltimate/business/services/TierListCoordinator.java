@@ -5,10 +5,10 @@ import static app.TierListMakerUltimate.business.constants.BusinessConstants.*;
 import java.io.InputStream;
 import java.util.List;
 
-import app.TierListMakerUltimate.business.exception.InitializationException;
-import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.ImageException;
-import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.exceptions.InitializationException;
+import app.TierListMakerUltimate.business.exceptions.NotFoundException;
+import app.TierListMakerUltimate.business.exceptions.ImageException;
+import app.TierListMakerUltimate.business.exceptions.ValidationException;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
 import app.TierListMakerUltimate.models.TierItem;

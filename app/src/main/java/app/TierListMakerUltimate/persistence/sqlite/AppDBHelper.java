@@ -1,6 +1,6 @@
 package app.TierListMakerUltimate.persistence.sqlite;
 
-import static app.TierListMakerUltimate.persistence.Constants.*;
+import static app.TierListMakerUltimate.persistence.constants.Constants.*;
 
 import android.content.ContentValues;
 import android.content.Context;

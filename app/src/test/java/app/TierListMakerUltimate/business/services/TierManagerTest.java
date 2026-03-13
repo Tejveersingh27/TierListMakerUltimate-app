@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import app.TierListMakerUltimate.business.constants.DefaultTiers;
-import app.TierListMakerUltimate.business.exception.InitializationException;
-import app.TierListMakerUltimate.business.exception.NotFoundException;
-import app.TierListMakerUltimate.business.exception.ValidationException;
+import app.TierListMakerUltimate.business.exceptions.InitializationException;
+import app.TierListMakerUltimate.business.exceptions.NotFoundException;
+import app.TierListMakerUltimate.business.exceptions.ValidationException;
 import app.TierListMakerUltimate.business.validation.TierValidator;
 import app.TierListMakerUltimate.models.Tier;
-import app.TierListMakerUltimate.persistence.TierPersistence;
+import app.TierListMakerUltimate.persistence.interfaces.TierPersistence;
 import app.TierListMakerUltimate.persistence.stubs.TierPersistenceStub;
 
 class TierManagerTest {

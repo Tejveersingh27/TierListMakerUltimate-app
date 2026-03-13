@@ -1,4 +1,4 @@
-package app.TierListMakerUltimate.presentation;
+package app.TierListMakerUltimate.presentation.activities;
 
 import static app.TierListMakerUltimate.presentation.constants.PresentationConstants.*;
 
@@ -16,14 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import app.TierListMakerUltimate.R;
 import app.TierListMakerUltimate.application.TierListMakerUltimate;
-import app.TierListMakerUltimate.business.exception.BusinessException;
+import app.TierListMakerUltimate.business.exceptions.BusinessException;
 import app.TierListMakerUltimate.business.services.IItemPlacementManager;
 import app.TierListMakerUltimate.business.services.ITierListCoordinator;
 import app.TierListMakerUltimate.business.services.ITierManager;
 import app.TierListMakerUltimate.models.Tier;
 import app.TierListMakerUltimate.models.TierItem;
 import app.TierListMakerUltimate.models.TierList;
-import app.TierListMakerUltimate.presentation.activities.TierListBrowserActivity;
+import app.TierListMakerUltimate.presentation.adapters.TierAdapter;
+import app.TierListMakerUltimate.presentation.adapters.TierItemAdapter;
 import app.TierListMakerUltimate.presentation.controllers.TierItemDragController;
 import app.TierListMakerUltimate.presentation.fragments.TierEditorFragment;
 import app.TierListMakerUltimate.presentation.fragments.TierItemCreationFragment;
