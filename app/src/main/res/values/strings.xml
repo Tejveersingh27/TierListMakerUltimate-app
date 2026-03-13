@@ -87,4 +87,6 @@
     <string name="choose_a_color">Choose a Color</string>
     <string name="edit_tier">Edit Tier</string>
     <string name="tier_label">Tier Label</string>
+    <string name="test_text">test text test text test text test text</string>
+    <string name="unranked">Unranked</string>
 </resources>

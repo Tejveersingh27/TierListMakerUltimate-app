@@ -135,7 +135,6 @@ public class TierAdapter extends RecyclerView.Adapter<TierAdapter.TierViewHolder
     }
 
     public interface TierActions {
-        void onDeleteTier(Tier tier);
 
         void onItemDroppedTierOnTier(int itemId, int targetTierId);
 
